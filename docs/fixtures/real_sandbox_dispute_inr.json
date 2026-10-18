@@ -1,0 +1,142 @@
+{
+  "dispute_id": "PP-R-NKI-10193390",
+  "create_time": "2026-10-18T13:37:42.244Z",
+  "update_time": "2026-10-18T13:41:14.107Z",
+  "disputed_transactions": [
+    {
+      "buyer_transaction_id": "4H384663R6471042S",
+      "seller_transaction_id": "4R073105U90937213",
+      "create_time": "2026-10-18T13:30:05.000Z",
+      "transaction_status": "HELD",
+      "gross_amount": {
+        "currency_code": "USD",
+        "value": "25.00"
+      },
+      "buyer": {
+        "email": "sb-6oifq53423350@personal.example.com",
+        "payer_id": "ZTBK2FS2NBR9E",
+        "name": "John Doe"
+      },
+      "seller": {
+        "email": "sb-2mews53303427@business.example.com",
+        "merchant_id": "MZ6BFYDPH4CAU",
+        "name": "Test Store"
+      },
+      "items": [
+        {
+          "item_name": "Mechanical Keyboard",
+          "item_description": "Mechanical Keyboard",
+          "item_quantity": "1",
+          "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+          "item_type": "PRODUCT"
+        }
+      ],
+      "seller_protection_eligible": true,
+      "seller_protection_type": "EXPANDED_SELLER_PROTECTION"
+    }
+  ],
+  "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+  "status": "WAITING_FOR_SELLER_RESPONSE",
+  "dispute_amount": {
+    "currency_code": "USD",
+    "value": "25.00"
+  },
+  "dispute_state": "REQUIRED_ACTION",
+  "fund_movements": [
+    {
+      "party": "RECEIVER",
+      "amount": {
+        "currency_code": "USD",
+        "value": "23.64"
+      },
+      "initiated_time": "2026-10-18T13:41:04.000Z",
+      "type": "DEBIT",
+      "reason": "HOLD_PLACED"
+    }
+  ],
+  "dispute_life_cycle_stage": "INQUIRY",
+  "dispute_channel": "INTERNAL",
+  "messages": [
+    {
+      "posted_by": "BUYER",
+      "time_posted": "2026-10-18T13:37:42.244Z",
+      "content": "I ordered this merchandise but it has not arrived. Tracking only shows label created."
+    }
+  ],
+  "extensions": {
+    "merchant_contacted": false,
+    "buyer_contacted_time": "2026-10-18T13:37:41.483Z"
+  },
+  "evidences": [
+    {
+      "evidence_type": "CREATE",
+      "notes": "I ordered this merchandise but it has not arrived. Tracking only shows label created.",
+      "source": "SUBMITTED_BY_BUYER",
+      "date": "2026-10-18T13:37:42.244Z",
+      "dispute_life_cycle_stage": "INQUIRY"
+    },
+    {
+      "evidence_type": "PROOF_OF_FULFILLMENT",
+      "source": "REQUESTED_FROM_SELLER",
+      "date": "2026-10-18T13:41:14.107Z"
+    }
+  ],
+  "seller_response_due_date": "2026-11-07T13:37:42.244Z",
+  "offer": {
+    "buyer_requested_amount": {
+      "currency_code": "USD",
+      "value": "25.00"
+    }
+  },
+  "refund_details": {
+    "allowed_refund_amount": {
+      "currency_code": "USD",
+      "value": "25.00"
+    }
+  },
+  "allowed_response_options": {
+    "accept_claim": {
+      "accept_claim_types": [
+        "PARTIAL_REFUND",
+        "REFUND"
+      ]
+    },
+    "make_offer": {
+      "offer_types": [
+        "REFUND"
+      ]
+    }
+  },
+  "links": [
+    {
+      "href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-R-NKI-10193390",
+      "rel": "self",
+      "method": "GET"
+    },
+    {
+      "href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-R-NKI-10193390/accept-claim",
+      "rel": "accept_claim",
+      "method": "POST"
+    },
+    {
+      "href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-R-NKI-10193390/provide-evidence",
+      "rel": "provide_evidence",
+      "method": "POST"
+    },
+    {
+      "href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-R-NKI-10193390/send-message",
+      "rel": "send_message",
+      "method": "POST"
+    },
+    {
+      "href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-R-NKI-10193390/escalate",
+      "rel": "escalate",
+      "method": "POST"
+    },
+    {
+      "href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-R-NKI-10193390/make-offer",
+      "rel": "make_offer",
+      "method": "POST"
+    }
+  ]
+}
