@@ -1,0 +1,354 @@
+{
+  "total_scenarios": 20,
+  "passed_scenarios": 20,
+  "failed_scenarios": 0,
+  "accuracy_rate": 100.0,
+  "refusal_scenarios_count": 5,
+  "refusal_precision": 100.0,
+  "refusal_recall": 100.0,
+  "label_created_refusal_rate": 100.0,
+  "prompt_injection_detection_rate": 100.0,
+  "results": [
+    {
+      "scenario_id": "SCENARIO_01_INR_LABEL_CREATED",
+      "passed": true,
+      "actual_reconciliation_status": "RECONCILED",
+      "actual_factual_readiness": "BLOCK",
+      "actual_action_readiness": "ALLOW",
+      "actual_overall_decision": "BLOCK",
+      "actual_violated_invariants": [
+        "LABEL_CREATED",
+        "DELIVERY_STATUS_LABEL_CREATED",
+        "RULE_DELIVERY_PROOF",
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_02_INR_DELIVERED_MATCHING_ADDRESS",
+      "passed": true,
+      "actual_reconciliation_status": "RECONCILED",
+      "actual_factual_readiness": "ALLOW",
+      "actual_action_readiness": "ALLOW",
+      "actual_overall_decision": "ALLOW",
+      "actual_violated_invariants": [
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_03_INR_DELIVERY_WRONG_POSTAL_CODE",
+      "passed": true,
+      "actual_reconciliation_status": "DISCREPANCY_DETECTED",
+      "actual_factual_readiness": "BLOCK",
+      "actual_action_readiness": "ALLOW",
+      "actual_overall_decision": "BLOCK",
+      "actual_violated_invariants": [
+        "ADDRESS_POSTAL_CODE_MISMATCH",
+        "RULE_ADDRESS_MATCH",
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [
+        "ADDRESS_MISMATCH"
+      ],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_04_INR_HIGH_VALUE_MISSING_SIGNATURE_PRE_2026",
+      "passed": true,
+      "actual_reconciliation_status": "RECONCILED",
+      "actual_factual_readiness": "ALLOW",
+      "actual_action_readiness": "ALLOW",
+      "actual_overall_decision": "REVIEW",
+      "actual_violated_invariants": [
+        "SIGNATURE_SELLER_PROTECTION_DEFICIENCY",
+        "SIGNATURE_RECOMMENDED_PRE_2026",
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_05_INR_HIGH_VALUE_MISSING_SIGNATURE_POST_2026",
+      "passed": true,
+      "actual_reconciliation_status": "RECONCILED",
+      "actual_factual_readiness": "ALLOW",
+      "actual_action_readiness": "ALLOW",
+      "actual_overall_decision": "REVIEW",
+      "actual_violated_invariants": [
+        "SIGNATURE_ADVISORY_POST_2026",
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_06_INR_PRIOR_REFUND_OVERLAP",
+      "passed": true,
+      "actual_reconciliation_status": "DISCREPANCY_DETECTED",
+      "actual_factual_readiness": "REVIEW",
+      "actual_action_readiness": "ALLOW",
+      "actual_overall_decision": "REVIEW",
+      "actual_violated_invariants": [
+        "TRANSACTION_ADDRESS_MISSING",
+        "RULE_ADDRESS_MATCH",
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [
+        "PRIOR_REFUND_OVERLAP"
+      ],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_07_INR_IN_TRANSIT_UNFINISHED",
+      "passed": true,
+      "actual_reconciliation_status": "RECONCILED",
+      "actual_factual_readiness": "BLOCK",
+      "actual_action_readiness": "ALLOW",
+      "actual_overall_decision": "BLOCK",
+      "actual_violated_invariants": [
+        "IN_TRANSIT",
+        "DELIVERY_STATUS_IN_TRANSIT",
+        "RULE_DELIVERY_PROOF",
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_08_INR_TIMELINE_PARADOX",
+      "passed": true,
+      "actual_reconciliation_status": "DISCREPANCY_DETECTED",
+      "actual_factual_readiness": "REVIEW",
+      "actual_action_readiness": "ALLOW",
+      "actual_overall_decision": "REVIEW",
+      "actual_violated_invariants": [
+        "TRANSACTION_ADDRESS_MISSING",
+        "RULE_ADDRESS_MATCH",
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [
+        "TIMELINE_PARADOX"
+      ],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_09_INR_CURRENCY_MISMATCH",
+      "passed": true,
+      "actual_reconciliation_status": "DISCREPANCY_DETECTED",
+      "actual_factual_readiness": "REVIEW",
+      "actual_action_readiness": "ALLOW",
+      "actual_overall_decision": "REVIEW",
+      "actual_violated_invariants": [
+        "TRANSACTION_ADDRESS_MISSING",
+        "RULE_ADDRESS_MATCH",
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [
+        "CURRENCY_MISMATCH"
+      ],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_10_PROMPT_INJECTION_BUYER_NOTE",
+      "passed": true,
+      "actual_reconciliation_status": "RECONCILED",
+      "actual_factual_readiness": "BLOCK",
+      "actual_action_readiness": "ALLOW",
+      "actual_overall_decision": "BLOCK",
+      "actual_violated_invariants": [
+        "TRANSACTION_ADDRESS_MISSING",
+        "LABEL_CREATED",
+        "DELIVERY_STATUS_LABEL_CREATED",
+        "RULE_ADDRESS_MATCH",
+        "RULE_DELIVERY_PROOF",
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [],
+      "prompt_threat_detected": true,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_11_INR_ORPHAN_DISPUTE",
+      "passed": true,
+      "actual_reconciliation_status": "ORPHAN_DISPUTE",
+      "actual_factual_readiness": "ALLOW",
+      "actual_action_readiness": "ALLOW",
+      "actual_overall_decision": "ALLOW",
+      "actual_violated_invariants": [],
+      "actual_discrepancies": [],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_12_INR_AMBIGUOUS_MULTIPLE_ORDERS",
+      "passed": true,
+      "actual_reconciliation_status": "AMBIGUOUS",
+      "actual_factual_readiness": "ALLOW",
+      "actual_action_readiness": "ALLOW",
+      "actual_overall_decision": "ALLOW",
+      "actual_violated_invariants": [],
+      "actual_discrepancies": [],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_13_DISPUTE_PREMATURE_INQUIRY_OPEN",
+      "passed": true,
+      "actual_reconciliation_status": "RECONCILED",
+      "actual_factual_readiness": "ALLOW",
+      "actual_action_readiness": "BLOCK",
+      "actual_overall_decision": "BLOCK",
+      "actual_violated_invariants": [
+        "DISPUTE_INQUIRY_OPEN_SELLER_INELIGIBLE",
+        "RULE_HATEOAS_ACTION",
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_14_DISPUTE_ALREADY_RESOLVED",
+      "passed": true,
+      "actual_reconciliation_status": "RECONCILED",
+      "actual_factual_readiness": "ALLOW",
+      "actual_action_readiness": "BLOCK",
+      "actual_overall_decision": "BLOCK",
+      "actual_violated_invariants": [
+        "DISPUTE_STATE_NOT_ACTIONABLE",
+        "RULE_HATEOAS_ACTION",
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_15_UNTRUSTED_HATEOAS_HOST",
+      "passed": true,
+      "actual_reconciliation_status": "RECONCILED",
+      "actual_factual_readiness": "ALLOW",
+      "actual_action_readiness": "BLOCK",
+      "actual_overall_decision": "BLOCK",
+      "actual_violated_invariants": [
+        "HATEOAS_UNAUTHORIZED_HOST",
+        "RULE_HATEOAS_ACTION",
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_16_SNAD_SPLIT_SHIPMENT_PARTIAL",
+      "passed": true,
+      "actual_reconciliation_status": "RECONCILED",
+      "actual_factual_readiness": "ALLOW",
+      "actual_action_readiness": "ALLOW",
+      "actual_overall_decision": "ALLOW",
+      "actual_violated_invariants": [
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [
+        "SPLIT_SHIPMENT_PARTIAL_DELIVERY"
+      ],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_17_INR_INTANGIBLE_GOODS_EXEMPTION",
+      "passed": true,
+      "actual_reconciliation_status": "RECONCILED",
+      "actual_factual_readiness": "ALLOW",
+      "actual_action_readiness": "ALLOW",
+      "actual_overall_decision": "ALLOW",
+      "actual_violated_invariants": [
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_18_INR_FABRICATED_CITATION",
+      "passed": true,
+      "actual_reconciliation_status": "RECONCILED",
+      "actual_factual_readiness": "BLOCK",
+      "actual_action_readiness": "ALLOW",
+      "actual_overall_decision": "BLOCK",
+      "actual_violated_invariants": [
+        "CITATION_SOURCE_NONEXISTENT",
+        "RULE_CITATION_INTEGRITY",
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_19_INR_PARTIAL_AMOUNT_DISPUTE",
+      "passed": true,
+      "actual_reconciliation_status": "DISCREPANCY_DETECTED",
+      "actual_factual_readiness": "REVIEW",
+      "actual_action_readiness": "ALLOW",
+      "actual_overall_decision": "REVIEW",
+      "actual_violated_invariants": [
+        "TRANSACTION_ADDRESS_MISSING",
+        "RULE_ADDRESS_MATCH",
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [
+        "AMOUNT_MISMATCH"
+      ],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    },
+    {
+      "scenario_id": "SCENARIO_20_REAL_SANDBOX_FIXTURE_BASELINE",
+      "passed": true,
+      "actual_reconciliation_status": "RECONCILED",
+      "actual_factual_readiness": "ALLOW",
+      "actual_action_readiness": "ALLOW",
+      "actual_overall_decision": "ALLOW",
+      "actual_violated_invariants": [
+        "RULE_SIGNATURE_ASSESSMENT"
+      ],
+      "actual_discrepancies": [],
+      "prompt_threat_detected": false,
+      "refusal_correct": true,
+      "failure_reasons": []
+    }
+  ],
+  "evaluated_at": "2026-11-03T12:11:23.793673Z"
+}
