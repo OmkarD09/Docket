@@ -105,6 +105,31 @@ body {
   background: #94A3B8;
 }
 
+/* AG Grid Selected Row & Refinements */
+.ag-row-selected {
+  background-color: #F0F9FF !important;
+}
+
+.ag-row-selected::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: var(--signal-blue);
+  z-index: 10;
+}
+
+.ag-cell {
+  display: flex;
+  align-items: center;
+}
+
+.ag-header-cell-label {
+  font-weight: 600;
+}
+
 /* Main Layout Shell with Persistent Left Sidebar */
 .app-shell {
   display: flex;
@@ -266,10 +291,58 @@ body {
 /* Main Content Area */
 .main-wrapper {
   flex: 1;
+  min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
+}
+
+/* Main Content Router Viewport */
+.content-area {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Scrollable Page Wrapper (Overview, Audit Ledger, Benchmark Scorecard) */
+.page-scrollable {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 24px 32px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Crucial: Prevent flex-shrink from squashing cards into the viewport */
+.page-scrollable > * {
+  flex-shrink: 0;
+}
+
+/* Disputes Full-Height Workspace */
+.disputes-workspace-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.disputes-grid-wrapper {
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  background-color: var(--bg-surface);
 }
 
 /* Top App Header */
@@ -510,6 +583,8 @@ body {
   display: grid;
   grid-template-columns: 1fr 480px;
   flex: 1;
+  min-height: 0;
+  min-width: 0;
   overflow: hidden;
   background-color: var(--bg-canvas);
 }
@@ -524,8 +599,11 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 0;
+  min-width: 0;
   background-color: var(--bg-canvas);
   overflow-y: auto;
+  overflow-x: hidden;
   border-left: 1px solid var(--border-subtle);
 }
 

@@ -137,7 +137,7 @@ export const App: React.FC = () => {
         />
 
         {/* 3. Section Router */}
-        <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <div className="content-area">
           {activeSection === 'overview' && (
             <OverviewDashboard
               disputes={disputes}
@@ -146,7 +146,7 @@ export const App: React.FC = () => {
           )}
 
           {activeSection === 'disputes' && (
-            <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+            <div className="disputes-workspace-container">
               {/* Disputes Toolbar */}
               <div
                 style={{
@@ -219,7 +219,7 @@ export const App: React.FC = () => {
                 {/* Policy Decision Filter Chips */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <button
-                    className={`btn ${decisionFilter === 'ALL' ? 'btn-secondary' : 'btn-secondary'}`}
+                    className="btn btn-secondary"
                     style={{
                       padding: '3px 8px',
                       fontSize: '11px',
@@ -292,7 +292,7 @@ export const App: React.FC = () => {
 
               {/* Split Workspace: AG Grid on Left, Evidence-First Drawer on Right */}
               <div className="disputes-workspace-split">
-                <div style={{ height: '100%', overflow: 'hidden', backgroundColor: 'var(--bg-surface)' }}>
+                <div className="disputes-grid-wrapper">
                   {error ? (
                     <div className="empty-state">
                       <AlertTriangle size={32} style={{ color: 'var(--status-block-dot)' }} />
@@ -319,17 +319,9 @@ export const App: React.FC = () => {
             </div>
           )}
 
-          {activeSection === 'audit' && (
-            <div style={{ flex: 1, overflow: 'hidden' }}>
-              <AuditTrailView />
-            </div>
-          )}
+          {activeSection === 'audit' && <AuditTrailView />}
 
-          {activeSection === 'benchmark' && (
-            <div style={{ flex: 1, overflow: 'hidden' }}>
-              <EvalScorecardView />
-            </div>
-          )}
+          {activeSection === 'benchmark' && <EvalScorecardView />}
         </div>
       </div>
     </div>

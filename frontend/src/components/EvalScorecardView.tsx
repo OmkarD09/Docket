@@ -94,7 +94,7 @@ export const EvalScorecardView: React.FC = () => {
   });
 
   return (
-    <div style={{ padding: '24px 32px', display: 'flex', flexDirection: 'column', gap: '20px', height: '100%', overflowY: 'auto' }}>
+    <div className="page-scrollable">
       {/* Header Banner with Mandatory Synthetic Source Badge */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>

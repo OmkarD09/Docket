@@ -140,10 +140,23 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
     }
   };
 
-  const copyToClipboard = (text: string) => {
+  const copyToClipboard = (text?: string) => {
+    if (!text) return;
     navigator.clipboard.writeText(text);
     setCopiedId(true);
     setTimeout(() => setCopiedId(false), 2000);
+  };
+
+  const formatDeadline = (isoString?: string | null, status?: string) => {
+    if (status === 'RESOLVED') return 'Closed';
+    if (!isoString) return 'Immediate Action Window';
+    try {
+      const d = new Date(isoString);
+      if (isNaN(d.getTime())) return 'Immediate Action Window';
+      return d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+    } catch {
+      return 'Immediate Action Window';
+    }
   };
 
   if (!disputeId) {
@@ -163,7 +176,7 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
   if (loading) {
     return (
       <div className="empty-state" style={{ height: '100%' }}>
-        <RefreshCw size={24} className="spin" style={{ color: 'var(--accent-primary)' }} />
+        <RefreshCw size={24} className="spin" style={{ color: 'var(--accent-slate)' }} />
         <p style={{ marginTop: '12px', color: 'var(--text-secondary)' }}>
           Retrieving cross-source evidence and policy state...
         </p>
@@ -182,7 +195,17 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
     );
   }
 
-  const { dispute, matched_order, matched_shipments, evaluation, approval_request, approval_record, dispatch_result, has_prompt_threat } = detail;
+  const {
+    dispute,
+    matched_order,
+    matched_shipments,
+    evaluation,
+    approval_request,
+    approval_record,
+    dispatch_result,
+    has_prompt_threat,
+  } = detail;
+
   const isReal = dispute?.dispute_id === 'PP-R-NKI-10193390';
   const overallDecision = evaluation?.overall_decision || 'REVIEW';
   const isReady = evaluation?.is_ready_for_submission || false;
@@ -192,25 +215,64 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
     .toLowerCase()
     .replace(/\b\w/g, (c: string) => c.toUpperCase());
 
+  // Non-ALLOW check results
+  const nonAllowChecks = evaluation?.check_results?.filter((c) => c.decision !== 'ALLOW') || [];
+  const primaryCheck = nonAllowChecks[0];
+  const recommendedDirective =
+    primaryCheck?.recommended_next_action ||
+    (overallDecision === 'ALLOW'
+      ? 'Authorize evidence submission and dispatch package delivery proof to PayPal API.'
+      : 'Review cross-source discrepancies or contact customer.');
+
   return (
     <div className="detail-drawer">
-      {/* 1. Header Overview Bar */}
+      {/* 1. Header Overview Bar: Identity, Origin, Amount, Status, Deadline */}
       <div className="drawer-header">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
             <span
-              className="badge"
               style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                padding: '2px 8px',
+                borderRadius: '4px',
+                fontSize: '11px',
+                fontWeight: 600,
                 backgroundColor: isReal ? 'var(--status-allow-bg)' : 'var(--bg-subtle)',
                 color: isReal ? 'var(--status-allow-text)' : 'var(--text-secondary)',
                 border: `1px solid ${isReal ? 'var(--status-allow-border)' : 'var(--border-subtle)'}`,
               }}
             >
-              {isReal ? 'Live PayPal Sandbox Dispute' : 'Synthetic Benchmark Scenario'}
+              {isReal ? (
+                <>
+                  <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#059669' }} />
+                  Live Sandbox
+                </>
+              ) : (
+                'Benchmark'
+              )}
             </span>
+
+            <span
+              style={{
+                fontSize: '11px',
+                fontWeight: 500,
+                padding: '2px 8px',
+                borderRadius: '4px',
+                backgroundColor: dispute?.status === 'WAITING_FOR_SELLER_RESPONSE' ? '#f0f9ff' : 'var(--bg-subtle)',
+                color: dispute?.status === 'WAITING_FOR_SELLER_RESPONSE' ? '#0369a1' : 'var(--text-secondary)',
+                border: `1px solid ${dispute?.status === 'WAITING_FOR_SELLER_RESPONSE' ? '#bae6fd' : 'var(--border-subtle)'}`,
+              }}
+            >
+              {dispute?.status === 'WAITING_FOR_SELLER_RESPONSE'
+                ? 'Waiting Response'
+                : dispute?.status?.replace(/_/g, ' ') || 'Open'}
+            </span>
+
             {has_prompt_threat && (
               <span className="badge badge-threat" title="Adversarial prompt injection quarantined">
-                <ShieldAlert size={12} /> Prompt Threat Quarantined
+                <ShieldAlert size={12} /> Threat Quarantined
               </span>
             )}
           </div>
@@ -218,21 +280,22 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
           <button
             onClick={() => fetchDetail(disputeId)}
             className="btn btn-secondary"
-            style={{ padding: '3px 8px', fontSize: '11px', height: '26px' }}
+            style={{ padding: '2px 8px', fontSize: '11px', height: '24px' }}
             title="Refresh case state"
           >
-            <RefreshCw size={12} /> Sync
+            <RefreshCw size={11} /> Sync
           </button>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginTop: '4px' }}>
+        {/* Dispute ID & Amount */}
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginTop: '6px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span className="font-mono" style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>
               {dispute?.dispute_id}
             </span>
             <button
               onClick={() => copyToClipboard(dispute?.dispute_id)}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-tertiary)' }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}
               title="Copy Dispute ID"
             >
               {copiedId ? <Check size={13} color="#059669" /> : <Copy size={13} />}
@@ -242,17 +305,18 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
             <span className="font-mono" style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)' }}>
               ${dispute?.dispute_amount?.value || '0.00'}
             </span>
-            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+            <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600 }}>
               {dispute?.dispute_amount?.currency_code || 'USD'}
             </span>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '12px', color: 'var(--text-secondary)' }}>
-          <span>{reasonReadable}</span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-muted)', fontSize: '11px' }}>
+        {/* Reason & Deadline */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '12px', marginTop: '2px' }}>
+          <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>{reasonReadable}</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-muted)', fontSize: '11.5px' }}>
             <Clock size={12} />
-            Due: {dispute?.seller_response_due_date ? new Date(dispute.seller_response_due_date).toLocaleDateString() : 'Immediate Action Window'}
+            Deadline: {formatDeadline(dispute?.seller_response_due_date, dispute?.status)}
           </span>
         </div>
       </div>
@@ -270,7 +334,7 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
           </div>
         )}
 
-        {/* 2. Docket Policy Assessment Card (The Main Decision Anchor) */}
+        {/* 2 & 3. One Clear Docket Policy Decision & Concise Explanation */}
         <div
           className="panel-card"
           style={{
@@ -285,10 +349,10 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
         >
           <div className="panel-card-header">
             <span className="panel-card-title">
-              {overallDecision === 'ALLOW' && <CheckCircle2 size={14} color="var(--status-allow-dot)" />}
-              {overallDecision === 'BLOCK' && <XCircle size={14} color="var(--status-block-dot)" />}
-              {overallDecision === 'REVIEW' && <AlertTriangle size={14} color="var(--status-review-dot)" />}
-              Docket Policy Assessment: {overallDecision}
+              {overallDecision === 'ALLOW' && <CheckCircle2 size={13} color="var(--status-allow-dot)" />}
+              {overallDecision === 'BLOCK' && <XCircle size={13} color="var(--status-block-dot)" />}
+              {overallDecision === 'REVIEW' && <AlertTriangle size={13} color="var(--status-review-dot)" />}
+              Docket Policy Assessment
             </span>
             <span
               className={`badge ${
@@ -304,190 +368,234 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
           </div>
 
           <div className="panel-card-body">
-            {/* Primary Explanation */}
             <div>
-              <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>
+              <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.4 }}>
                 {evaluation?.summary || 'Policy evaluation completed.'}
               </div>
               <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px', lineHeight: 1.5 }}>
                 {overallDecision === 'BLOCK' && (
                   <span>
-                    Deterministic invariant checks prevented a false claim. Carrier delivery proof was not verified to the buyer's destination address.
+                    Deterministic policy invariants blocked counter-claim submission. Carrier tracking has not confirmed physical delivery to the recipient postal code.
                   </span>
                 )}
                 {overallDecision === 'ALLOW' && (
                   <span>
-                    All required invariants passed. Verified carrier tracking establishes physical delivery to the recipient postal code matching the order.
+                    All policy barriers passed. Carrier delivery proof confirmed physical delivery matching the order shipping address.
                   </span>
                 )}
                 {overallDecision === 'REVIEW' && (
                   <span>
-                    Discrepancy or advisory threshold identified. Merchant review is required before any counter-claim can be authorized.
+                    Advisory threshold or data discrepancy flagged. Merchant manual review is required before authorization.
                   </span>
                 )}
               </div>
             </div>
 
-            {/* Invariants & Rules Matrix */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', padding: '10px', backgroundColor: 'var(--bg-subtle)', borderRadius: '6px' }}>
+            {/* Compact Readiness Strip (no nested boxed borders) */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', padding: '8px 12px', backgroundColor: 'var(--bg-subtle)', borderRadius: '6px' }}>
               <div>
                 <span className="kv-key">Factual Readiness</span>
-                <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)', display: 'block', marginTop: '1px' }}>
                   {evaluation?.factual_readiness || 'N/A'}
-                </div>
+                </span>
               </div>
               <div>
                 <span className="kv-key">Action Eligibility</span>
-                <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)', display: 'block', marginTop: '1px' }}>
                   {evaluation?.action_readiness || 'N/A'}
-                </div>
+                </span>
               </div>
             </div>
-
-            {/* Violated Invariants Chips */}
-            {evaluation?.check_results && evaluation.check_results.some(c => c.decision === 'BLOCK' || c.decision === 'REVIEW') && (
-              <div>
-                <span className="kv-key" style={{ textTransform: 'uppercase' }}>Rule Findings & Invariants:</span>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '6px' }}>
-                  {evaluation.check_results
-                    .filter(c => c.decision !== 'ALLOW')
-                    .map((check, idx) => (
-                      <div
-                        key={idx}
-                        style={{
-                          padding: '6px 10px',
-                          borderRadius: '5px',
-                          backgroundColor: check.decision === 'BLOCK' ? 'var(--status-block-bg)' : 'var(--status-review-bg)',
-                          border: `1px solid ${check.decision === 'BLOCK' ? 'var(--status-block-border)' : 'var(--status-review-border)'}`,
-                          fontSize: '11px',
-                          width: '100%',
-                        }}
-                      >
-                        <div style={{ fontWeight: 600, color: check.decision === 'BLOCK' ? 'var(--status-block-text)' : 'var(--status-review-text)' }}>
-                          {check.rule_identifier}
-                        </div>
-                        <div style={{ color: 'var(--text-secondary)', marginTop: '2px', lineHeight: 1.4 }}>
-                          {check.explanation}
-                        </div>
-                        {check.recommended_next_action && (
-                          <div style={{ marginTop: '4px', fontStyle: 'italic', color: 'var(--text-muted)' }}>
-                            Directive: {check.recommended_next_action}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
-        {/* 3. Evidence Provenance & Reconciliation (Evidence-First Hierarchy) */}
+        {/* 4. Evidence & Source Provenance */}
         <div className="panel-card">
           <div className="panel-card-header">
             <span className="panel-card-title">
-              <Truck size={14} color="var(--accent-primary)" />
-              Carrier Tracking & Delivery Provenance
+              <Truck size={13} color="var(--accent-slate)" />
+              Evidence & Source Provenance
             </span>
-            <span className="badge badge-neutral">USPS / Carrier Signal</span>
+            <span className="badge badge-neutral">Reconciled Nodes</span>
           </div>
 
           <div className="panel-card-body">
-            {matched_shipments && matched_shipments.length > 0 ? (
-              matched_shipments.map((ship, idx) => (
-                <div key={idx} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <div className="kv-grid">
-                    <div className="kv-pair">
-                      <span className="kv-key">Carrier</span>
-                      <span className="kv-val">{ship.carrier_name}</span>
+            {/* Carrier Tracking */}
+            <div>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '6px' }}>
+                Carrier Tracking
+              </div>
+              {matched_shipments && matched_shipments.length > 0 ? (
+                matched_shipments.map((ship, idx) => (
+                  <div key={idx} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div className="kv-grid">
+                      <div className="kv-pair">
+                        <span className="kv-key">Carrier</span>
+                        <span className="kv-val">{ship.carrier_name}</span>
+                      </div>
+                      <div className="kv-pair">
+                        <span className="kv-key">Tracking Status</span>
+                        <span
+                          className="kv-val"
+                          style={{
+                            color:
+                              ship.tracking_status === 'DELIVERED'
+                                ? 'var(--status-allow-text)'
+                                : 'var(--status-block-text)',
+                          }}
+                        >
+                          {ship.tracking_status}
+                        </span>
+                      </div>
+                      <div className="kv-pair">
+                        <span className="kv-key">Tracking Number</span>
+                        <span className="kv-val font-mono" style={{ fontSize: '11px' }}>
+                          {ship.tracking_number}
+                        </span>
+                      </div>
+                      <div className="kv-pair">
+                        <span className="kv-key">Signature</span>
+                        <span className="kv-val">
+                          {ship.recipient_signature_present ? 'Verified Signature' : 'No Signature'}
+                        </span>
+                      </div>
                     </div>
-                    <div className="kv-pair">
-                      <span className="kv-key">Tracking Status</span>
-                      <span className="kv-val" style={{ color: ship.tracking_status === 'DELIVERED' ? 'var(--status-allow-text)' : 'var(--status-block-text)' }}>
-                        {ship.tracking_status}
+
+                    {/* Destination Postal Alignment */}
+                    <div
+                      style={{
+                        padding: '6px 10px',
+                        backgroundColor: 'var(--bg-subtle)',
+                        borderRadius: '5px',
+                        fontSize: '11.5px',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <span style={{ color: 'var(--text-secondary)' }}>
+                        Postal Alignment: Order <strong>{matched_order?.shipping_address?.postal_code || 'N/A'}</strong> ↔ Delivery <strong>{ship.shipment_address?.postal_code || 'N/A'}</strong>
                       </span>
-                    </div>
-                    <div className="kv-pair">
-                      <span className="kv-key">Tracking Number</span>
-                      <span className="kv-val font-mono">{ship.tracking_number}</span>
-                    </div>
-                    <div className="kv-pair">
-                      <span className="kv-key">Signature On File</span>
-                      <span className="kv-val">
-                        {ship.recipient_signature_present ? 'Verified Signature' : 'No Signature (Direct Delivery)'}
-                      </span>
+                      {matched_order?.shipping_address?.postal_code === ship.shipment_address?.postal_code && ship.shipment_address?.postal_code ? (
+                        <span style={{ color: 'var(--status-allow-text)', fontWeight: 600, fontSize: '11px' }}>
+                          Matched
+                        </span>
+                      ) : (
+                        <span style={{ color: 'var(--status-block-text)', fontWeight: 600, fontSize: '11px' }}>
+                          Mismatch
+                        </span>
+                      )}
                     </div>
                   </div>
+                ))
+              ) : (
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                  No carrier tracking linked.
+                </div>
+              )}
+            </div>
 
-                  {/* Address Alignment Table */}
-                  <div style={{ padding: '8px 12px', backgroundColor: 'var(--bg-subtle)', borderRadius: '6px', fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <div style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>Destination Postal Matching:</div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-primary)' }}>
-                      <span>Order Postal Code: <strong>{matched_order?.shipping_address?.postal_code || 'N/A'}</strong></span>
-                      <span>Delivery Postal Code: <strong>{ship.shipment_address?.postal_code || 'N/A'}</strong></span>
-                    </div>
-                    {matched_order?.shipping_address?.postal_code !== ship.shipment_address?.postal_code && ship.shipment_address?.postal_code && (
-                      <div style={{ color: 'var(--status-block-text)', fontWeight: 600, marginTop: '2px' }}>
-                        * Postal code mismatch detected between order and carrier scan.
-                      </div>
-                    )}
+            {/* Merchant Order Divider */}
+            <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '10px' }}>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '6px' }}>
+                Merchant Order (ERP)
+              </div>
+              {matched_order ? (
+                <div className="kv-grid">
+                  <div className="kv-pair">
+                    <span className="kv-key">Order ID</span>
+                    <span className="kv-val font-mono">{matched_order.order_id}</span>
+                  </div>
+                  <div className="kv-pair">
+                    <span className="kv-key">Customer</span>
+                    <span className="kv-val">{matched_order.customer_name || 'N/A'}</span>
+                  </div>
+                  <div className="kv-pair">
+                    <span className="kv-key">Email</span>
+                    <span className="kv-val font-mono" style={{ fontSize: '11px' }}>{matched_order.customer_email || 'N/A'}</span>
+                  </div>
+                  <div className="kv-pair">
+                    <span className="kv-key">Gross Amount</span>
+                    <span className="kv-val font-mono">
+                      ${matched_order.gross_amount?.value} {matched_order.gross_amount?.currency_code}
+                    </span>
                   </div>
                 </div>
-              ))
-            ) : (
-              <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontStyle: 'italic' }}>
-                No carrier tracking records linked to this dispute.
-              </div>
-            )}
+              ) : (
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                  No internal order record matched.
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* 4. Matched Merchant Order Record */}
+        {/* 5. Individual Policy Findings (Without garish red containers) */}
         <div className="panel-card">
           <div className="panel-card-header">
             <span className="panel-card-title">
-              <Package size={14} color="var(--accent-primary)" />
-              Merchant Order Record
+              Policy Invariant Findings
             </span>
-            <span className="badge badge-neutral">ERP Source</span>
+            <span className="badge badge-neutral">
+              {nonAllowChecks.length > 0 ? `${nonAllowChecks.length} Invariant Flagged` : 'All Invariants Passed'}
+            </span>
           </div>
 
           <div className="panel-card-body">
-            {matched_order ? (
-              <div className="kv-grid">
-                <div className="kv-pair">
-                  <span className="kv-key">Order Reference</span>
-                  <span className="kv-val font-mono">{matched_order.order_id}</span>
-                </div>
-                <div className="kv-pair">
-                  <span className="kv-key">Customer Name</span>
-                  <span className="kv-val">{matched_order.customer_name || 'N/A'}</span>
-                </div>
-                <div className="kv-pair">
-                  <span className="kv-key">Customer Email</span>
-                  <span className="kv-val font-mono">{matched_order.customer_email || 'N/A'}</span>
-                </div>
-                <div className="kv-pair">
-                  <span className="kv-key">Gross Amount</span>
-                  <span className="kv-val font-mono">
-                    ${matched_order.gross_amount?.value} {matched_order.gross_amount?.currency_code}
-                  </span>
-                </div>
+            {nonAllowChecks.length === 0 ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--status-allow-text)', fontSize: '12px', fontWeight: 500 }}>
+                <CheckCircle2 size={13} color="var(--status-allow-dot)" />
+                <span>All 5 policy invariants verified (DeliveryProof, AddressMatch, HATEOASAction, SignatureAssessment, CitationIntegrity).</span>
               </div>
             ) : (
-              <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontStyle: 'italic' }}>
-                No internal order record matched to this transaction.
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {nonAllowChecks.map((check, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      backgroundColor: check.decision === 'BLOCK' ? 'var(--status-block-bg)' : 'var(--status-review-bg)',
+                      border: `1px solid ${check.decision === 'BLOCK' ? 'var(--status-block-border)' : 'var(--status-review-border)'}`,
+                      fontSize: '11.5px',
+                    }}
+                  >
+                    <div style={{ fontWeight: 600, color: check.decision === 'BLOCK' ? 'var(--status-block-text)' : 'var(--status-review-text)' }}>
+                      {check.rule_identifier}
+                    </div>
+                    <div style={{ color: 'var(--text-secondary)', marginTop: '2px', lineHeight: 1.45 }}>
+                      {check.explanation}
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
         </div>
 
-        {/* 5. Affirmative Human-in-the-Loop Merchant Action Desk */}
-        <div className="panel-card" style={{ border: '1px solid var(--border-strong)', boxShadow: 'var(--shadow-card)' }}>
-          <div className="panel-card-header" style={{ backgroundColor: 'var(--bg-subtle)' }}>
+        {/* 6. Recommended Next Step */}
+        <div
+          style={{
+            padding: '12px 14px',
+            borderRadius: '6px',
+            backgroundColor: overallDecision === 'BLOCK' ? 'var(--bg-subtle)' : 'var(--signal-blue-subtle)',
+            border: `1px solid ${overallDecision === 'BLOCK' ? 'var(--border-subtle)' : 'var(--signal-blue-border)'}`,
+          }}
+        >
+          <div style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', color: overallDecision === 'BLOCK' ? 'var(--text-muted)' : 'var(--signal-blue)' }}>
+            Recommended Directive
+          </div>
+          <div style={{ fontSize: '12.5px', fontWeight: 500, color: 'var(--text-primary)', marginTop: '3px', lineHeight: 1.45 }}>
+            {recommendedDirective}
+          </div>
+        </div>
+
+        {/* 7. Merchant Approval and Available Actions */}
+        <div className="panel-card" style={{ border: '1px solid var(--border-strong)' }}>
+          <div className="panel-card-header" style={{ backgroundColor: 'var(--bg-header)' }}>
             <span className="panel-card-title">
-              <Lock size={14} color="var(--accent-primary)" />
-              Merchant Action & Submission Desk
+              <Lock size={13} color="var(--accent-slate)" />
+              Merchant Approval & Actions
             </span>
             <span
               className={`badge ${
@@ -508,28 +616,28 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
 
           <div className="panel-card-body">
             {!isReady ? (
-              <div style={{ padding: '12px', borderRadius: '6px', backgroundColor: 'var(--status-block-bg)', border: '1px solid var(--status-block-border)', color: 'var(--status-block-text)', fontSize: '12px', lineHeight: 1.45 }}>
-                <strong>External Submission Disabled:</strong> Docket policy invariants have refused this claim. Unverified delivery claims cannot be submitted to PayPal.
+              <div style={{ padding: '10px 12px', borderRadius: '5px', backgroundColor: 'var(--status-block-bg)', border: '1px solid var(--status-block-border)', color: 'var(--status-block-text)', fontSize: '12px', lineHeight: 1.45 }}>
+                <strong>External Submission Barred:</strong> Deterministic policy engine blocked counter-claim. PayPal API submission is locked to prevent false representation.
               </div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {!approval_request ? (
                   <div>
-                    <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
-                      Evidence passes deterministic policy barriers. Generate an HMAC-SHA256 authorization ticket to review and approve submission.
+                    <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '8px', lineHeight: 1.4 }}>
+                      Evidence passes policy verification. Generate a cryptographic HMAC-SHA256 ticket to review and authorize dispatch.
                     </p>
                     <button
                       onClick={handleGenerateTicket}
                       disabled={actionLoading}
                       className="btn btn-primary"
-                      style={{ width: '100%' }}
+                      style={{ width: '100%', height: '32px' }}
                     >
                       <Lock size={13} /> Generate Cryptographic Approval Ticket
                     </button>
                   </div>
                 ) : (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <div style={{ padding: '10px', backgroundColor: 'var(--bg-subtle)', borderRadius: '6px', fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <div style={{ padding: '8px 12px', backgroundColor: 'var(--bg-subtle)', borderRadius: '5px', fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Ticket ID:</span>
                         <span className="font-mono">{approval_request.approval_id}</span>
@@ -548,6 +656,7 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
                           onClick={() => handleAuthorize('APPROVE')}
                           disabled={actionLoading}
                           className="btn btn-allow"
+                          style={{ height: '32px' }}
                         >
                           <CheckCircle2 size={13} /> Authorize (Approve)
                         </button>
@@ -555,9 +664,9 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
                           onClick={() => handleAuthorize('REJECT')}
                           disabled={actionLoading}
                           className="btn btn-secondary"
-                          style={{ color: '#dc2626' }}
+                          style={{ color: '#dc2626', height: '32px' }}
                         >
-                          <XCircle size={13} /> Reject Submission
+                          <XCircle size={13} /> Reject
                         </button>
                       </div>
                     ) : approval_record.decision === 'APPROVE' ? (
@@ -566,7 +675,7 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
                           Approval Authorized by {approval_record.merchant_user_id}
                         </div>
                         {dispatch_result ? (
-                          <div style={{ padding: '8px 12px', borderRadius: '5px', backgroundColor: 'var(--status-allow-bg)', border: '1px solid var(--status-allow-border)', fontSize: '11px', color: 'var(--status-allow-text)' }}>
+                          <div style={{ padding: '8px 12px', borderRadius: '5px', backgroundColor: 'var(--status-allow-bg)', border: '1px solid var(--status-allow-border)', fontSize: '11.5px', color: 'var(--status-allow-text)' }}>
                             <strong>Dispatched Successfully!</strong> Receipt: HTTP {dispatch_result.paypal_status_code || 200}
                           </div>
                         ) : (
@@ -574,15 +683,15 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
                             onClick={handleDispatch}
                             disabled={actionLoading}
                             className="btn btn-primary"
-                            style={{ width: '100%' }}
+                            style={{ width: '100%', height: '32px' }}
                           >
                             <Send size={13} /> Submit Evidence to PayPal API
                           </button>
                         )}
                       </div>
                     ) : (
-                      <div style={{ padding: '8px 12px', borderRadius: '5px', backgroundColor: 'var(--status-block-bg)', color: 'var(--status-block-text)', fontSize: '11px' }}>
-                        Dispute submission was rejected by merchant.
+                      <div style={{ padding: '8px 12px', borderRadius: '5px', backgroundColor: 'var(--status-block-bg)', color: 'var(--status-block-text)', fontSize: '11.5px' }}>
+                        Dispute submission was rejected by merchant operations.
                       </div>
                     )}
                   </div>
@@ -592,10 +701,10 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
           </div>
         </div>
 
-        {/* 6. Technical Details & Developer Payloads (Collapsible Details - Hidden from primary flow) */}
+        {/* Expandable Technical Inspector (Collapsible - Developer View) */}
         <details className="code-details">
           <summary>
-            Inspect Technical Payloads & Raw Schemas (Developer View)
+            Inspect Technical Payloads & Citations (Developer View)
           </summary>
           <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>

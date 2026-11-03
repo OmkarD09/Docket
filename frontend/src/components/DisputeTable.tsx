@@ -12,15 +12,15 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 const docketLightTheme = themeQuartz.withParams({
   backgroundColor: '#ffffff',
   foregroundColor: '#0f172a',
-  headerBackgroundColor: '#f8f9fa',
+  headerBackgroundColor: '#fafbfc',
   headerTextColor: '#475569',
   oddRowBackgroundColor: '#ffffff',
   borderColor: '#e2e8f0',
   accentColor: '#0f172a',
   rowHoverColor: '#f8fafc',
-  fontSize: 13,
+  fontSize: 12.5,
   fontFamily: "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-  headerFontSize: 12,
+  headerFontSize: 11.5,
   headerFontWeight: 600,
   rowHeight: 46,
   headerHeight: 40,
@@ -37,13 +37,26 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({
   selectedDisputeId,
   onSelectDispute,
 }) => {
-  // Column Definitions
+  // Format deadline date cleanly
+  const formatDeadline = (isoString?: string | null, status?: string) => {
+    if (status === 'RESOLVED') return 'Closed';
+    if (!isoString) return 'Immediate Window';
+    try {
+      const d = new Date(isoString);
+      if (isNaN(d.getTime())) return 'Immediate Window';
+      return d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+    } catch {
+      return 'Immediate Window';
+    }
+  };
+
+  // Column Definitions prioritizing essential dispute information
   const colDefs = useMemo<ColDef<DisputeSummary>[]>(() => {
     return [
       {
         headerName: 'Dispute Reference',
         field: 'dispute_id',
-        width: 180,
+        width: 175,
         pinned: 'left',
         cellRenderer: (params: any) => {
           const d: DisputeSummary = params.data;
@@ -73,7 +86,7 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({
       },
       {
         headerName: 'Origin',
-        width: 115,
+        width: 110,
         cellRenderer: (params: any) => {
           const d: DisputeSummary = params.data;
           if (!d) return null;
@@ -129,7 +142,22 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({
             .replace(/_/g, ' ')
             .toLowerCase()
             .replace(/\b\w/g, (c: string) => c.toUpperCase());
-          return <span style={{ color: '#334155', fontWeight: 500, fontSize: '12px' }}>{readable}</span>;
+          return (
+            <span
+              style={{
+                color: '#334155',
+                fontWeight: 500,
+                fontSize: '12px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                display: 'block',
+              }}
+              title={readable}
+            >
+              {readable}
+            </span>
+          );
         },
       },
       {
@@ -155,7 +183,7 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({
       {
         headerName: 'PayPal Status',
         field: 'status',
-        width: 165,
+        width: 145,
         cellRenderer: (params: any) => {
           const val = params.value || '';
           let label = val.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, (c: string) => c.toUpperCase());
@@ -171,9 +199,9 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({
             label = 'Waiting Response';
             style = {
               ...style,
-              backgroundColor: '#eff6ff',
-              color: '#1e40af',
-              border: '1px solid #bfdbfe',
+              backgroundColor: '#f0f9ff',
+              color: '#0369a1',
+              border: '1px solid #bae6fd',
               fontWeight: 600,
             };
           } else if (val === 'RESOLVED') {
@@ -196,7 +224,7 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({
         },
       },
       {
-        headerName: 'Docket Policy',
+        headerName: 'Docket Decision',
         field: 'overall_decision',
         width: 110,
         cellRenderer: (params: any) => {
@@ -223,61 +251,24 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({
         },
       },
       {
-        headerName: 'Evidence & Invariant Assessment',
-        field: 'violated_invariants',
-        minWidth: 170,
-        flex: 1.2,
+        headerName: 'Deadline',
+        field: 'due_date',
+        width: 125,
         cellRenderer: (params: any) => {
-          const d: DisputeSummary = params.data;
+          const d = params.data;
           if (!d) return null;
-
-          const hasInvariants = d.violated_invariants && d.violated_invariants.length > 0;
-          const hasDiscrepancies = d.discrepancies && d.discrepancies.length > 0;
-
-          if (!hasInvariants && !hasDiscrepancies) {
-            return (
-              <span style={{ color: '#059669', fontSize: '11px', fontStyle: 'italic', display: 'flex', alignItems: 'center', gap: '3px' }}>
-                <CheckCircle2 size={11} /> Verified proof complete
-              </span>
-            );
-          }
-
-          const items = [...(d.violated_invariants || []), ...(d.discrepancies || [])].slice(0, 2);
+          const isResolved = d.status === 'RESOLVED';
+          const label = formatDeadline(d.due_date, d.status);
           return (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', overflow: 'hidden' }}>
-              {items.map((it, idx) => {
-                const label = it
-                  .replace('RULE_', '')
-                  .replace(/_/g, ' ')
-                  .toLowerCase()
-                  .replace(/\b\w/g, (c) => c.toUpperCase());
-                return (
-                  <span
-                    key={idx}
-                    style={{
-                      fontSize: '10px',
-                      padding: '2px 5px',
-                      borderRadius: '3px',
-                      backgroundColor: '#fef2f2',
-                      color: '#991b1b',
-                      border: '1px solid #fecaca',
-                      whiteSpace: 'nowrap',
-                      maxWidth: '110px',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }}
-                    title={it}
-                  >
-                    {label}
-                  </span>
-                );
-              })}
-              {d.violated_invariants.length > 2 && (
-                <span style={{ fontSize: '10px', color: '#64748b' }}>
-                  +{d.violated_invariants.length - 2}
-                </span>
-              )}
-            </div>
+            <span
+              style={{
+                fontSize: '11.5px',
+                color: isResolved ? '#94a3b8' : '#475569',
+                fontWeight: 500,
+              }}
+            >
+              {label}
+            </span>
           );
         },
       },

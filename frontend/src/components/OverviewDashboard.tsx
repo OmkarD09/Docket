@@ -134,7 +134,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
   }, [disputes]);
 
   return (
-    <div style={{ padding: '24px 32px', display: 'flex', flexDirection: 'column', gap: '24px', overflowY: 'auto', height: '100%' }}>
+    <div className="page-scrollable">
       {/* Section A: Page Introduction */}
       <div>
         <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
