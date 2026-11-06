@@ -149,3 +149,39 @@ class TestIndividualScenarios:
         assert result.prompt_threat_detected
         assert result.actual_factual_readiness == "BLOCK"
 
+
+
+class TestEnrichedScorecardService:
+    """Verify enriched evaluation scorecard data structure and API endpoint."""
+
+    def test_build_enriched_scorecard(self):
+        from docket.eval.service import execute_and_persist_benchmark
+        data = execute_and_persist_benchmark()
+        assert data["total_scenarios"] == 20
+        assert data["passed_scenarios"] == 20
+        assert data["false_allow"] == 0
+        assert data["false_block"] == 0
+        assert "confusion_matrix" in data
+        assert data["confusion_matrix"]["counts"]["BLOCK"]["BLOCK"] == 8
+        assert data["confusion_matrix"]["counts"]["ALLOW"]["ALLOW"] == 6
+        assert data["confusion_matrix"]["counts"]["REVIEW"]["REVIEW"] == 6
+        assert len(data["rule_performance"]) == 5
+        assert len(data["results"]) == 20
+
+    def test_api_eval_scorecard_and_run(self):
+        from fastapi.testclient import TestClient
+        from docket.api.app import create_app
+        client = TestClient(create_app())
+
+        resp = client.get("/api/eval/scorecard")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["total_scenarios"] == 20
+        assert data["passed_scenarios"] == 20
+        assert "confusion_matrix" in data
+        assert "rule_performance" in data
+
+        run_resp = client.post("/api/eval/run")
+        assert run_resp.status_code == 200
+        run_data = run_resp.json()
+        assert run_data["total_scenarios"] == 20

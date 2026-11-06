@@ -1,0 +1,28 @@
+# Community 488
+
+> 4 nodes
+
+## Key Concepts
+
+- **C++ Hooks** (3 connections) — `.agents/rules/cpp-hooks.md`
+- **cpp-hooks.md** (2 connections) — `.agents/rules/cpp-hooks.md`
+- **Build Hooks** (1 connections) — `.agents/rules/cpp-hooks.md`
+- **Recommended CI Pipeline** (1 connections) — `.agents/rules/cpp-hooks.md`
+
+## Relationships
+
+- [Community 189](Community_189.md) (1 shared connections)
+
+## Source Files
+
+- `.agents/rules/cpp-hooks.md`
+
+## Audit Trail
+
+- EXTRACTED: 4 (100%)
+- INFERRED: 0 (0%)
+- AMBIGUOUS: 0 (0%)
+
+---
+
+*Part of the graphify knowledge wiki. See [index](index.md) to navigate.*

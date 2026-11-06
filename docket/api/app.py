@@ -102,6 +102,24 @@ class DispatchRequest(BaseModel):
     custom_notes: Optional[str] = None
 
 
+class WebhookIngestRequest(BaseModel):
+    dispute_id: str
+    reason: str = "MERCHANDISE_OR_SERVICE_NOT_RECEIVED"
+    status: str = "WAITING_FOR_SELLER_RESPONSE"
+    amount: str = "25.00"
+    currency: str = "USD"
+    idempotency_key: Optional[str] = None
+    actor: str = "PAYPAL_WEBHOOK"
+
+
+class WebhookIngestResponse(BaseModel):
+    event_id: str
+    dispute_id: str
+    is_duplicate: bool
+    event_type: str
+    message: str
+
+
 # ============================================================================
 # Dispute Case Store
 # ============================================================================
@@ -524,16 +542,98 @@ def create_app(
             raise HTTPException(status_code=500, detail=f"Internal dispatch failure: {e}")
 
     # ------------------------------------------------------------------------
+    # Webhook Ingestion with Idempotency Guard
+    # ------------------------------------------------------------------------
+    @app.post("/api/webhooks/paypal", response_model=WebhookIngestResponse)
+    def ingest_paypal_webhook(req: WebhookIngestRequest):
+        """Idempotently ingest an incoming PayPal webhook notification."""
+        payload = {
+            "reason": req.reason,
+            "status": req.status,
+            "amount": req.amount,
+            "currency": req.currency,
+        }
+        event, is_duplicate = audit_logger.log_dispute_ingestion(
+            dispute_id=req.dispute_id,
+            actor=req.actor,
+            payload=payload,
+            idempotency_key=req.idempotency_key,
+            record_duplicate_attempt=True,
+        )
+        msg = (
+            "Duplicate webhook delivery observed; existing dispute ingestion preserved."
+            if is_duplicate
+            else "New dispute ingested and recorded in cryptographic audit ledger."
+        )
+        return WebhookIngestResponse(
+            event_id=event.event_id,
+            dispute_id=event.dispute_id,
+            is_duplicate=is_duplicate,
+            event_type=event.event_type.value,
+            message=msg,
+        )
+
+    # ------------------------------------------------------------------------
     # Audit Trail Viewer
     # ------------------------------------------------------------------------
     @app.get("/api/audit-trail")
     def get_audit_trail():
+        details = audit_logger.verify_chain_detailed()
         events = audit_logger.get_events()
-        chain_intact = audit_logger.verify_chain_integrity()
+        
+        verif_map = {ev["event_id"]: ev["is_valid"] for ev in details.get("event_verifications", [])}
+        
+        enriched_events = []
+        for e in events:
+            ed = e.model_dump()
+            ed["timestamp"] = e.timestamp.isoformat()
+            ed["event_type"] = e.event_type.value
+            ed["is_verified"] = verif_map.get(e.event_id, details["is_valid"])
+            
+            # Contextual outcome result
+            result_str = None
+            p = e.payload or {}
+            if e.event_type == AuditEventType.DISPUTE_INGESTED:
+                st = p.get("status", "")
+                result_str = "Waiting Response" if st == "WAITING_FOR_SELLER_RESPONSE" else (st.replace("_", " ").title() if st else "Ingested")
+            elif e.event_type == AuditEventType.DUPLICATE_WEBHOOK_RECEIVED:
+                result_str = "Duplicate Delivery"
+            elif e.event_type == AuditEventType.EVIDENCE_RECONCILED:
+                conf = p.get("confidence", "")
+                result_str = f"Reconciled ({conf.title()})" if conf else "Reconciled"
+            elif e.event_type == AuditEventType.POLICY_EVALUATED:
+                result_str = p.get("overall_decision", "EVALUATED")
+            elif e.event_type == AuditEventType.APPROVAL_REQUESTED:
+                appr_id = p.get("approval_id", "")
+                result_str = f"Ticket: {appr_id[:12]}" if appr_id else "Ticket Issued"
+            elif e.event_type == AuditEventType.APPROVAL_GRANTED:
+                result_str = "Approved"
+            elif e.event_type == AuditEventType.APPROVAL_REJECTED:
+                result_str = "Rejected"
+            elif e.event_type == AuditEventType.DISPATCH_ATTEMPTED:
+                result_str = "Attempted"
+            elif e.event_type == AuditEventType.DISPATCH_SUCCEEDED:
+                sc = p.get("status_code", 200)
+                result_str = f"HTTP {sc} OK"
+            elif e.event_type == AuditEventType.DISPATCH_FAILED:
+                result_str = "Failed"
+            
+            ed["result"] = result_str
+            enriched_events.append(ed)
+
         return {
-            "total_events": len(events),
-            "chain_intact": chain_intact,
-            "events": [e.model_dump() for e in events],
+            "total_events": details["total_events"],
+            "verified_count": details["verified_count"],
+            "failed_count": details["failed_count"],
+            "chain_intact": details["is_valid"],
+            "last_verified_at": details["last_verified_at"],
+            "verification_details": {
+                "status": "VALID" if details["is_valid"] else "COMPROMISED",
+                "verified_events": details["verified_count"],
+                "failed_event_id": details["failed_event_id"],
+                "error_message": details["error_message"],
+            },
+            "events": enriched_events,
         }
 
     # ------------------------------------------------------------------------
@@ -541,13 +641,19 @@ def create_app(
     # ------------------------------------------------------------------------
     @app.get("/api/eval/scorecard")
     def get_eval_scorecard():
+        from docket.eval.service import build_enriched_scorecard, execute_and_persist_benchmark
         matrix_path = Path("artifacts/docket_evaluation_matrix.json")
         if not matrix_path.exists():
-            raise HTTPException(status_code=404, detail="Evaluation matrix artifact not found.")
+            return execute_and_persist_benchmark()
 
         with open(matrix_path, "r", encoding="utf-8") as f:
             data = json.load(f)
-        return data
+        return build_enriched_scorecard(data)
+
+    @app.post("/api/eval/run")
+    def run_eval_benchmark():
+        from docket.eval.service import execute_and_persist_benchmark
+        return execute_and_persist_benchmark()
 
     return app
 

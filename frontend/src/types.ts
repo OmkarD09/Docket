@@ -156,11 +156,59 @@ export interface AuditEventItem {
   dispute_id: string;
   actor: string;
   payload: any;
+  is_verified?: boolean;
+  result?: string;
+}
+
+export interface AuditTrailVerificationDetails {
+  status: 'VALID' | 'COMPROMISED';
+  verified_events: number;
+  failed_event_id: string | null;
+  error_message: string | null;
+}
+
+export interface AuditTrailResponse {
+  total_events: number;
+  verified_count: number;
+  failed_count: number;
+  chain_intact: boolean;
+  last_verified_at: string;
+  verification_details: AuditTrailVerificationDetails;
+  events: AuditEventItem[];
+}
+
+export interface ScenarioInputEvidence {
+  order_id?: string | null;
+  order_amount?: string | null;
+  tracking_status?: string | null;
+  carrier?: string | null;
+  tracking_number?: string | null;
+  customer_message?: string | null;
+  refund_record?: string | null;
+  raw_json?: any;
+}
+
+export interface ScenarioPolicyFindings {
+  factual_readiness: string;
+  action_readiness: string;
+  reconciliation_status: string;
+  violated_invariants: string[];
+  discrepancies: string[];
+  prompt_threat_detected: boolean;
+  refusal_correct: boolean;
+  failure_reasons: string[];
 }
 
 export interface EvalScenarioResult {
   scenario_id: string;
+  name?: string;
+  category?: string;
+  expected_decision?: 'ALLOW' | 'REVIEW' | 'BLOCK' | string;
+  actual_decision?: 'ALLOW' | 'REVIEW' | 'BLOCK' | string;
   passed: boolean;
+  primary_invariant?: string;
+  evidence_summary?: string;
+  why_passed_or_failed?: string;
   actual_reconciliation_status: string;
   actual_factual_readiness: string;
   actual_action_readiness: string;
@@ -170,17 +218,44 @@ export interface EvalScenarioResult {
   prompt_threat_detected: boolean;
   refusal_correct: boolean;
   failure_reasons: string[];
+  input_evidence?: ScenarioInputEvidence;
+  policy_findings?: ScenarioPolicyFindings;
+}
+
+export interface ConfusionMatrixCounts {
+  ALLOW: { ALLOW: number; REVIEW: number; BLOCK: number };
+  REVIEW: { ALLOW: number; REVIEW: number; BLOCK: number };
+  BLOCK: { ALLOW: number; REVIEW: number; BLOCK: number };
+}
+
+export interface ConfusionMatrixData {
+  counts: ConfusionMatrixCounts;
+  mapping: Record<string, string[]>;
+}
+
+export interface RulePerformanceItem {
+  rule_id: string;
+  name: string;
+  passed_count: number;
+  total_count: number;
+  pass_rate: number;
+  scenario_ids: string[];
 }
 
 export interface EvalScorecardData {
   total_scenarios: number;
   passed_scenarios: number;
   failed_scenarios: number;
+  false_allow: number;
+  false_block: number;
   accuracy_rate: number;
-  refusal_scenarios_count: number;
-  refusal_precision: number;
-  refusal_recall: number;
-  label_created_refusal_rate: number;
-  prompt_injection_detection_rate: number;
+  evaluated_at?: string;
+  refusal_scenarios_count?: number;
+  refusal_precision?: number;
+  refusal_recall?: number;
+  label_created_refusal_rate?: number;
+  prompt_injection_detection_rate?: number;
+  confusion_matrix?: ConfusionMatrixData;
+  rule_performance?: RulePerformanceItem[];
   results: EvalScenarioResult[];
 }

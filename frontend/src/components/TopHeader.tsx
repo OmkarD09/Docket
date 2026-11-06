@@ -22,9 +22,9 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
       case 'disputes':
         return selectedDisputeId ? `Dispute Workspace: ${selectedDisputeId}` : 'Dispute Workspace';
       case 'audit':
-        return 'Cryptographic Audit Ledger';
+        return 'Audit Trail';
       case 'benchmark':
-        return 'Benchmark Scorecard (20 Scenarios)';
+        return 'Benchmark Scorecard';
       default:
         return 'Dispute Operations';
     }

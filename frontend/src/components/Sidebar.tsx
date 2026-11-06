@@ -40,7 +40,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
     {
       id: 'audit' as NavSection,
-      label: 'Audit Ledger',
+      label: 'Audit Trail',
       icon: <ShieldCheck size={16} strokeWidth={2} />,
     },
     {

@@ -794,3 +794,76 @@ def test_audit_logger_corrupt_file_handling(tmp_path):
         AuditLogger(storage_path=log_file)
     assert "Corrupt JSON" in str(exc_info.value)
 
+
+def test_audit_logger_ingestion_idempotency_prevents_duplicate_logical_ingestion(tmp_path):
+    log_file = tmp_path / "audit_trail.jsonl"
+    logger = AuditLogger(storage_path=log_file)
+
+    payload = {
+        "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+        "status": "WAITING_FOR_SELLER_RESPONSE",
+        "amount": "25.00",
+        "currency": "USD",
+    }
+
+    # 1. First webhook delivery
+    e1, is_dup1 = logger.log_dispute_ingestion(
+        dispute_id="PP-R-NKI-10193390",
+        actor="PAYPAL_WEBHOOK",
+        payload=payload,
+    )
+    assert is_dup1 is False
+    assert e1.event_type == AuditEventType.DISPUTE_INGESTED
+    assert e1.dispute_id == "PP-R-NKI-10193390"
+
+    # 2. Repeated webhook delivery with identical snapshot (e.g. 28s later retry)
+    e2, is_dup2 = logger.log_dispute_ingestion(
+        dispute_id="PP-R-NKI-10193390",
+        actor="PAYPAL_WEBHOOK",
+        payload=payload,
+        record_duplicate_attempt=True,
+    )
+    assert is_dup2 is True
+    # Preserves observability with DUPLICATE_WEBHOOK_RECEIVED without mutating logical dispute
+    assert e2.event_type == AuditEventType.DUPLICATE_WEBHOOK_RECEIVED
+    assert e2.payload["original_event_id"] == e1.event_id
+    assert e2.payload["delivery_reason"] == "REPEATED_WEBHOOK_DELIVERY"
+
+    # 3. Chain remains 100% mathematically valid
+    assert logger.verify_chain_integrity() is True
+    events = logger.get_events()
+    assert len(events) == 2
+
+
+def test_audit_logger_detailed_verification_diagnostics(tmp_path):
+    log_file = tmp_path / "audit_trail.jsonl"
+    logger = AuditLogger(storage_path=log_file)
+
+    e1 = logger.log_event(AuditEventType.DISPUTE_INGESTED, "DISP_1", "SYSTEM", {"amount": "100"})
+    e2 = logger.log_event(AuditEventType.POLICY_EVALUATED, "DISP_1", "ENGINE", {"decision": "ALLOW"})
+
+    # Valid check
+    diag = logger.verify_chain_detailed()
+    assert diag["is_valid"] is True
+    assert diag["total_events"] == 2
+    assert diag["verified_count"] == 2
+    assert diag["failed_count"] == 0
+    assert diag["failed_event_id"] is None
+    assert diag["error_message"] is None
+    assert len(diag["event_verifications"]) == 2
+
+    # Now tamper with event 1
+    lines = log_file.read_text(encoding="utf-8").strip().split("\n")
+    rec = json.loads(lines[0])
+    rec["payload"]["amount"] = "999"  # Tampered!
+    lines[0] = json.dumps(rec)
+    log_file.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+    tampered_logger = AuditLogger(storage_path=log_file)
+    diag_tampered = tampered_logger.verify_chain_detailed()
+    assert diag_tampered["is_valid"] is False
+    assert diag_tampered["verified_count"] == 0
+    assert diag_tampered["failed_event_id"] == e1.event_id
+    assert "hash mismatch" in diag_tampered["error_message"].lower()
+
+

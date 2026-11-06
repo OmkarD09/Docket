@@ -1,0 +1,28 @@
+# Community 502
+
+> 4 nodes
+
+## Key Concepts
+
+- **37. EXAMPLE INTERPRETATIONS** (4 connections) — `.agents/skills/imagegen-frontend-mobile/SKILL.md`
+- **Example 1** (1 connections) — `.agents/skills/imagegen-frontend-mobile/SKILL.md`
+- **Example 2** (1 connections) — `.agents/skills/imagegen-frontend-mobile/SKILL.md`
+- **Example 3** (1 connections) — `.agents/skills/imagegen-frontend-mobile/SKILL.md`
+
+## Relationships
+
+- [Community 31](Community_31.md) (1 shared connections)
+
+## Source Files
+
+- `.agents/skills/imagegen-frontend-mobile/SKILL.md`
+
+## Audit Trail
+
+- EXTRACTED: 4 (100%)
+- INFERRED: 0 (0%)
+- AMBIGUOUS: 0 (0%)
+
+---
+
+*Part of the graphify knowledge wiki. See [index](index.md) to navigate.*

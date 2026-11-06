@@ -12,7 +12,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 from uuid import uuid4
 
 from docket.models.audit import AuditEvent, AuditEventType
@@ -134,14 +134,90 @@ class AuditLogger:
             return [e for e in self._events if e.dispute_id == dispute_id]
         return list(self._events)
 
-    def verify_chain_integrity(self) -> bool:
-        """Verify unbroken hash chain and payload integrity across the entire audit log.
-        
-        Raises:
-            AuditVerificationError: If an unbroken link is severed or an entry was tampered with.
+    def log_dispute_ingestion(
+        self,
+        dispute_id: str,
+        actor: str,
+        payload: Dict[str, Any],
+        idempotency_key: Optional[str] = None,
+        record_duplicate_attempt: bool = True,
+    ) -> Tuple[AuditEvent, bool]:
+        """Log a dispute ingestion event with deterministic idempotency verification.
+
+        If an identical dispute ingestion for this dispute_id with identical status and amount
+        (or matching idempotency_key) has already been recorded in the ledger:
+          - Prevents duplicate logical dispute ingestion.
+          - If record_duplicate_attempt is True, records a DUPLICATE_WEBHOOK_RECEIVED event
+            in the cryptographic audit trail for delivery-attempt observability without mutating
+            the logical dispute state.
+          - Returns (event, is_duplicate=True).
+
+        If new:
+          - Records DISPUTE_INGESTED in the audit trail.
+          - Returns (new_event, is_duplicate=False).
         """
+        reason = payload.get("reason")
+        status = payload.get("status")
+        amount = payload.get("amount")
+        currency = payload.get("currency")
+
+        for existing_event in self._events:
+            if existing_event.event_type == AuditEventType.DISPUTE_INGESTED and existing_event.dispute_id == dispute_id:
+                p = existing_event.payload
+                matches_key = idempotency_key and p.get("idempotency_key") == idempotency_key
+                matches_snapshot = (
+                    p.get("reason") == reason
+                    and p.get("status") == status
+                    and p.get("amount") == amount
+                    and p.get("currency") == currency
+                )
+                if matches_key or matches_snapshot:
+                    if record_duplicate_attempt:
+                        dup_payload = {
+                            "original_event_id": existing_event.event_id,
+                            "original_timestamp": existing_event.timestamp.isoformat(),
+                            "idempotency_key": idempotency_key or f"{dispute_id}:{status}:{amount}",
+                            "delivery_reason": "REPEATED_WEBHOOK_DELIVERY",
+                            **payload,
+                        }
+                        dup_event = self.log_event(
+                            event_type=AuditEventType.DUPLICATE_WEBHOOK_RECEIVED,
+                            dispute_id=dispute_id,
+                            actor=actor,
+                            payload=dup_payload,
+                        )
+                        return dup_event, True
+                    return existing_event, True
+
+        ingest_payload = dict(payload)
+        if idempotency_key:
+            ingest_payload["idempotency_key"] = idempotency_key
+
+        event = self.log_event(
+            event_type=AuditEventType.DISPUTE_INGESTED,
+            dispute_id=dispute_id,
+            actor=actor,
+            payload=ingest_payload,
+        )
+        return event, False
+
+    def verify_chain_detailed(self) -> Dict[str, Any]:
+        """Perform mathematical verification across the entire audit log, returning structured diagnostics.
+
+        Does not raise AuditVerificationError; instead captures detailed error context for telemetry and UI.
+        """
+        now_iso = datetime.now(timezone.utc).isoformat()
         if not self.storage_path.exists():
-            return True
+            return {
+                "is_valid": True,
+                "total_events": 0,
+                "verified_count": 0,
+                "failed_count": 0,
+                "last_verified_at": now_iso,
+                "failed_event_id": None,
+                "error_message": None,
+                "event_verifications": [],
+            }
 
         records: List[Dict[str, Any]] = []
         with open(self.storage_path, "r", encoding="utf-8") as f:
@@ -151,11 +227,24 @@ class AuditLogger:
                     try:
                         records.append(json.loads(stripped))
                     except json.JSONDecodeError as e:
-                        raise AuditVerificationError(f"Corrupt JSON at line {line_no}: {e}")
+                        return {
+                            "is_valid": False,
+                            "total_events": len(records),
+                            "verified_count": 0,
+                            "failed_count": 1,
+                            "last_verified_at": now_iso,
+                            "failed_event_id": None,
+                            "error_message": f"Corrupt JSON at line {line_no}: {e}",
+                            "event_verifications": [],
+                        }
 
-        if not records:
-            return True
+        total = len(records)
+        event_verifications = []
+        failed_event_id = None
+        error_message = None
+        verified_count = 0
 
+        chain_broken = False
         for i, rec in enumerate(records):
             event_id = rec.get("event_id", f"index_{i}")
             parent_hash = rec.get("parent_hash")
@@ -167,20 +256,27 @@ class AuditLogger:
             payload = rec.get("payload", {})
 
             # 1. Verify parent hash link
-            if i == 0:
-                if parent_hash != "GENESIS":
-                    raise AuditVerificationError(
-                        f"Audit chain verification failed at genesis event {event_id}: parent_hash is '{parent_hash}', expected 'GENESIS'."
-                    )
+            parent_valid = False
+            if chain_broken:
+                parent_valid = False
+                if not error_message:
+                    error_message = f"Chain already broken before event {event_id}."
+                    failed_event_id = event_id
+            elif i == 0:
+                parent_valid = (parent_hash == "GENESIS")
+                if not parent_valid and not error_message:
+                    error_message = f"Genesis event {event_id} parent_hash '{parent_hash}' != 'GENESIS'."
+                    failed_event_id = event_id
             else:
                 prev_event_hash = records[i - 1].get("event_hash")
-                if parent_hash != prev_event_hash:
-                    raise AuditVerificationError(
-                        f"Audit chain verification failed at event {event_id}: parent_hash '{parent_hash}' "
-                        f"does not match previous event hash '{prev_event_hash}'."
+                parent_valid = (parent_hash == prev_event_hash)
+                if not parent_valid and not error_message:
+                    error_message = (
+                        f"Event {event_id} parent_hash does not match previous hash '{prev_event_hash}'."
                     )
+                    failed_event_id = event_id
 
-            # 2. Recalculate and verify event hash
+            # 2. Recalculate event hash
             expected_hash = self._calculate_event_hash(
                 parent_hash=parent_hash,
                 event_id=event_id,
@@ -190,11 +286,51 @@ class AuditLogger:
                 actor=actor,
                 payload=payload,
             )
-
-            if event_hash != expected_hash:
-                raise AuditVerificationError(
-                    f"Audit chain verification failed at event {event_id}: calculated hash '{expected_hash}' "
-                    f"does not match recorded event_hash '{event_hash}'. Tampering detected."
+            hash_valid = (event_hash == expected_hash)
+            if not hash_valid and not error_message:
+                error_message = (
+                    f"Event {event_id} hash mismatch. Computed '{expected_hash}' != recorded '{event_hash}'."
                 )
+                failed_event_id = event_id
 
+            is_event_valid = (not chain_broken) and parent_valid and hash_valid
+            if not is_event_valid:
+                chain_broken = True
+            else:
+                verified_count += 1
+
+            event_verifications.append({
+                "event_id": event_id,
+                "index": i,
+                "is_valid": is_event_valid,
+                "parent_valid": parent_valid,
+                "hash_valid": hash_valid,
+            })
+
+        is_valid = (verified_count == total) and (total > 0)
+        if total == 0:
+            is_valid = True
+
+        return {
+            "is_valid": is_valid,
+            "total_events": total,
+            "verified_count": verified_count,
+            "failed_count": total - verified_count,
+            "last_verified_at": now_iso,
+            "failed_event_id": failed_event_id,
+            "error_message": error_message,
+            "event_verifications": event_verifications,
+        }
+
+    def verify_chain_integrity(self) -> bool:
+        """Verify unbroken hash chain and payload integrity across the entire audit log.
+
+        Raises:
+            AuditVerificationError: If an unbroken link is severed or an entry was tampered with.
+        """
+        details = self.verify_chain_detailed()
+        if not details["is_valid"]:
+            raise AuditVerificationError(
+                f"Audit chain verification failed: {details['error_message']}"
+            )
         return True

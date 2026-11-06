@@ -319,7 +319,9 @@ export const App: React.FC = () => {
             </div>
           )}
 
-          {activeSection === 'audit' && <AuditTrailView />}
+          {activeSection === 'audit' && (
+            <AuditTrailView onNavigateToDispute={handleNavigateToDisputes} />
+          )}
 
           {activeSection === 'benchmark' && <EvalScorecardView />}
         </div>

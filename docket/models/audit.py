@@ -14,6 +14,7 @@ from pydantic import BaseModel, Field
 class AuditEventType(str, Enum):
     """Categorized lifecycle events in Docket's dispute processing."""
     DISPUTE_INGESTED = "DISPUTE_INGESTED"
+    DUPLICATE_WEBHOOK_RECEIVED = "DUPLICATE_WEBHOOK_RECEIVED"
     EVIDENCE_RECONCILED = "EVIDENCE_RECONCILED"
     POLICY_EVALUATED = "POLICY_EVALUATED"
     APPROVAL_REQUESTED = "APPROVAL_REQUESTED"

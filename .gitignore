@@ -37,3 +37,6 @@ Thumbs.db
 scratch/
 *.log
 *.tmp
+
+
+.graphify-out
