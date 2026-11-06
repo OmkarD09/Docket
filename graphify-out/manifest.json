@@ -648,50 +648,50 @@
     "semantic_hash": ""
   },
   "frontend/src/App.tsx": {
-    "mtime": 1794000876.435909,
-    "seen": 1794001746.269904,
+    "mtime": 1794001978.7926838,
+    "seen": 1794002810.9516525,
     "ast_hash": "bf24beaa51f810e471c2c7dcb0b675b4",
     "semantic_hash": ""
   },
   "frontend/src/components/AuditTrailView.tsx": {
-    "mtime": 1793999965.8704197,
-    "seen": 1794001746.269904,
+    "mtime": 1794001979.1257498,
+    "seen": 1794002810.9516525,
     "ast_hash": "69b6031634ba1040ea3561d541c957bf",
     "semantic_hash": ""
   },
   "frontend/src/components/DisputeDetailPanel.tsx": {
-    "mtime": 1794000746.7935016,
-    "seen": 1794001746.269904,
+    "mtime": 1794001979.3315299,
+    "seen": 1794002810.9516525,
     "ast_hash": "7194a3caf072c34e83a3b9a5412dc6ad",
     "semantic_hash": ""
   },
   "frontend/src/components/DisputeTable.tsx": {
-    "mtime": 1794001261.2675488,
-    "seen": 1794001746.269904,
+    "mtime": 1794001979.4256628,
+    "seen": 1794002810.9516525,
     "ast_hash": "579ffbeb409347c071ab2eac1cc7681c",
     "semantic_hash": ""
   },
   "frontend/src/components/EvalScorecardView.tsx": {
-    "mtime": 1794000091.2526574,
-    "seen": 1794001746.269904,
+    "mtime": 1794001979.6799123,
+    "seen": 1794002810.9516525,
     "ast_hash": "1ea0b4025f6f217edd857fd3c8eaf8ad",
     "semantic_hash": ""
   },
   "frontend/src/components/OverviewDashboard.tsx": {
-    "mtime": 1793999360.9429944,
-    "seen": 1794001746.269904,
+    "mtime": 1794001979.832247,
+    "seen": 1794002810.9516525,
     "ast_hash": "2cdee04f2516c3f09afcc919057a09da",
     "semantic_hash": ""
   },
   "frontend/src/components/Sidebar.tsx": {
-    "mtime": 1793999273.0308247,
-    "seen": 1794001746.269904,
+    "mtime": 1794001979.892781,
+    "seen": 1794002810.9516525,
     "ast_hash": "d686111bae5c5ee9e601c4fd485ccc31",
     "semantic_hash": ""
   },
   "frontend/src/components/TopHeader.tsx": {
-    "mtime": 1794000153.0565128,
-    "seen": 1794001746.269904,
+    "mtime": 1794001979.9834468,
+    "seen": 1794002810.9516525,
     "ast_hash": "7603cabf16287600f8fd58a96b34f604",
     "semantic_hash": ""
   },
@@ -3696,9 +3696,9 @@
     "semantic_hash": ""
   },
   "scripts/capture_improved_screens.js": {
-    "mtime": 1794000221.3721223,
-    "seen": 1794001746.2709086,
-    "ast_hash": "e472f05183c4c16913d2b744b22c4b0a",
+    "mtime": 1794001782.267295,
+    "seen": 1794002810.9516525,
+    "ast_hash": "24a3e349b0b95ccf5d4a21e776b54da5",
     "semantic_hash": ""
   },
   "artifacts/screenshots_baseline/01_overview_1440.png": {
