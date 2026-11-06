@@ -263,19 +263,19 @@ export const EvalScorecardView: React.FC = () => {
         </div>
       )}
 
-      {/* 1. Benchmark Page Header */}
-      <div className="benchmark-header-area">
+      {/* 1. Benchmark Operational Header */}
+      <div className="operational-header" style={{ alignItems: 'center' }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-              Benchmark Scorecard
-            </h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div className="operational-title">
+              Benchmark Evaluation Suite
+            </div>
             <span className="synthetic-data-label">
               SYNTHETIC BENCHMARK DATA — NOT LIVE PAYPAL DISPUTES
             </span>
           </div>
-          <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
-            Evaluate Docket's evidence-validation and deterministic policy engine.
+          <div className="operational-subtitle">
+            Evaluate Docket's cross-source evidence reconciliation and deterministic policy engine across 20 edge-case scenarios.
           </div>
         </div>
 
@@ -285,10 +285,11 @@ export const EvalScorecardView: React.FC = () => {
             className="btn btn-primary"
             onClick={handleRunSuite}
             disabled={runningSuite}
-            style={{ height: '32px', fontSize: '12px' }}
+            style={{ height: '30px', fontSize: '11.5px', gap: '6px' }}
+            title="Execute entire benchmark suite through policy engine"
           >
-            <Play size={12} fill="currentColor" className={runningSuite ? 'spin' : ''} />
-            <span>{runningSuite ? 'Running Suite...' : 'Run Evaluation Suite'}</span>
+            <Play size={11} fill="currentColor" className={runningSuite ? 'spin' : ''} />
+            <span>{runningSuite ? 'Executing Engine...' : 'Run Evaluation Suite'}</span>
           </button>
 
           {/* Export Report */}
@@ -296,9 +297,10 @@ export const EvalScorecardView: React.FC = () => {
             className="btn btn-secondary"
             onClick={handleExportReport}
             disabled={exporting}
-            style={{ height: '32px', fontSize: '12px' }}
+            style={{ height: '30px', fontSize: '11.5px', gap: '6px' }}
+            title="Export evaluation results as JSON report"
           >
-            <Download size={13} />
+            <Download size={12} />
             <span>Export Report</span>
           </button>
         </div>
@@ -912,10 +914,10 @@ export const EvalScorecardView: React.FC = () => {
 
             {/* Drawer Content */}
             <div className="scenario-drawer-body">
-              {/* 1. Decision Summary */}
+              {/* Decision Summary */}
               <div className="panel-card">
                 <div className="panel-card-header">
-                  <span className="panel-card-title">1. Decision Summary</span>
+                  <span className="panel-card-title">Decision Summary</span>
                   <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
                     Policy Outcome
                   </span>
@@ -981,10 +983,10 @@ export const EvalScorecardView: React.FC = () => {
                 </div>
               </div>
 
-              {/* 2. Input Evidence */}
+              {/* Input Evidence */}
               <div className="panel-card">
                 <div className="panel-card-header">
-                  <span className="panel-card-title">2. Input Evidence</span>
+                  <span className="panel-card-title">Input Evidence</span>
                   <span className="badge badge-neutral" style={{ fontSize: '10px' }}>
                     Reconciled Facts
                   </span>
@@ -1069,10 +1071,10 @@ export const EvalScorecardView: React.FC = () => {
                 </div>
               </div>
 
-              {/* 3. Policy Findings */}
+              {/* Policy Findings */}
               <div className="panel-card">
                 <div className="panel-card-header">
-                  <span className="panel-card-title">3. Policy Findings</span>
+                  <span className="panel-card-title">Policy Findings</span>
                   <span className="badge badge-neutral" style={{ fontSize: '10px' }}>
                     Engine Diagnostics
                   </span>
@@ -1148,10 +1150,10 @@ export const EvalScorecardView: React.FC = () => {
                 </div>
               </div>
 
-              {/* 4. Why the Test Passed or Failed */}
+              {/* Operational Rationale */}
               <div className="panel-card">
                 <div className="panel-card-header">
-                  <span className="panel-card-title">4. Operational Rationale</span>
+                  <span className="panel-card-title">Operational Rationale</span>
                   <span className="badge badge-allow" style={{ fontSize: '10px' }}>
                     Audited
                   </span>
@@ -1164,10 +1166,10 @@ export const EvalScorecardView: React.FC = () => {
                 </div>
               </div>
 
-              {/* 5. Source Records & Technical Inspector */}
+              {/* Technical Diagnostics */}
               <div className="panel-card">
                 <div className="panel-card-header">
-                  <span className="panel-card-title">5. Technical Inspector (JSON)</span>
+                  <span className="panel-card-title">Technical Diagnostics (JSON)</span>
                   <button
                     className="btn btn-secondary"
                     onClick={() =>

@@ -135,13 +135,27 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
 
   return (
     <div className="page-scrollable">
-      {/* Section A: Page Introduction */}
-      <div>
-        <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-          Overview
-        </h2>
-        <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '2px' }}>
-          Monitor dispute volume, review evidence reconciliation health, and track deterministic policy enforcement across active cases.
+      {/* Section A: Operational Context Bar */}
+      <div className="operational-header">
+        <div>
+          <div className="operational-title">
+            Dispute Operations & Telemetry
+          </div>
+          <div className="operational-subtitle">
+            Cross-source evidence reconciliation, deterministic policy enforcement, and live PayPal dispute settlement tracking.
+          </div>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <button
+            onClick={() => onNavigateToDisputes('PP-R-NKI-10193390')}
+            className="btn btn-secondary"
+            style={{ height: '30px', padding: '4px 10px', fontSize: '11.5px', gap: '6px' }}
+            title="Inspect active Live Sandbox dispute"
+          >
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#059669' }} />
+            <span>Open Live Sandbox Case</span>
+            <ArrowRight size={12} />
+          </button>
         </div>
       </div>
 
@@ -150,62 +164,62 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '14px',
+          gap: '12px',
         }}
       >
-        <div className="card" style={{ padding: '14px 18px' }}>
+        <div className="card" style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
           <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600 }}>
             Total Disputes Tracked
           </div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '4px' }}>
-            <span className="font-mono" style={{ fontSize: '26px', fontWeight: 700, color: 'var(--text-primary)' }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '2px' }}>
+            <span className="font-mono" style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
               {kpis.total}
             </span>
           </div>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#059669' }} />
+          <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#059669' }} />
             <span>{kpis.realCount} Live Sandbox · {kpis.benchmarkCount} Benchmarks</span>
           </div>
         </div>
 
-        <div className="card" style={{ padding: '14px 18px' }}>
+        <div className="card" style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
           <div style={{ fontSize: '11px', color: 'var(--signal-blue)', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600 }}>
             Awaiting Seller Action
           </div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '4px' }}>
-            <span className="font-mono" style={{ fontSize: '26px', fontWeight: 700, color: 'var(--signal-blue)' }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '2px' }}>
+            <span className="font-mono" style={{ fontSize: '24px', fontWeight: 700, color: 'var(--signal-blue)', letterSpacing: '-0.02em' }}>
               {kpis.waitingSellerAction}
             </span>
           </div>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>
             Active PayPal response windows
           </div>
         </div>
 
-        <div className="card" style={{ padding: '14px 18px' }}>
+        <div className="card" style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
           <div style={{ fontSize: '11px', color: 'var(--status-review-text)', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600 }}>
             Evidence Review Required
           </div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '4px' }}>
-            <span className="font-mono" style={{ fontSize: '26px', fontWeight: 700, color: 'var(--status-review-text)' }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '2px' }}>
+            <span className="font-mono" style={{ fontSize: '24px', fontWeight: 700, color: 'var(--status-review-text)', letterSpacing: '-0.02em' }}>
               {kpis.reviewRequired}
             </span>
           </div>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>
             High-value or signature advisory cases
           </div>
         </div>
 
-        <div className="card" style={{ padding: '14px 18px' }}>
+        <div className="card" style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
           <div style={{ fontSize: '11px', color: 'var(--status-block-text)', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600 }}>
             Policy-Blocked Claims
           </div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '4px' }}>
-            <span className="font-mono" style={{ fontSize: '26px', fontWeight: 700, color: 'var(--status-block-text)' }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '2px' }}>
+            <span className="font-mono" style={{ fontSize: '24px', fontWeight: 700, color: 'var(--status-block-text)', letterSpacing: '-0.02em' }}>
               {kpis.policyBlocked}
             </span>
           </div>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>
             Label-created & delivery gaps refused
           </div>
         </div>
@@ -247,16 +261,33 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                     style={{
                       padding: '10px 12px',
                       borderRadius: '6px',
-                      backgroundColor: item.bg,
-                      border: `1px solid ${item.border}`,
+                      backgroundColor: 'var(--bg-surface)',
+                      border: '1px solid var(--border-subtle)',
+                      boxShadow: 'var(--shadow-xs)',
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', fontWeight: 600, color: item.text }}>
-                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: item.color }} />
-                      <span>{item.decision}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: item.color }} />
+                        <span>{item.decision}</span>
+                      </div>
+                      <span
+                        style={{
+                          fontSize: '10px',
+                          fontWeight: 600,
+                          padding: '1px 5px',
+                          borderRadius: '3px',
+                          backgroundColor: item.bg,
+                          color: item.text,
+                          border: `1px solid ${item.border}`,
+                          fontFamily: 'var(--font-mono)',
+                        }}
+                      >
+                        {item.pct}%
+                      </span>
                     </div>
-                    <div style={{ fontSize: '18px', fontWeight: 700, color: item.text, marginTop: '2px', fontFamily: 'var(--font-mono)' }}>
-                      {item.count} <span style={{ fontSize: '11px', fontWeight: 500 }}>({item.pct}%)</span>
+                    <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', marginTop: '4px', fontFamily: 'var(--font-mono)', letterSpacing: '-0.02em' }}>
+                      {item.count} <span style={{ fontSize: '11px', fontWeight: 500, color: 'var(--text-muted)' }}>cases</span>
                     </div>
                     <div style={{ fontSize: '10.5px', color: 'var(--text-secondary)', marginTop: '2px' }}>
                       {item.label}
@@ -372,14 +403,14 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
             <thead>
-              <tr style={{ borderBottom: '1px solid var(--border-subtle)', backgroundColor: 'var(--bg-header)', color: 'var(--text-muted)' }}>
-                <th style={{ padding: '9px 16px', textAlign: 'left', fontWeight: 600 }}>Dispute Reference</th>
-                <th style={{ padding: '9px 16px', textAlign: 'left', fontWeight: 600 }}>Origin</th>
-                <th style={{ padding: '9px 16px', textAlign: 'left', fontWeight: 600 }}>Dispute Reason</th>
-                <th style={{ padding: '9px 16px', textAlign: 'right', fontWeight: 600 }}>Amount</th>
-                <th style={{ padding: '9px 16px', textAlign: 'left', fontWeight: 600 }}>PayPal Status</th>
-                <th style={{ padding: '9px 16px', textAlign: 'center', fontWeight: 600 }}>Docket Decision</th>
-                <th style={{ padding: '9px 16px', textAlign: 'right', fontWeight: 600 }}>Action</th>
+              <tr style={{ borderBottom: '1px solid var(--border-subtle)', backgroundColor: 'var(--bg-header)', color: 'var(--text-secondary)' }}>
+                <th style={{ padding: '8px 14px', textAlign: 'left', fontWeight: 600, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Dispute Reference</th>
+                <th style={{ padding: '8px 14px', textAlign: 'left', fontWeight: 600, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Origin</th>
+                <th style={{ padding: '8px 14px', textAlign: 'left', fontWeight: 600, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Dispute Reason</th>
+                <th style={{ padding: '8px 14px', textAlign: 'right', fontWeight: 600, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Amount</th>
+                <th style={{ padding: '8px 14px', textAlign: 'left', fontWeight: 600, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>PayPal Status</th>
+                <th style={{ padding: '8px 14px', textAlign: 'center', fontWeight: 600, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Docket Decision</th>
+                <th style={{ padding: '8px 14px', textAlign: 'right', fontWeight: 600, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -395,14 +426,15 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                     key={d.dispute_id}
                     onClick={() => onNavigateToDisputes(d.dispute_id)}
                     style={{
-                      borderBottom: '1px solid var(--border-subtle)',
+                      borderBottom: '1px solid var(--border-light)',
                       cursor: 'pointer',
                       transition: 'background-color 100ms ease',
+                      height: '38px',
                     }}
                     onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--bg-hover)')}
                     onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
                   >
-                    <td style={{ padding: '10px 16px', fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-primary)' }}>
+                    <td style={{ padding: '7px 14px', fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-primary)', fontSize: '11.5px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                         {d.has_prompt_threat && (
                           <span title="Adversarial threat quarantined">
@@ -412,47 +444,53 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                         <span>{d.dispute_id}</span>
                       </div>
                     </td>
-                    <td style={{ padding: '10px 16px' }}>
+                    <td style={{ padding: '7px 14px' }}>
                       {isReal ? (
                         <span
                           style={{
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: '4px',
-                            padding: '2px 7px',
-                            borderRadius: '4px',
+                            padding: '1px 6px',
+                            borderRadius: '3px',
                             fontSize: '10.5px',
                             fontWeight: 600,
-                            backgroundColor: '#ecfdf5',
-                            color: '#065f46',
-                            border: '1px solid #a7f3d0',
+                            backgroundColor: 'var(--status-allow-bg)',
+                            color: 'var(--status-allow-text)',
+                            border: '1px solid var(--status-allow-border)',
                           }}
                         >
                           <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#059669' }} />
                           Live Sandbox
                         </span>
                       ) : (
-                        <span className="badge badge-neutral">Benchmark</span>
+                        <span className="badge badge-neutral" style={{ padding: '1px 6px', fontSize: '10.5px' }}>
+                          Benchmark
+                        </span>
                       )}
                     </td>
-                    <td style={{ padding: '10px 16px', color: 'var(--text-secondary)' }}>
+                    <td style={{ padding: '7px 14px', color: 'var(--text-secondary)', fontSize: '11.5px' }}>
                       {reasonReadable}
                     </td>
-                    <td style={{ padding: '10px 16px', textAlign: 'right', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                    <td style={{ padding: '7px 14px', textAlign: 'right', fontFamily: 'var(--font-mono)', fontWeight: 600, fontSize: '12px' }}>
                       ${d.amount} <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>{d.currency}</span>
                     </td>
-                    <td style={{ padding: '10px 16px' }}>
+                    <td style={{ padding: '7px 14px' }}>
                       <span
                         style={{
-                          fontSize: '11px',
+                          fontSize: '10.5px',
                           fontWeight: 500,
+                          padding: '1px 6px',
+                          borderRadius: '3px',
+                          backgroundColor: d.status === 'WAITING_FOR_SELLER_RESPONSE' ? '#f0f9ff' : 'var(--bg-subtle)',
                           color: d.status === 'WAITING_FOR_SELLER_RESPONSE' ? 'var(--signal-blue)' : 'var(--text-secondary)',
+                          border: `1px solid ${d.status === 'WAITING_FOR_SELLER_RESPONSE' ? 'var(--signal-blue-border)' : 'var(--border-subtle)'}`,
                         }}
                       >
                         {d.status === 'WAITING_FOR_SELLER_RESPONSE' ? 'Waiting Response' : d.status}
                       </span>
                     </td>
-                    <td style={{ padding: '10px 16px', textAlign: 'center' }}>
+                    <td style={{ padding: '7px 14px', textAlign: 'center' }}>
                       <span
                         className={`badge ${
                           d.overall_decision === 'ALLOW'
@@ -461,17 +499,18 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                             ? 'badge-block'
                             : 'badge-review'
                         }`}
+                        style={{ fontSize: '10.5px', padding: '1px 6px' }}
                       >
-                        {d.overall_decision === 'ALLOW' && <CheckCircle2 size={11} />}
-                        {d.overall_decision === 'BLOCK' && <XCircle size={11} />}
-                        {d.overall_decision === 'REVIEW' && <AlertTriangle size={11} />}
+                        {d.overall_decision === 'ALLOW' && <CheckCircle2 size={10} />}
+                        {d.overall_decision === 'BLOCK' && <XCircle size={10} />}
+                        {d.overall_decision === 'REVIEW' && <AlertTriangle size={10} />}
                         {d.overall_decision}
                       </span>
                     </td>
-                    <td style={{ padding: '10px 16px', textAlign: 'right' }}>
+                    <td style={{ padding: '7px 14px', textAlign: 'right' }}>
                       <button
                         className="btn btn-secondary"
-                        style={{ padding: '2px 6px', fontSize: '10.5px', height: '22px' }}
+                        style={{ padding: '2px 8px', fontSize: '10.5px', height: '22px' }}
                       >
                         Inspect
                       </button>

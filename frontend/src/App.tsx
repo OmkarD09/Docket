@@ -59,6 +59,29 @@ export const App: React.FC = () => {
     fetchDisputes();
   }, [fetchDisputes]);
 
+  // Global Keyboard Shortcuts (1: Overview, 2: Disputes, 3: Audit, 4: Benchmark)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const activeEl = document.activeElement;
+      if (
+        activeEl &&
+        (activeEl.tagName === 'INPUT' ||
+          activeEl.tagName === 'TEXTAREA' ||
+          activeEl.tagName === 'SELECT' ||
+          (activeEl as HTMLElement).isContentEditable)
+      ) {
+        return;
+      }
+      if (e.key === '1') setActiveSection('overview');
+      if (e.key === '2') setActiveSection('disputes');
+      if (e.key === '3') setActiveSection('audit');
+      if (e.key === '4') setActiveSection('benchmark');
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const handleNavigateToDisputes = (disputeId?: string) => {
     if (disputeId) {
       setSelectedDisputeId(disputeId);
@@ -147,39 +170,76 @@ export const App: React.FC = () => {
 
           {activeSection === 'disputes' && (
             <div className="disputes-workspace-container">
-              {/* Disputes Toolbar */}
+              {/* Disputes Professional Toolbar */}
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  padding: '8px 20px',
-                  backgroundColor: 'var(--bg-canvas)',
+                  padding: '8px 18px',
+                  backgroundColor: 'var(--bg-surface)',
                   borderBottom: '1px solid var(--border-subtle)',
                   gap: '12px',
                   flexShrink: 0,
                 }}
               >
-                {/* Dataset Scope Toggle */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                {/* Segmented Dataset Scope Control */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    backgroundColor: 'var(--bg-subtle)',
+                    padding: '2px',
+                    borderRadius: '6px',
+                    border: '1px solid var(--border-light)',
+                    gap: '2px',
+                  }}
+                >
                   <button
-                    className={`btn ${scopeFilter === 'ALL' ? 'btn-primary' : 'btn-secondary'}`}
-                    style={{ padding: '3px 8px', fontSize: '11px', height: '26px' }}
+                    className="btn"
+                    style={{
+                      padding: '3px 9px',
+                      fontSize: '11px',
+                      height: '24px',
+                      backgroundColor: scopeFilter === 'ALL' ? '#FFFFFF' : 'transparent',
+                      color: scopeFilter === 'ALL' ? 'var(--text-primary)' : 'var(--text-secondary)',
+                      boxShadow: scopeFilter === 'ALL' ? 'var(--shadow-xs)' : 'none',
+                      fontWeight: scopeFilter === 'ALL' ? 600 : 500,
+                      borderRadius: '4px',
+                    }}
                     onClick={() => setScopeFilter('ALL')}
                   >
                     All Records ({disputes.length})
                   </button>
                   <button
-                    className={`btn ${scopeFilter === 'REAL' ? 'btn-primary' : 'btn-secondary'}`}
-                    style={{ padding: '3px 8px', fontSize: '11px', height: '26px' }}
+                    className="btn"
+                    style={{
+                      padding: '3px 9px',
+                      fontSize: '11px',
+                      height: '24px',
+                      backgroundColor: scopeFilter === 'REAL' ? '#FFFFFF' : 'transparent',
+                      color: scopeFilter === 'REAL' ? 'var(--text-primary)' : 'var(--text-secondary)',
+                      boxShadow: scopeFilter === 'REAL' ? 'var(--shadow-xs)' : 'none',
+                      fontWeight: scopeFilter === 'REAL' ? 600 : 500,
+                      borderRadius: '4px',
+                    }}
                     onClick={() => setScopeFilter('REAL')}
                   >
-                    <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#059669', marginRight: '4px' }} />
+                    <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#059669', marginRight: '5px' }} />
                     Live Sandbox ({metrics.realCount})
                   </button>
                   <button
-                    className={`btn ${scopeFilter === 'BENCHMARK' ? 'btn-primary' : 'btn-secondary'}`}
-                    style={{ padding: '3px 8px', fontSize: '11px', height: '26px' }}
+                    className="btn"
+                    style={{
+                      padding: '3px 9px',
+                      fontSize: '11px',
+                      height: '24px',
+                      backgroundColor: scopeFilter === 'BENCHMARK' ? '#FFFFFF' : 'transparent',
+                      color: scopeFilter === 'BENCHMARK' ? 'var(--text-primary)' : 'var(--text-secondary)',
+                      boxShadow: scopeFilter === 'BENCHMARK' ? 'var(--shadow-xs)' : 'none',
+                      fontWeight: scopeFilter === 'BENCHMARK' ? 600 : 500,
+                      borderRadius: '4px',
+                    }}
                     onClick={() => setScopeFilter('BENCHMARK')}
                   >
                     Benchmarks ({metrics.benchmarkCount})
@@ -192,17 +252,18 @@ export const App: React.FC = () => {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '6px',
-                    backgroundColor: 'var(--bg-surface)',
+                    backgroundColor: 'var(--bg-canvas)',
                     border: '1px solid var(--border-subtle)',
                     borderRadius: '5px',
-                    padding: '4px 8px',
-                    width: '200px',
+                    padding: '3px 8px',
+                    width: '220px',
+                    transition: 'border-color var(--transition-fast)',
                   }}
                 >
                   <Search size={12} style={{ color: 'var(--text-muted)' }} />
                   <input
                     type="text"
-                    placeholder="Search ID, Order, Carrier..."
+                    placeholder="Filter ID, Order, Carrier..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     style={{
@@ -214,31 +275,43 @@ export const App: React.FC = () => {
                       width: '100%',
                     }}
                   />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', alignItems: 'center' }}
+                      title="Clear search"
+                    >
+                      ×
+                    </button>
+                  )}
                 </div>
 
                 {/* Policy Decision Filter Chips */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <button
-                    className="btn btn-secondary"
+                    className="btn"
                     style={{
                       padding: '3px 8px',
                       fontSize: '11px',
                       height: '26px',
                       backgroundColor: decisionFilter === 'ALL' ? 'var(--bg-subtle)' : 'var(--bg-surface)',
+                      border: '1px solid var(--border-subtle)',
                       fontWeight: decisionFilter === 'ALL' ? 600 : 500,
+                      color: decisionFilter === 'ALL' ? 'var(--text-primary)' : 'var(--text-secondary)',
                     }}
                     onClick={() => setDecisionFilter('ALL')}
                   >
-                    All Decisions
+                    All
                   </button>
                   <button
-                    className="btn btn-secondary"
+                    className="btn"
                     style={{
                       padding: '3px 8px',
                       fontSize: '11px',
                       height: '26px',
                       backgroundColor: decisionFilter === 'READY' ? 'var(--status-allow-bg)' : 'var(--bg-surface)',
-                      color: decisionFilter === 'READY' ? 'var(--status-allow-text)' : 'inherit',
+                      color: decisionFilter === 'READY' ? 'var(--status-allow-text)' : 'var(--text-secondary)',
+                      border: `1px solid ${decisionFilter === 'READY' ? 'var(--status-allow-border)' : 'var(--border-subtle)'}`,
                       fontWeight: decisionFilter === 'READY' ? 600 : 500,
                     }}
                     onClick={() => setDecisionFilter('READY')}
@@ -246,13 +319,14 @@ export const App: React.FC = () => {
                     Ready ({metrics.readyCount})
                   </button>
                   <button
-                    className="btn btn-secondary"
+                    className="btn"
                     style={{
                       padding: '3px 8px',
                       fontSize: '11px',
                       height: '26px',
                       backgroundColor: decisionFilter === 'REVIEW' ? 'var(--status-review-bg)' : 'var(--bg-surface)',
-                      color: decisionFilter === 'REVIEW' ? 'var(--status-review-text)' : 'inherit',
+                      color: decisionFilter === 'REVIEW' ? 'var(--status-review-text)' : 'var(--text-secondary)',
+                      border: `1px solid ${decisionFilter === 'REVIEW' ? 'var(--status-review-border)' : 'var(--border-subtle)'}`,
                       fontWeight: decisionFilter === 'REVIEW' ? 600 : 500,
                     }}
                     onClick={() => setDecisionFilter('REVIEW')}
@@ -260,13 +334,14 @@ export const App: React.FC = () => {
                     Review ({metrics.reviewCount})
                   </button>
                   <button
-                    className="btn btn-secondary"
+                    className="btn"
                     style={{
                       padding: '3px 8px',
                       fontSize: '11px',
                       height: '26px',
                       backgroundColor: decisionFilter === 'BLOCKED' ? 'var(--status-block-bg)' : 'var(--bg-surface)',
-                      color: decisionFilter === 'BLOCKED' ? 'var(--status-block-text)' : 'inherit',
+                      color: decisionFilter === 'BLOCKED' ? 'var(--status-block-text)' : 'var(--text-secondary)',
+                      border: `1px solid ${decisionFilter === 'BLOCKED' ? 'var(--status-block-border)' : 'var(--border-subtle)'}`,
                       fontWeight: decisionFilter === 'BLOCKED' ? 600 : 500,
                     }}
                     onClick={() => setDecisionFilter('BLOCKED')}
@@ -274,13 +349,14 @@ export const App: React.FC = () => {
                     Blocked ({metrics.blockedCount})
                   </button>
                   <button
-                    className="btn btn-secondary"
+                    className="btn"
                     style={{
                       padding: '3px 8px',
                       fontSize: '11px',
                       height: '26px',
                       backgroundColor: decisionFilter === 'THREATS' ? 'var(--status-threat-bg)' : 'var(--bg-surface)',
-                      color: decisionFilter === 'THREATS' ? 'var(--status-threat-text)' : 'inherit',
+                      color: decisionFilter === 'THREATS' ? 'var(--status-threat-text)' : 'var(--text-secondary)',
+                      border: `1px solid ${decisionFilter === 'THREATS' ? 'var(--status-threat-border)' : 'var(--border-subtle)'}`,
                       fontWeight: decisionFilter === 'THREATS' ? 600 : 500,
                     }}
                     onClick={() => setDecisionFilter('THREATS')}
@@ -291,7 +367,7 @@ export const App: React.FC = () => {
               </div>
 
               {/* Split Workspace: AG Grid on Left, Evidence-First Drawer on Right */}
-              <div className="disputes-workspace-split">
+              <div className={`disputes-workspace-split ${!selectedDisputeId ? 'full-width' : ''}`}>
                 <div className="disputes-grid-wrapper">
                   {error ? (
                     <div className="empty-state">
@@ -311,10 +387,13 @@ export const App: React.FC = () => {
                   )}
                 </div>
 
-                <DisputeDetailPanel
-                  disputeId={selectedDisputeId}
-                  onRefresh={fetchDisputes}
-                />
+                {selectedDisputeId && (
+                  <DisputeDetailPanel
+                    disputeId={selectedDisputeId}
+                    onRefresh={fetchDisputes}
+                    onClose={() => setSelectedDisputeId(null)}
+                  />
+                )}
               </div>
             </div>
           )}
