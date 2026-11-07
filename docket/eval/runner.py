@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Dict, List, Optional
 
+from docket.ai.base import BaseFactExtractor
 from docket.ai.contradiction import ContradictionDetector
 from docket.ai.deterministic import DeterministicFactExtractor
 from docket.ai.prompt_guard import PromptInjectionGuard
@@ -23,11 +24,15 @@ from docket.reconciliation.engine import EvidenceReconciler
 class BenchmarkRunner:
     """Executes evaluation scenarios through the complete Docket pipeline and scores results."""
 
-    def __init__(self, scenarios: Optional[List[EvalScenario]] = None) -> None:
+    def __init__(
+        self,
+        scenarios: Optional[List[EvalScenario]] = None,
+        fact_extractor: Optional[BaseFactExtractor] = None,
+    ) -> None:
         self.scenarios = scenarios or load_all_scenarios()
         self._scenario_by_id: Dict[str, EvalScenario] = {s.scenario_id: s for s in self.scenarios}
         self.guard = PromptInjectionGuard()
-        self.fact_extractor = DeterministicFactExtractor()
+        self.fact_extractor = fact_extractor or DeterministicFactExtractor()
         self.contradiction_detector = ContradictionDetector()
 
     def run_all(self) -> EvalScorecard:

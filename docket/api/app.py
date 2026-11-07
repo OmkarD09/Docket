@@ -228,8 +228,8 @@ def load_initial_cases(policy_engine: PolicyEngine) -> Dict[str, CaseData]:
         cases["SCENARIO_20_REAL_SANDBOX_FIXTURE_BASELINE"] = real_case
 
     # 2. 20 Benchmark Scenarios
-    from docket.ai.deterministic import DeterministicFactExtractor
-    fact_extractor = DeterministicFactExtractor()
+    from docket.ai.factory import get_fact_extractor
+    fact_extractor = get_fact_extractor()
 
     for scen in load_all_scenarios():
         reconciler = EvidenceReconciler(
@@ -335,11 +335,21 @@ def create_app(
     # ------------------------------------------------------------------------
     @app.get("/api/health")
     def health():
+        from docket.ai.factory import get_fact_extractor
+        active_extractor = get_fact_extractor()
+        provider_name = (
+            "gemini" if os.getenv("GEMINI_API_KEY")
+            else "openai" if os.getenv("OPENAI_API_KEY")
+            else "anthropic" if os.getenv("ANTHROPIC_API_KEY")
+            else "offline-deterministic"
+        )
         return {
             "status": "ok",
             "version": "1.0.0",
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "total_cases_loaded": len(cases_store),
+            "ai_extractor": type(active_extractor).__name__,
+            "ai_provider": provider_name,
         }
 
     # ------------------------------------------------------------------------
