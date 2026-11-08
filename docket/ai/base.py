@@ -11,6 +11,11 @@ from docket.models.evidence import ExtractedClaim, SourceCitation, SourceType
 from docket.models.reconciliation import ReconciledDisputeBundle
 
 
+class AIProviderError(RuntimeError):
+    """Raised when an external AI provider fails, times out, or returns a malformed response."""
+    pass
+
+
 class ParsedDocumentChunk(BaseModel):
     """A segment of unstructured source text with location coordinates."""
     model_config = ConfigDict(frozen=True)

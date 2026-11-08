@@ -1,4 +1,4 @@
-"""Factory router for fact extractors with deterministic fallback."""
+"""Factory router for fact extractors with explicit offline/live modes."""
 
 from __future__ import annotations
 
@@ -12,29 +12,79 @@ from docket.ai.provider_anthropic import AnthropicFactExtractor
 from docket.ai.provider_gemini import GeminiFactExtractor
 
 
-def get_fact_extractor(provider: Optional[str] = None) -> BaseFactExtractor:
-    """Return the configured AI fact extractor or fall back safely to DeterministicFactExtractor."""
-    selected_provider = (provider or os.getenv("DOCKET_LLM_PROVIDER", "")).strip().lower()
+class AIConfigurationError(ValueError):
+    """Raised when AI configuration is invalid, missing required keys, or malformed."""
+    pass
 
-    openai_key = os.getenv("OPENAI_API_KEY")
-    anthropic_key = os.getenv("ANTHROPIC_API_KEY")
-    gemini_key = os.getenv("GEMINI_API_KEY")
 
-    if selected_provider == "openai" and openai_key:
-        return OpenAIFactExtractor(api_key=openai_key)
-    if selected_provider == "anthropic" and anthropic_key:
-        return AnthropicFactExtractor(api_key=anthropic_key)
-    if selected_provider == "gemini" and gemini_key:
-        return GeminiFactExtractor(api_key=gemini_key)
+def get_fact_extractor(
+    mode: Optional[str] = None,
+    provider: Optional[str] = None,
+    model: Optional[str] = None,
+    api_key: Optional[str] = None,
+) -> BaseFactExtractor:
+    """Return the configured AI fact extractor based on explicit configuration.
 
-    # Automatic fallback based on available environment credentials
-    if openai_key and not selected_provider:
-        return OpenAIFactExtractor(api_key=openai_key)
-    if anthropic_key and not selected_provider:
-        return AnthropicFactExtractor(api_key=anthropic_key)
-    if gemini_key and not selected_provider:
-        return GeminiFactExtractor(api_key=gemini_key)
+    Modes:
+      - 'offline' (default): Always returns DeterministicFactExtractor. No external model calls.
+      - 'live': Requires explicit provider configuration and a valid API key.
 
-    # Safe deterministic offline extractor (0 network or API key dependency)
-    return DeterministicFactExtractor()
+    Does NOT silently switch providers merely because an API key happens to exist in the environment.
+    """
+    selected_mode = (mode or os.getenv("DOCKET_AI_MODE", "")).strip().lower()
 
+    # Legacy support: if DOCKET_AI_MODE is unset, but DOCKET_AI_PROVIDER or DOCKET_LLM_PROVIDER
+    # was explicitly specified, treat as live mode.
+    legacy_provider = os.getenv("DOCKET_AI_PROVIDER") or os.getenv("DOCKET_LLM_PROVIDER")
+    if not selected_mode:
+        if provider or legacy_provider:
+            selected_mode = "live"
+        else:
+            selected_mode = "offline"
+
+    if selected_mode == "offline":
+        return DeterministicFactExtractor()
+
+    if selected_mode != "live":
+        raise AIConfigurationError(
+            f"Invalid DOCKET_AI_MODE '{selected_mode}'. Supported modes are 'offline' and 'live'."
+        )
+
+    # Live Mode: Provider must be explicitly chosen or defaults to 'gemini'
+    selected_provider = (
+        provider
+        or os.getenv("DOCKET_AI_PROVIDER")
+        or os.getenv("DOCKET_LLM_PROVIDER")
+        or "gemini"
+    ).strip().lower()
+
+    if selected_provider == "gemini":
+        key = api_key or os.getenv("GEMINI_API_KEY")
+        if not key:
+            raise AIConfigurationError(
+                "DOCKET_AI_MODE is set to 'live' with provider 'gemini', but GEMINI_API_KEY is not set."
+            )
+        model_name = model or os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+        return GeminiFactExtractor(api_key=key, model=model_name)
+
+    if selected_provider == "openai":
+        key = api_key or os.getenv("OPENAI_API_KEY")
+        if not key:
+            raise AIConfigurationError(
+                "DOCKET_AI_MODE is set to 'live' with provider 'openai', but OPENAI_API_KEY is not set."
+            )
+        model_name = model or os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+        return OpenAIFactExtractor(api_key=key, model=model_name)
+
+    if selected_provider == "anthropic":
+        key = api_key or os.getenv("ANTHROPIC_API_KEY")
+        if not key:
+            raise AIConfigurationError(
+                "DOCKET_AI_MODE is set to 'live' with provider 'anthropic', but ANTHROPIC_API_KEY is not set."
+            )
+        model_name = model or os.getenv("ANTHROPIC_MODEL", "claude-3-5-sonnet-20241022")
+        return AnthropicFactExtractor(api_key=key, model=model_name)
+
+    raise AIConfigurationError(
+        f"Unsupported AI provider '{selected_provider}'. Supported providers are: gemini, openai, anthropic."
+    )

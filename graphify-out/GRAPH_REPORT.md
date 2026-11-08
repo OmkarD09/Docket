@@ -1,34 +1,34 @@
-# Graph Report - Docket  (2026-11-07)
+# Graph Report - Docket  (2026-11-08)
 
 ## Corpus Check
-- 577 files · ~772,746 words
+- 580 files · ~777,167 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 19 file(s) not represented in the graph (top: (none) 5, .toml 4, .css 3)
 
 ## Summary
-- 7904 nodes · 12620 edges · 547 communities (507 shown, 40 thin omitted)
-- Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 1210 edges (avg confidence: 0.91)
+- 7977 nodes · 12853 edges · 551 communities (504 shown, 47 thin omitted)
+- Extraction: 91% EXTRACTED · 9% INFERRED · 0% AMBIGUOUS · INFERRED: 1128 edges (avg confidence: 0.9)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `25499593`
+- Built from commit: `5eb758fb`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - ExtractedClaim
 - live-browser.js
-- verify_dispatch_pipeline.py
+- test_dispatch_and_audit.py
 - connectSSE
-- ExtractedClaim
-- ReconciledDisputeBundle
+- 4. Test Strategy & Verification Results
+- DisputeCase
 - DeterministicFactExtractor
-- test_policy_engine.py
+- GeminiFactExtractor
 - setLiveState
 - modern-screenshot.umd.js
 - spike_paypal_dispute.py
 - instinct-cli.py
-- scenarios.py
+- Docket — Project Status & Evidence Ledger
 - pytest
 - Git Workflow Patterns
 - Test-Driven Development Workflow
@@ -49,13 +49,13 @@
 - CORE DIRECTIVE: IMAGE-FIRST WEBSITE DESIGN TO CODE
 - CORE DIRECTIVE: PREMIUM MOBILE APP IMAGE DIRECTION
 - mountSvelteComponentVariant
-- test_grader.py
+- ObservationEvent
 - Web Performance Rules
-- test_dispatch_and_audit.py
+- AddressMatchInvariant
 - PRP Implement
 - High-Agency Frontend Skill
 - Eval Harness Skill
-- policy/engine.py
+- test_policy_engine.py
 - assets.mjs
 - architect.md
 - re
@@ -65,7 +65,7 @@
 - Review Checklist
 - inspect.mjs
 - DOCKET — Comprehensive Project Audit & Development Readiness Assessment
-- OverallPolicyEvaluation
+- .get_access_token
 - _load_instincts_from_dir
 - getOne
 - Plankton Code Quality Skill
@@ -75,7 +75,7 @@
 - Continuous Learning v2.1 - Instinct
 - adapt.md
 - handleManualEditActivity
-- report.py
+- test_api_endpoints.py
 - Coding Style
 - Extract Flow
 - onboard.md
@@ -209,7 +209,7 @@
 - Dart/Flutter Testing
 - Continuous Learning Skill - DEPRECATED
 - observe.sh
-- ne
+- AddressMatchPolicy
 - Imagery
 - The study
 - 2. THE COMBINATORIAL VARIATION ENGINE
@@ -251,8 +251,8 @@
 - Agent Introspection Debugging
 - Evaluation Criteria — Detailed Scoring Guide
 - init.mjs
-- Ce
-- .from_paypal_response
+- 10. REFERENCE VOCABULARY (Pattern Names the Agent Should Know)
+- Docket — Milestone 4 Verification & AI Semantic Fact Extraction Report
 - Council - External Review
 - Delivery Gate — Mechanical Quality Gate for Claude Code
 - Colour
@@ -325,6 +325,7 @@
 - Context Budget
 - observer-loop.sh
 - Words
+- run_dev.py
 - CORE DIRECTIVE: AWWWARDS-LEVEL DESIGN ENGINEERING
 - 22. STYLE VARIATION ENGINE
 - Visualize: Direction Comps & Asset Production
@@ -369,7 +370,7 @@
 - Security Scan Command
 - Test Coverage
 - Update Codemaps
-- cmd_evolve
+- APPENDICES - Real Source-Backed Reference Material
 - parse_trace
 - 2. Phase-by-Phase Milestone Plan
 - dependencies
@@ -394,7 +395,7 @@
 - Vue Security
 - Web Design Quality Standards
 - Web Security Rules
-- dispatcher.py
+- 8. DARK MODE PROTOCOL
 - 9. AI TELLS (Forbidden Patterns)
 - 12. THE COMBINATORIAL VARIATION ENGINE
 - 8. ANTI-AI-SLOP RULES
@@ -428,7 +429,7 @@
 - detect-project.sh
 - doctor.md
 - tasteskill v2 (`design-taste-frontend`)
-- _promote_auto
+- .__init__
 - 11. REDESIGN PROTOCOL
 - 3. DEFAULT ARCHITECTURE & CONVENTIONS
 - 6. PERFORMANCE & ACCESSIBILITY GUARDRAILS
@@ -463,8 +464,8 @@
 - 29. ANTI-AI-SLOP RULES
 - 5. IMAGE COUNT & PAGE SLICING
 - .list_disputes
-- EvidencePayloadFormatter
-- _update_registry
+- 7. DIAL DEFINITIONS (Technical Reference)
+- 9. Installed Skill Verification
 - scan_dir_to_json
 - FastAPI Review
 - GAN-Style Design Harness
@@ -483,7 +484,7 @@
 - patch_globals
 - 12. THE BLOCK LIBRARY (Contract - Implementations Land Here Iteratively)
 - 5. CONTEXT-AWARE PROACTIVITY
-- ConfigurationError
+- Docket — Architectural Decision Records (ADRs) & Decisions Log
 - 21. MOBILE ANTI-AI-TELLS RULE
 - interface
 - Impeccable Documenter
@@ -544,93 +545,89 @@
 - hookify-configure.md
 - skill-comply
 - Region map
-- approval.py
-- app.py
+- 10. Naming Consistency Findings
+- FastAPI Rules
 
 ## God Nodes (most connected - your core abstractions)
-1. `ExtractedClaim` - 90 edges
-2. `DisputeCase` - 70 edges
-3. `ReconciledDisputeBundle` - 64 edges
-4. `EvidenceReconciler` - 64 edges
-5. `SourceCitation` - 60 edges
-6. `Money` - 60 edges
-7. `PolicyEngine` - 59 edges
-8. `DeterministicFactExtractor` - 45 edges
-9. `ApprovalService` - 44 edges
-10. `OrderRecord` - 43 edges
+1. `ExtractedClaim` - 79 edges
+2. `DisputeCase` - 73 edges
+3. `ReconciledDisputeBundle` - 69 edges
+4. `Money` - 64 edges
+5. `EvidenceReconciler` - 63 edges
+6. `SourceCitation` - 58 edges
+7. `PolicyEngine` - 57 edges
+8. `ApprovalService` - 44 edges
+9. `DeterministicFactExtractor` - 43 edges
+10. `PayPalSandboxClient` - 40 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Read-Only Integration (`scripts/spike_paypal_dispute.py`)` --references--> `PayPalDisputeError`  [INFERRED]
-  docs/DOCKET_AUDIT_2026-11-03.md → scripts/spike_paypal_dispute.py
-- `3. PayPal Provide-Evidence Schema Compliance` --references--> `EvidencePayloadFormatter`  [INFERRED]
-  docs/DOCKET_MILESTONE_6_VERIFICATION.md → docket/dispatch/dispatcher.py
-- `Orders v2 Helper (`scripts/create_test_order.py`)` --references--> `AddressMatchInvariant`  [INFERRED]
-  docs/DOCKET_AUDIT_2026-11-03.md → docket/policy/engine.py
-- `7. Remaining Limitations & Policy Assumptions` --references--> `SignatureAssessmentInvariant`  [INFERRED]
-  docs/DOCKET_MILESTONE_2_1_VERIFICATION.md → docket/policy/engine.py
+- `Structure` --references--> `create_app()`  [INFERRED]
+  .agents/rules/python-fastapi.md → docket/api/app.py
 - `6. Threat Model & AI Safety Safeguards` --references--> `DeliveryProofInvariant`  [INFERRED]
   docs/ARCHITECTURE.md → docket/policy/engine.py
+- `Orders v2 Helper (`scripts/create_test_order.py`)` --references--> `AddressMatchInvariant`  [INFERRED]
+  docs/DOCKET_AUDIT_2026-11-03.md → docket/policy/engine.py
+- `3.2 Reconciliation Test Matrix (`tests/test_reconciliation.py`)` --references--> `PolicyEngine`  [INFERRED]
+  docs/DOCKET_MILESTONE_3_VERIFICATION.md → docket/policy/engine.py
+- `Read-Only Integration (`scripts/spike_paypal_dispute.py`)` --references--> `PayPalDisputeError`  [INFERRED]
+  docs/DOCKET_AUDIT_2026-11-03.md → scripts/spike_paypal_dispute.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (547 total, 40 thin omitted)
+## Communities (551 total, 47 thin omitted)
 
 ### Community 0 - "ExtractedClaim"
-Cohesion: 0.06
-Nodes (27): BaseFactExtractor, ExtractionResult, ParsedDocumentChunk, get_fact_extractor(), SanitizedInput, ThreatLevel, AnthropicFactExtractor, GeminiFactExtractor (+19 more)
+Cohesion: 0.04
+Nodes (28): AIProviderError, BaseFactExtractor, ExtractionResult, ParsedDocumentChunk, CitationVerificationResult, VerbatimCitationVerifier, ContradictionFinding, AIConfigurationError (+20 more)
 
 ### Community 1 - "live-browser.js"
 Cohesion: 0.03
 Nodes (145): addManualContextText(), applyGlobalBarLabelState(), applyLiveBarPreference(), applyParamValue(), applyPlaceholderSizingStyles(), averageRgb01(), bindEditBadgeProxy(), bufferToBase64() (+137 more)
 
-### Community 2 - "verify_dispatch_pipeline.py"
-Cohesion: 0.09
-Nodes (11): AuditError, AuditLogger, AuditVerificationError, AuditEvent, AuditEventType, test_audit_logger_corrupt_file_handling(), test_audit_logger_detailed_verification_diagnostics(), test_audit_logger_detects_tampering() (+3 more)
+### Community 2 - "test_dispatch_and_audit.py"
+Cohesion: 0.04
+Nodes (63): AuditError, AuditLogger, AuditVerificationError, ApprovalError, ApprovalService, DisputeMismatchError, InvalidSignatureError, PayloadTamperedError (+55 more)
 
 ### Community 3 - "connectSSE"
 Cohesion: 0.06
 Nodes (89): applyParamDefaults(), applyPlaceholderDimensions(), applySavedSessionMeta(), buildCyclingRow(), clampVariantIndex(), clearHandled(), closedClipPath(), commitAcceptedVariantToDom() (+81 more)
 
-### Community 4 - "ExtractedClaim"
-Cohesion: 0.05
-Nodes (18): ContradictionDetector, ContradictionFinding, ExtractedClaim, resolve_field_path(), 1. Executive Summary, 4.1 Test Suite Breakdown, 4.2 Invariant Hardening Test Coverage (`tests/test_policy_engine.py`), 4. Test Strategy & Verification Results (+10 more)
+### Community 4 - "4. Test Strategy & Verification Results"
+Cohesion: 0.67
+Nodes (3): 4.1 Test Suite Breakdown, 4.2 Invariant Hardening Test Coverage (`tests/test_policy_engine.py`), 4. Test Strategy & Verification Results
 
-### Community 5 - "ReconciledDisputeBundle"
-Cohesion: 0.05
-Nodes (16): CustomerMessageRecord, CandidateMatch, DiscrepancySeverity, MatchConfidence, MatchStrategy, ReconciliationDiscrepancy, ReconciliationStatus, EvidenceReconciler (+8 more)
+### Community 5 - "DisputeCase"
+Cohesion: 0.03
+Nodes (49): load_initial_cases(), EvalExpectation, EvalResult, EvalScenario, EvalScorecard, _create_base_dispute(), load_all_scenarios(), DisputeCase (+41 more)
 
 ### Community 6 - "DeterministicFactExtractor"
 Cohesion: 0.04
-Nodes (39): CitationVerificationResult, VerbatimCitationVerifier, DeterministicFactExtractor, PromptInjectionGuard, load_initial_cases(), 1. PayPal API Client & Token Manager (`scripts/spike_paypal_dispute.py`), 2. Evidence Ingestion & Adapters (`docket/models/`), 3. Cross-Source Evidence Reconciler (`docket/reconciliation/` - IMPLEMENTED & VERIFIED IN MILESTONE 3) (+31 more)
+Nodes (35): ContradictionDetector, DeterministicFactExtractor, get_fact_extractor(), PromptInjectionGuard, PolicyEngine, 1. PayPal API Client & Token Manager (`scripts/spike_paypal_dispute.py`), 2. Evidence Ingestion & Adapters (`docket/models/`), 3. Cross-Source Evidence Reconciler (`docket/reconciliation/` - IMPLEMENTED & VERIFIED IN MILESTONE 3) (+27 more)
 
-### Community 7 - "test_policy_engine.py"
-Cohesion: 0.07
-Nodes (8): HATEOASLink, RequestedEvidence, TestHATEOASActionHardening, TestHATEOASActionInvariant, sample_dispute(), sample_order(), sample_refund(), sample_shipment()
+### Community 7 - "GeminiFactExtractor"
+Cohesion: 0.10
+Nodes (10): GeminiFactExtractor, SemanticExtractionWorkflow, SemanticWorkflowResult, display_workflow_result(), print_section(), run_demo(), TestLLMProvidersMocked, TestEndToEndWorkflowAndPolicySeparation (+2 more)
 
 ### Community 8 - "setLiveState"
 Cohesion: 0.10
 Nodes (64): abortSvelteComponentInjection(), applyEditing(), beginNewLiveConfiguration(), cancelEditing(), cancelEditingToPicking(), cancelInsertConfigure(), cleanup(), cleanupAcceptedSession() (+56 more)
 
 ### Community 9 - "modern-screenshot.umd.js"
-Cohesion: 0.11
-Nodes (41): ae(), be(), bt(), Ct(), de(), dt(), _e(), er() (+33 more)
+Cohesion: 0.09
+Nodes (53): ae(), be(), bt(), Ce(), Ct(), de(), dt(), _e() (+45 more)
 
 ### Community 10 - "spike_paypal_dispute.py"
-Cohesion: 0.11
-Nodes (14): 5. Error Handling & Edge Cases, AuthenticationError, AuthorizationError, MalformedResponseError, NetworkError, NotFoundError, PayPalDisputeError, PayPalServerError (+6 more)
+Cohesion: 0.13
+Nodes (12): 5. Error Handling & Edge Cases, AuthenticationError, AuthorizationError, MalformedResponseError, NetworkError, NotFoundError, PayPalDisputeError, PayPalServerError (+4 more)
 
 ### Community 11 - "instinct-cli.py"
-Cohesion: 0.07
-Nodes (17): _append_observations(), _collect_pending_dirs(), _collect_pending_instincts(), _fetch_import_url(), _frontmatter_scalar(), _merge_instinct_dir(), _parse_created_date(), _project_hash() (+9 more)
-
-### Community 12 - "scenarios.py"
-Cohesion: 0.07
-Nodes (19): EvalExpectation, EvalResult, EvalScenario, EvalScorecard, BenchmarkRunner, _create_base_dispute(), load_all_scenarios(), RefundRecord (+11 more)
+Cohesion: 0.05
+Nodes (27): _append_observations(), _assign_unique_slugs(), _cluster_by_keyword_overlap(), cmd_evolve(), _collect_pending_dirs(), _collect_pending_instincts(), _evolved_agent_name(), _evolved_command_name() (+19 more)
 
 ### Community 13 - "pytest"
 Cohesion: 0.09
-Nodes (18): PayPalSandboxClient, test_authenticated_get_network_and_request_errors(), test_authenticated_get_non_dict_json(), test_authenticated_get_unexpected_status_400(), test_get_dispute_empty_id_raises_configuration_error(), test_get_dispute_forbidden_403(), test_get_dispute_malformed_json(), test_get_dispute_not_found_404() (+10 more)
+Nodes (17): ConfigurationError, PayPalSandboxClient, test_authenticated_get_network_and_request_errors(), test_authenticated_get_non_dict_json(), test_authenticated_get_unexpected_status_400(), test_get_dispute_empty_id_raises_configuration_error(), test_get_dispute_forbidden_403(), test_get_dispute_malformed_json() (+9 more)
 
 ### Community 14 - "Git Workflow Patterns"
 Cohesion: 0.04
@@ -653,8 +650,8 @@ Cohesion: 0.04
 Nodes (44): 1. Logo Cover, 1. Monogram + Meaning, 2 × 3 REFERENCE-STYLE LAYOUT, 2. Logo Construction, 2. Product Action, 3. Digital Application, 3. Metaphor Fusion, 4. Brand Essence (+36 more)
 
 ### Community 19 - "test_parse_instinct.py"
-Cohesion: 0.07
-Nodes (33): cmd_prune(), _normalize_remote_url(), parse_instinct_file(), _validate_file_path(), _pending_item(), test_cmd_prune_deletes_only_expired(), test_cmd_prune_dry_run_keeps_files(), test_cmd_prune_empty_pending_nothing_to_do() (+25 more)
+Cohesion: 0.06
+Nodes (39): cmd_prune(), _normalize_remote_url(), parse_instinct_file(), _update_registry(), _validate_file_path(), _pending_item(), test_cmd_prune_deletes_only_expired(), test_cmd_prune_dry_run_keeps_files() (+31 more)
 
 ### Community 20 - "initGlobalBar"
 Cohesion: 0.08
@@ -670,11 +667,11 @@ Nodes (36): argv, assetQueries(), ASSETS_PATH, briefStop(), briefWords(), deal()
 
 ### Community 23 - "_make_project"
 Cohesion: 0.07
-Nodes (33): cmd_projects(), _cmd_projects_delete(), _cmd_projects_gc(), _cmd_projects_merge(), load_registry(), _project_counts(), _remove_project_storage(), _validate_project_id() (+25 more)
+Nodes (34): cmd_projects(), _cmd_projects_delete(), _cmd_projects_gc(), _cmd_projects_merge(), load_registry(), _project_counts(), _registry_lock(), _remove_project_storage() (+26 more)
 
 ### Community 24 - "test_paypal_dispute.py"
-Cohesion: 0.07
-Nodes (19): DisputeSummary, format_dispute_summary(), main(), parse_dispute_summary(), test_explicit_credentials_accepted(), test_format_dispute_summary_empty_evidence(), test_get_access_token_cached_when_reused(), test_get_access_token_success() (+11 more)
+Cohesion: 0.09
+Nodes (16): DisputeSummary, format_dispute_summary(), main(), parse_dispute_summary(), test_explicit_credentials_accepted(), test_format_dispute_summary_empty_evidence(), test_main_catches_client_configuration_error(), test_main_cli_force_list_flag() (+8 more)
 
 ### Community 25 - "Review Priorities (React-specific only)"
 Cohesion: 0.05
@@ -685,16 +682,16 @@ Cohesion: 0.07
 Nodes (26): 1. Accessibility (VoiceOver / TalkBack), 2. Performance, 3. Appearance & Theming, 4. Platform Conformance (CRITICAL), 5. Adaptivity, Diagnostic Scan, Recommended Actions, Craft (deprecated alias) (+18 more)
 
 ### Community 27 - "scripts/runner.py"
-Cohesion: 0.13
-Nodes (8): main(), generate_scenarios(), generate_spec(), extract_yaml(), banner(), main(), start_backend(), start_frontend()
+Cohesion: 0.18
+Nodes (4): main(), generate_scenarios(), generate_spec(), extract_yaml()
 
 ### Community 28 - "live.md"
 Cohesion: 0.06
 Nodes (33): Apply at system scale, Audit before choosing, Choose a strategy, Contrast and perception, Live-mode signature params, Verify, Visitor mode, Step 1: Parse the request (+25 more)
 
 ### Community 29 - "Docket — Milestone 2.1 Verification & Policy Safety Hardening Report"
-Cohesion: 0.12
-Nodes (8): Address, 3.1 Domain Model Hardening (`docket/models/`), 3. Changes Implemented in Milestone 2.1, sample_order(), sample_shipment_label_created(), sample_order(), sample_shipment_delivered(), sample_shipment_label_created()
+Cohesion: 0.14
+Nodes (3): 3.1 Domain Model Hardening (`docket/models/`), 3.2 Invariant Hardening (`docket/policy/engine.py`), 3. Changes Implemented in Milestone 2.1
 
 ### Community 30 - "CORE DIRECTIVE: IMAGE-FIRST WEBSITE DESIGN TO CODE"
 Cohesion: 0.06
@@ -708,17 +705,13 @@ Nodes (34): 10. DEVICE MOCKUP FRAME RULE, 11. ONBOARDING FLOW RULE, 12. FIRST SC
 Cohesion: 0.09
 Nodes (35): applyOriginalAttrsToSvelteAnchor(), buildSvelteExpressionTextMap(), buildSveltePropValuesFromLiveElement(), buildSveltePropValuesV2(), cloneWithoutElements(), collectTextNodes(), collectVisibleTexts(), commitAcceptedSvelteComponentToDom() (+27 more)
 
-### Community 33 - "test_grader.py"
-Cohesion: 0.15
-Nodes (11): classify_events(), _parse_classification(), _check_temporal_order(), StepResult, ComplianceSpec, Detector, ObservationEvent, parse_spec() (+3 more)
+### Community 33 - "ObservationEvent"
+Cohesion: 0.20
+Nodes (11): classify_events(), _parse_classification(), _check_temporal_order(), ComplianceResult, StepResult, ComplianceSpec, ObservationEvent, generate_report() (+3 more)
 
 ### Community 34 - "Web Performance Rules"
 Cohesion: 0.06
 Nodes (29): Build Troubleshooting, Context Window Management, Extended Thinking + Plan Mode, Model Selection Strategy, Performance Optimization, Animations, Images & Assets, Lists (+21 more)
-
-### Community 35 - "test_dispatch_and_audit.py"
-Cohesion: 0.16
-Nodes (21): ApprovalService, EvidenceDispatcher, ApprovalRequest, 4.2 Dispatch & Audit Test Matrix ([`tests/test_dispatch_and_audit.py`](file:///c:/Users/ACER/Downloads/Docket/tests/test_dispatch_and_audit.py)), test_approval_service_detects_invalid_signature_or_key(), test_approval_service_detects_payload_tampering(), test_approval_service_detects_token_expiration(), test_approval_service_records_merchant_decision() (+13 more)
 
 ### Community 36 - "PRP Implement"
 Cohesion: 0.06
@@ -732,9 +725,9 @@ Nodes (30): 10. FINAL PRE-FLIGHT CHECK, 1. ACTIVE BASELINE CONFIGURATION, 2. DEF
 Cohesion: 0.06
 Nodes (30): 1. Code-Based Grader, 1. Define (Before Coding), 2. Implement, 2. Model-Based Grader, 3. Evaluate, 3. Human Grader, 4. Report, Best Practices (+22 more)
 
-### Community 39 - "policy/engine.py"
-Cohesion: 0.03
-Nodes (25): Money, OrderRecord, ShipmentRecord, DecisionType, PolicyCheckResult, AddressMatchInvariant, AddressMatchPolicy, CitationIntegrityInvariant (+17 more)
+### Community 39 - "test_policy_engine.py"
+Cohesion: 0.02
+Nodes (39): DisputeLifecycleStage, DisputeReason, DisputeStatus, HATEOASLink, RequestedEvidence, DecisionType, OverallPolicyEvaluation, PolicyCheckResult (+31 more)
 
 ### Community 40 - "assets.mjs"
 Cohesion: 0.08
@@ -745,20 +738,20 @@ Cohesion: 0.07
 Nodes (28): 1. Current State Analysis, 1. Modularity & Separation of Concerns, 2. Requirements Gathering, 2. Scalability, 3. Design Proposal, 3. Maintainability, 4. Security, 4. Trade-Off Analysis (+20 more)
 
 ### Community 42 - "re"
-Cohesion: 0.14
-Nodes (14): AxisScore, check_accuracy(), check_actionability(), check_clarity(), check_completeness(), check_conciseness(), _check_jargon(), _check_summary() (+6 more)
+Cohesion: 0.09
+Nodes (19): AxisScore, check_accuracy(), check_actionability(), check_clarity(), check_completeness(), check_conciseness(), _check_jargon(), _check_summary() (+11 more)
 
 ### Community 43 - "Docket — Milestone 6 Verification & Controlled Evidence Submission Report"
-Cohesion: 0.17
-Nodes (11): 1. Executive Summary, 2.1 Approval Domain Models ([`docket/models/dispatch.py`](file:///c:/Users/ACER/Downloads/Docket/docket/models/dispatch.py)), 2.4 Cryptographic Audit Ledger ([`docket/audit/logger.py`](file:///c:/Users/ACER/Downloads/Docket/docket/audit/logger.py)), 2. Implemented Architecture, 3. PayPal Provide-Evidence Schema Compliance, 4.1 Test Suite Breakdown (210 Passing Tests), 4.3 Code Coverage Ledger, 4. Test Strategy & Code Coverage (+3 more)
+Cohesion: 0.22
+Nodes (8): 1. Executive Summary, 3. PayPal Provide-Evidence Schema Compliance, 4.1 Test Suite Breakdown (210 Passing Tests), 4.3 Code Coverage Ledger, 4. Test Strategy & Code Coverage, 5. End-to-End Sandbox Pipeline Verification, 6. Next Steps: Milestone 7 (Merchant Command Desk UI with React & AG Grid), Docket — Milestone 6 Verification & Controlled Evidence Submission Report
 
 ### Community 44 - "shared.mjs"
 Cohesion: 0.09
 Nodes (36): resolved, enriched, entries, projects, table, context, existingIdx, gitActivity (+28 more)
 
 ### Community 45 - "Docket — Milestone 3 Verification & Cross-Source Evidence Reconciliation Report"
-Cohesion: 0.18
-Nodes (10): 1. Executive Summary, 2.2 Reconciliation Engine (`docket/reconciliation/engine.py`), 2. Implemented Architecture & Algorithms, 3.1 Test Suite Breakdown, 3.2 Reconciliation Test Matrix (`tests/test_reconciliation.py`), 3. Test Strategy & Verification Results, 4. Code Coverage Analysis, 5. End-to-End Defining Scenario Verification (+2 more)
+Cohesion: 0.20
+Nodes (9): 2.2 Reconciliation Engine (`docket/reconciliation/engine.py`), 2. Implemented Architecture & Algorithms, 3.1 Test Suite Breakdown, 3.2 Reconciliation Test Matrix (`tests/test_reconciliation.py`), 3. Test Strategy & Verification Results, 4. Code Coverage Analysis, 5. End-to-End Defining Scenario Verification, 6. Transition Readiness for Milestone 4 (AI Semantic Fact Extraction) (+1 more)
 
 ### Community 46 - "Review Checklist"
 Cohesion: 0.08
@@ -769,12 +762,12 @@ Cohesion: 0.10
 Nodes (17): allow, args, asJson, fails, HEIGHT, merged, outDir, report (+9 more)
 
 ### Community 48 - "DOCKET — Comprehensive Project Audit & Development Readiness Assessment"
-Cohesion: 0.07
-Nodes (26): 10. Naming Consistency Findings, 11. Highest-Priority Blockers, 12. Revised Nine-Day Roadmap (Nov 3 – Nov 12, 2026), 13. Acceptance and Kill Criteria, 14. The Single Most Important Next Implementation Task, 1. Executive Summary, 2. Actual Repository and Workspace Structure, 4. Verified vs. Historically Reported Test Results (+18 more)
+Cohesion: 0.10
+Nodes (19): 11. Highest-Priority Blockers, 12. Revised Nine-Day Roadmap (Nov 3 – Nov 12, 2026), 13. Acceptance and Kill Criteria, 14. The Single Most Important Next Implementation Task, 1. Executive Summary, 2. Actual Repository and Workspace Structure, 4. Verified vs. Historically Reported Test Results, 5. PayPal Sandbox Integration Status (+11 more)
 
-### Community 49 - "OverallPolicyEvaluation"
-Cohesion: 0.09
-Nodes (8): OverallPolicyEvaluation, ADR-010: Policy Engine Safety Hardening & Multi-Dimensional Decision Evaluation, approved_policy_evaluation(), blocked_policy_evaluation(), reconciled_bundle(), valid_dispute_case(), valid_order(), valid_shipment()
+### Community 49 - ".get_access_token"
+Cohesion: 0.11
+Nodes (8): test_get_access_token_cached_when_reused(), test_get_access_token_success(), test_oauth_token_authentication_failure_401(), test_oauth_token_authorization_failure_403(), test_oauth_token_malformed_json(), test_oauth_token_missing_access_token_field(), test_oauth_token_rate_limit_429(), test_oauth_token_server_error_500()
 
 ### Community 50 - "_load_instincts_from_dir"
 Cohesion: 0.08
@@ -797,8 +790,8 @@ Cohesion: 0.08
 Nodes (23): 1. Discover, 2. Infer the reader, 3. Read and verify anchors, 4. Write the `.tour`, 5. Validate, Anti-Patterns, Best Practices, Code Tour (+15 more)
 
 ### Community 55 - "_promote_specific"
-Cohesion: 0.08
-Nodes (15): cmd_export(), cmd_import(), cmd_promote(), _ensure_global_dirs(), load_project_only_instincts(), main(), _promote_specific(), _yaml_quote() (+7 more)
+Cohesion: 0.06
+Nodes (22): cmd_export(), cmd_import(), cmd_promote(), _ensure_global_dirs(), load_project_only_instincts(), main(), _promote_auto(), _promote_specific() (+14 more)
 
 ### Community 56 - "Continuous Learning v2.1 - Instinct"
 Cohesion: 0.08
@@ -811,10 +804,6 @@ Nodes (22): Assess Adaptation Challenge, Content Adaptation, Desktop Adaptation 
 ### Community 58 - "handleManualEditActivity"
 Cohesion: 0.19
 Nodes (24): clearStoredManualApplyState(), fetchPendingCount(), handleManualEditActivity(), hidePendingApplyDock(), manualApplyLoadingText(), manualApplyStateKey(), manualEditEventForCurrentPage(), numberOrNull() (+16 more)
-
-### Community 59 - "report.py"
-Cohesion: 0.44
-Nodes (5): ComplianceResult, generate_report(), _overall_compliance(), _step_compliance_rate(), _steps_to_promote()
 
 ### Community 60 - "Coding Style"
 Cohesion: 0.09
@@ -877,8 +866,8 @@ Cohesion: 0.10
 Nodes (20): 1a. Collect skill inventory, 1b. Collect rules index, 1c. Present to user, Batching, Cross-batch Merge, Design Principles, End-to-end run, Example (+12 more)
 
 ### Community 75 - "grade"
-Cohesion: 0.22
-Nodes (3): grade(), TestGradeCompliant, TestGradeNoncompliant
+Cohesion: 0.20
+Nodes (4): grade(), TestGradeCompliant, TestGradeEdgeCases, TestGradeNoncompliant
 
 ### Community 76 - "PRP Plan"
 Cohesion: 0.10
@@ -1089,8 +1078,8 @@ Cohesion: 0.12
 Nodes (17): Accessibility, Anti-Patterns to Avoid, Behavior, not implementation, Coverage Targets, Custom hooks, Example Session, MSW for network, React TDD Command (+9 more)
 
 ### Community 128 - "create_app"
-Cohesion: 0.05
-Nodes (14): Async, Dependency Injection, FastAPI Rules, Schemas, Security, Structure, Testing, create_app() (+6 more)
+Cohesion: 0.07
+Nodes (11): create_app(), get_eval_scorecard(), health(), run_eval_benchmark(), run_semantic_extraction_workflow_endpoint(), BenchmarkRunner, build_enriched_scorecard(), execute_and_persist_benchmark() (+3 more)
 
 ### Community 129 - "compilerOptions"
 Cohesion: 0.12
@@ -1253,12 +1242,12 @@ Cohesion: 0.25
 Nodes (3): Browser, Page, sleep()
 
 ### Community 169 - "tasteskill: Anti-Slop Frontend Skill"
-Cohesion: 0.06
-Nodes (34): 0.A Read these signals first, 0.B Output a one-line "Design Read" before generating, 0. BRIEF INFERENCE (Read the Room Before Anything Else), 0.C If the brief is ambiguous, ask one question, do not guess, 0.D Anti-Default Discipline, 10. REFERENCE VOCABULARY (Pattern Names the Agent Should Know), 13. OUT OF SCOPE, 14. FINAL PRE-FLIGHT CHECK (+26 more)
+Cohesion: 0.13
+Nodes (15): 0.A Read these signals first, 0.B Output a one-line "Design Read" before generating, 0. BRIEF INFERENCE (Read the Room Before Anything Else), 0.C If the brief is ambiguous, ask one question, do not guess, 0.D Anti-Default Discipline, 13. OUT OF SCOPE, 14. FINAL PRE-FLIGHT CHECK, 1.A Dial Inference (design read → dial values) (+7 more)
 
 ### Community 170 - "Appendix B - Canonical Sources (read these before reinventing)"
-Cohesion: 0.09
-Nodes (21): APPENDICES - Real Source-Backed Reference Material, Appendix A - Install Commands per Design System, Appendix B - Canonical Sources (read these before reinventing), Appendix C - Apple Liquid Glass: Honest Web Approximation, Apple Liquid Glass (Apple platforms only), Atlassian, Bootstrap, Carbon (+13 more)
+Cohesion: 0.13
+Nodes (15): Appendix B - Canonical Sources (read these before reinventing), Apple Liquid Glass (Apple platforms only), Atlassian, Bootstrap, Carbon, Fluent UI, GOV.UK, Material Web (+7 more)
 
 ### Community 171 - "Dev Team"
 Cohesion: 0.13
@@ -1347,10 +1336,6 @@ Nodes (13): Comparison Notes (Research: Jan 2025), Configuration, Continuous Lea
 ### Community 192 - "observe.sh"
 Cohesion: 0.25
 Nodes (13): _CHECK_OBSERVER_RUNNING(), _clv2_bump_signal_counter(), CLV2_PYTHON_CMD, _is_windows_app_installer_stub(), _NOTE_OBSERVER_NOSURVIVE(), PROJECT_ID_ENV, PROJECT_NAME_ENV, _REMOVE_FILE_IF_PRESENT() (+5 more)
-
-### Community 193 - "ne"
-Cohesion: 0.33
-Nodes (7): Et(), It(), ne(), St(), Tt(), Ve(), we()
 
 ### Community 194 - "Imagery"
 Cohesion: 0.14
@@ -1516,9 +1501,13 @@ Nodes (11): Accuracy, Actionability, Clarity, Completeness, Conciseness, Edge Ca
 Cohesion: 0.17
 Nodes (9): cargo, claudeMd, gitConfig, goMod, output, pkg, projects, pyproject (+1 more)
 
-### Community 235 - "Ce"
-Cohesion: 0.40
-Nodes (5): Ce(), Ee(), u(), Rt(), vt()
+### Community 235 - "10. REFERENCE VOCABULARY (Pattern Names the Agent Should Know)"
+Cohesion: 0.20
+Nodes (10): 10. REFERENCE VOCABULARY (Pattern Names the Agent Should Know), Animation Library Choice, Cards & Containers, Galleries & Media, Hero Paradigms, Layout & Grids, Micro-Interactions & Effects, Navigation & Menus (+2 more)
+
+### Community 236 - "Docket — Milestone 4 Verification & AI Semantic Fact Extraction Report"
+Cohesion: 0.20
+Nodes (9): 2.1 Prompt Injection Guard ([`docket/ai/prompt_guard.py`](file:///c:/Users/ACER/Downloads/Docket/docket/ai/prompt_guard.py)), 2.2 Verbatim Citation Verifier ([`docket/ai/citation_verifier.py`](file:///c:/Users/ACER/Downloads/Docket/docket/ai/citation_verifier.py)), 2.3 Semantic Contradiction Detector ([`docket/ai/contradiction.py`](file:///c:/Users/ACER/Downloads/Docket/docket/ai/contradiction.py)), 2. Implemented Components & Security Safeguards, 3.1 Test Suite Breakdown, 3. Test Strategy & Verification Results, 4. Code Coverage Analysis, 6. Transition Readiness for Milestone 5 (Synthetic Evaluation Benchmark Suite) (+1 more)
 
 ### Community 237 - "Council - External Review"
 Cohesion: 0.17
@@ -1585,8 +1574,8 @@ Cohesion: 0.17
 Nodes (11): Example Output, Notes, Process, Save Session Command, Session File Format, Step 1: Gather context, Step 2: Create the sessions folder if it doesn't exist, Step 3: Write the session file (+3 more)
 
 ### Community 253 - "Docket — Milestone 5 Verification & Synthetic Evaluation Benchmark Report"
-Cohesion: 0.15
-Nodes (12): 1. Executive Summary, 2. Evaluation Harness Architecture, 3. The 20 Labeled Benchmark Scenarios, 4.1 Key Metric Definitions & Results, 4. Empirical Performance Scorecard, 5.1 Test Breakdown (186 Tests Passing), 5.2 Unit Test Matrix for Evaluation Suite ([`tests/test_eval_suite.py`](file:///c:/Users/ACER\Downloads\Docket\tests\test_eval_suite.py)), 5.3 Code Coverage Ledger (+4 more)
+Cohesion: 0.17
+Nodes (11): 1. Executive Summary, 3. The 20 Labeled Benchmark Scenarios, 4.1 Key Metric Definitions & Results, 4. Empirical Performance Scorecard, 5.1 Test Breakdown (186 Tests Passing), 5.2 Unit Test Matrix for Evaluation Suite ([`tests/test_eval_suite.py`](file:///c:/Users/ACER\Downloads\Docket\tests\test_eval_suite.py)), 5.3 Code Coverage Ledger, 5. Verification Test Suite & Code Coverage (+3 more)
 
 ### Community 254 - "AuditTrailView.tsx"
 Cohesion: 0.27
@@ -1808,6 +1797,10 @@ Nodes (9): analyze_observations(), cleanup(), exit_if_idle_without_sessions(), f
 Cohesion: 0.20
 Nodes (9): 1. Write the argument first, 2. The two-line headline, 3. Headline shapes that work, 4. Supporting line, body, buttons, 5. Proof without inventing it, 6. Things that read as generated, 7. Micro-typography, Contents (+1 more)
 
+### Community 309 - "run_dev.py"
+Cohesion: 0.36
+Nodes (4): banner(), main(), start_backend(), start_frontend()
+
 ### Community 310 - "CORE DIRECTIVE: AWWWARDS-LEVEL DESIGN ENGINEERING"
 Cohesion: 0.20
 Nodes (9): 1. PYTHON-DRIVEN TRUE RANDOMIZATION (BREAKING THE LOOP), 2. AIDA STRUCTURE & SPACING, 3. HERO ARCHITECTURE & THE 2-LINE IRON RULE, 4. THE GAPLESS BENTO GRID, 5. ADVANCED GSAP MOTION & HOVER PHYSICS, 6. COMPONENT ARSENAL & CREATIVITY, 7. CONTENT, ASSETS & STRICT BANS, 8. MANDATORY PRE-FLIGHT <design_plan> (+1 more)
@@ -1984,13 +1977,13 @@ Nodes (8): Focus Areas, Step 1: Detect Test Framework, Step 2: Analyze Coverage 
 Cohesion: 0.22
 Nodes (8): Codemap Format, Step 1: Scan Project Structure, Step 2: Generate Codemaps, Step 3: Diff Detection, Step 4: Add Metadata, Step 5: Save Analysis Report, Tips, Update Codemaps
 
-### Community 356 - "cmd_evolve"
-Cohesion: 0.12
-Nodes (10): _assign_unique_slugs(), _cluster_by_keyword_overlap(), cmd_evolve(), _evolved_agent_name(), _evolved_command_name(), _evolved_skill_name(), _generate_evolved(), _print_preview_remainder() (+2 more)
+### Community 356 - "APPENDICES - Real Source-Backed Reference Material"
+Cohesion: 0.29
+Nodes (6): APPENDICES - Real Source-Backed Reference Material, Appendix A - Install Commands per Design System, Appendix C - Apple Liquid Glass: Honest Web Approximation, Safer web approximation skeleton, What is NOT official, What is official
 
 ### Community 357 - "parse_trace"
-Cohesion: 0.14
-Nodes (7): parse_trace(), compliant_trace(), _mock_compliant_classification(), _mock_noncompliant_classification(), noncompliant_trace(), tdd_spec(), TestParseTrace
+Cohesion: 0.10
+Nodes (11): Detector, parse_spec(), parse_trace(), Step, compliant_trace(), _mock_compliant_classification(), _mock_noncompliant_classification(), noncompliant_trace() (+3 more)
 
 ### Community 358 - "2. Phase-by-Phase Milestone Plan"
 Cohesion: 0.22
@@ -2084,9 +2077,9 @@ Nodes (7): Anti-Template Policy, Banned Patterns, Before Writing Frontend Code, 
 Cohesion: 0.25
 Nodes (7): Content Security Policy, Forms, HTTPS and Headers, Nonce-Based CSP, Third-Party Scripts, Web Security Rules, XSS Prevention
 
-### Community 381 - "dispatcher.py"
-Cohesion: 0.16
-Nodes (7): ApprovalDecision, DispatchResult, EvidenceInfoPayload, EvidenceItemPayload, EvidencePayload, MerchantApprovalRecord, TrackingInfoPayload
+### Community 381 - "8. DARK MODE PROTOCOL"
+Cohesion: 0.40
+Nodes (5): 8.A Token Strategy (pick one, stick to it), 8.B Do Not Prescribe Specific Colors Here, 8.C Default Mode, 8.D Test in Both Modes Before Finishing, 8. DARK MODE PROTOCOL
 
 ### Community 382 - "9. AI TELLS (Forbidden Patterns)"
 Cohesion: 0.25
@@ -2219,10 +2212,6 @@ Nodes (7): Monorepo notes, Opting out of the boot check, Step 1: Run the pass, S
 ### Community 414 - "tasteskill v2 (`design-taste-frontend`)"
 Cohesion: 0.29
 Nodes (6): Contents, How it works, Install, Notes, Requirements, tasteskill v2 (`design-taste-frontend`)
-
-### Community 415 - "_promote_auto"
-Cohesion: 0.17
-Nodes (7): _promote_auto(), _validate_instinct_id(), test_promote_auto_dry_run(), test_promote_auto_no_candidates(), test_promote_auto_skips_invalid_id(), test_promote_auto_writes_file(), test_validate_instinct_id()
 
 ### Community 416 - "11. REDESIGN PROTOCOL"
 Cohesion: 0.29
@@ -2360,13 +2349,13 @@ Nodes (6): 5. IMAGE COUNT & PAGE SLICING, Continuity Rule, Counting rule, Format
 Cohesion: 0.17
 Nodes (4): format_dispute_list(), test_format_dispute_list_empty(), test_list_disputes_empty(), test_list_disputes_success()
 
-### Community 450 - "EvidencePayloadFormatter"
-Cohesion: 0.27
-Nodes (4): EvidencePayloadFormatter, test_evidence_payload_formatter_no_shipments(), test_evidence_payload_formatter_other_carrier_mapping(), test_evidence_payload_formatter_standard_fulfillment()
+### Community 450 - "7. DIAL DEFINITIONS (Technical Reference)"
+Cohesion: 0.50
+Nodes (4): 7. DIAL DEFINITIONS (Technical Reference), DESIGN_VARIANCE (Level 1-10), MOTION_INTENSITY (Level 1-10), VISUAL_DENSITY (Level 1-10)
 
-### Community 451 - "_update_registry"
-Cohesion: 0.22
-Nodes (7): _registry_lock(), _update_registry(), test_update_registry_atomic_replaces_file(), test_update_registry_heals_malformed_entry(), test_update_registry_heals_non_dict_registry(), test_update_registry_matches_shell_schema(), test_update_registry_preserves_created_at()
+### Community 451 - "9. Installed Skill Verification"
+Cohesion: 0.50
+Nodes (4): 9. Installed Skill Verification, A. Skill Inventory & Verification, B. Persistent Skill Selection Policy, C. Skill Assignment Matrix by Docket Workstream
 
 ### Community 453 - "scan_dir_to_json"
 Cohesion: 0.53
@@ -2596,33 +2585,33 @@ Nodes (3): Expanding the Oxlint configuration, React Compiler, React + TypeScrip
 Cohesion: 0.40
 Nodes (4): Containment, Painted material, Region map, What varies independently
 
-### Community 551 - "approval.py"
-Cohesion: 0.10
-Nodes (16): ApprovalError, DisputeMismatchError, InvalidSignatureError, PayloadTamperedError, TokenExpiredError, DispatchError, DuplicateSubmissionError, MerchantApprovalRequiredError (+8 more)
+### Community 545 - "10. Naming Consistency Findings"
+Cohesion: 0.67
+Nodes (3): 10. Naming Consistency Findings, Documentation Inconsistencies Identified, Workspace Search Results
 
-### Community 552 - "app.py"
-Cohesion: 0.09
-Nodes (13): check_disk(), check_stale_libs(), count_edits(), get_project_memory_dir(), main(), AuthorizeRequest, CaseData, get_disputes() (+5 more)
+### Community 552 - "FastAPI Rules"
+Cohesion: 0.11
+Nodes (15): Async, Dependency Injection, FastAPI Rules, Schemas, Security, Structure, Testing, AuthorizeRequest (+7 more)
 
 ## Knowledge Gaps
 - **5 isolated node(s):** `CLV2_PYTHON_CMD`, `PROJECT_ID_ENV`, `PROJECT_NAME_ENV`, `TIMESTAMP`, `skill-comply`
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 4946 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **40 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 4972 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **47 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `init()` connect `initGlobalBar` to `live-browser.js`, `connectSSE`, `handleManualEditActivity`, `Init flow`, `setLiveState`, `onAnnotDown`, `Inherit Legacy Style`, `C# Coding Style`, `initPageChat`, `impeccable/SKILL.md`, `Swift Testing`, `live.md`, `doctor.md`?**
-  _High betweenness centrality (0.049) - this node is a cross-community bridge._
-- **Are the 21 inferred relationships involving `ExtractedClaim` (e.g. with `BaseFactExtractor` and `ExtractionResult`) actually correct?**
-  _`ExtractedClaim` has 21 INFERRED edges - model-reasoned connections that need verification._
+  _High betweenness centrality (0.052) - this node is a cross-community bridge._
+- **Are the 10 inferred relationships involving `ExtractedClaim` (e.g. with `ContradictionDetector` and `DeterministicFactExtractor`) actually correct?**
+  _`ExtractedClaim` has 10 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `CLV2_PYTHON_CMD`, `PROJECT_ID_ENV`, `PROJECT_NAME_ENV` to the rest of the system?**
   _5 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `ExtractedClaim` be split into smaller, more focused modules?**
-  _Cohesion score 0.05732390215148836 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.04261098378745438 - nodes in this community are weakly interconnected._
 - **Why does `Test Isolation` connect `Swift Testing` to `initGlobalBar`?**
-  _High betweenness centrality (0.021) - this node is a cross-community bridge._
-- **Are the 25 inferred relationships involving `DisputeCase` (e.g. with `BaseFactExtractor` and `DeterministicFactExtractor`) actually correct?**
-  _`DisputeCase` has 25 INFERRED edges - model-reasoned connections that need verification._
+  _High betweenness centrality (0.025) - this node is a cross-community bridge._
+- **Are the 18 inferred relationships involving `DisputeCase` (e.g. with `DeterministicFactExtractor` and `ApprovalService`) actually correct?**
+  _`DisputeCase` has 18 INFERRED edges - model-reasoned connections that need verification._
 - **Should `live-browser.js` be split into smaller, more focused modules?**
   _Cohesion score 0.026490066225165563 - nodes in this community are weakly interconnected._

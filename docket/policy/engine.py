@@ -55,6 +55,9 @@ def resolve_field_path(source: Any, field_path: str) -> tuple[bool, Any]:
 
     Returns (found: bool, value: Any).
     """
+    if isinstance(source, str) and field_path in ("text", "content", ""):
+        return True, source
+
     parts = field_path.strip().split(".")
     curr = source
     for part in parts:
