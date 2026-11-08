@@ -456,8 +456,8 @@
     "semantic_hash": ""
   },
   "docket/ai/contradiction.py": {
-    "mtime": 1794141142.4549003,
-    "seen": 1794141350.3885264,
+    "mtime": 1794141682.4900756,
+    "seen": 1794141690.927174,
     "ast_hash": "289533d682615154eb459a0707aacae8",
     "semantic_hash": ""
   },
@@ -486,8 +486,8 @@
     "semantic_hash": ""
   },
   "docket/ai/provider_gemini.py": {
-    "mtime": 1794140907.07698,
-    "seen": 1794141350.3885264,
+    "mtime": 1794141682.9522378,
+    "seen": 1794141690.927174,
     "ast_hash": "4e38e0dab02e405aefab1aadfd698a67",
     "semantic_hash": ""
   },
@@ -3786,14 +3786,14 @@
     "semantic_hash": ""
   },
   "scripts/live_gemini_smoke_test.py": {
-    "mtime": 1794140921.2668874,
-    "seen": 1794141350.3895395,
+    "mtime": 1794141682.4890811,
+    "seen": 1794141690.927174,
     "ast_hash": "88a9cbb8436d63d668c94ac2ed5423a8",
     "semantic_hash": ""
   },
   "docs/DOCKET_AI_INTEGRATION_VERIFICATION.md": {
-    "mtime": 1794141321.6108181,
-    "seen": 1794141350.3905194,
+    "mtime": 1794141682.4900756,
+    "seen": 1794141690.9281604,
     "ast_hash": "5ef7e8a817918fc9428ebf87ea930e05",
     "semantic_hash": ""
   },
