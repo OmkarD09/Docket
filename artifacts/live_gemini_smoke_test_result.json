@@ -1,203 +1,27 @@
 {
-  "timestamp": "2026-11-08T11:43:18.032905+00:00",
+  "timestamp": "2026-11-08T12:33:26.703017+00:00",
   "provider": "gemini",
   "model": "gemini-2.5-flash",
-  "latency_ms": 12941.68,
+  "latency_ms": 5457.13,
   "usage_metadata": {
-    "promptTokenCount": 613,
-    "candidatesTokenCount": 1127,
-    "totalTokenCount": 4080,
+    "promptTokenCount": 721,
+    "candidatesTokenCount": 317,
+    "totalTokenCount": 1700,
     "promptTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 613
+        "tokenCount": 721
       }
     ],
-    "thoughtsTokenCount": 2340,
+    "thoughtsTokenCount": 662,
     "serviceTier": "standard"
   },
-  "claims_count": 15,
+  "claims_count": 4,
   "claims": [
     {
-      "claim_id": "claim-1",
+      "claim_id": "PP-D-LIVE-2026-CL001",
       "claim_type": "OTHER",
-      "factual_assertion": "The dispute ID is PP-D-LIVE-2026.",
-      "normalized_value": null,
-      "supporting_sources": [
-        {
-          "source_type": "CUSTOMER_COMMUNICATION",
-          "source_identifier": "PP-D-LIVE-2026",
-          "field_path": "raw_messages.0.content",
-          "extracted_value": "Dispute ID: PP-D-LIVE-2026",
-          "verification_status": "UNVERIFIED"
-        }
-      ],
-      "claim_status": "PROPOSED"
-    },
-    {
-      "claim_id": "claim-2",
-      "claim_type": "OTHER",
-      "factual_assertion": "The dispute reason is Merchandise or Service Not Received.",
-      "normalized_value": null,
-      "supporting_sources": [
-        {
-          "source_type": "CUSTOMER_COMMUNICATION",
-          "source_identifier": "PP-D-LIVE-2026",
-          "field_path": "raw_messages.0.content",
-          "extracted_value": "Dispute Reason: DisputeReason.MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
-          "verification_status": "UNVERIFIED"
-        }
-      ],
-      "claim_status": "PROPOSED"
-    },
-    {
-      "claim_id": "claim-3",
-      "claim_type": "OTHER",
-      "factual_assertion": "The dispute amount is 75.00 USD.",
-      "normalized_value": null,
-      "supporting_sources": [
-        {
-          "source_type": "CUSTOMER_COMMUNICATION",
-          "source_identifier": "PP-D-LIVE-2026",
-          "field_path": "raw_messages.0.content",
-          "extracted_value": "Dispute Amount: 75.00 USD",
-          "verification_status": "UNVERIFIED"
-        }
-      ],
-      "claim_status": "PROPOSED"
-    },
-    {
-      "claim_id": "claim-4",
-      "claim_type": "OTHER",
-      "factual_assertion": "The order ID is ORD-LIVE-7701.",
-      "normalized_value": null,
-      "supporting_sources": [
-        {
-          "source_type": "ORDER_INVOICE",
-          "source_identifier": "ORD-LIVE-7701",
-          "field_path": "order_id",
-          "extracted_value": "Order ID: ORD-LIVE-7701",
-          "verification_status": "VERIFIED"
-        }
-      ],
-      "claim_status": "PROPOSED"
-    },
-    {
-      "claim_id": "claim-5",
-      "claim_type": "OTHER",
-      "factual_assertion": "The transaction ID is TX-LIVE-7701.",
-      "normalized_value": null,
-      "supporting_sources": [
-        {
-          "source_type": "ORDER_INVOICE",
-          "source_identifier": "ORD-LIVE-7701",
-          "field_path": "order_id",
-          "extracted_value": "Transaction: TX-LIVE-7701",
-          "verification_status": "VERIFIED"
-        }
-      ],
-      "claim_status": "PROPOSED"
-    },
-    {
-      "claim_id": "claim-6",
-      "claim_type": "OTHER",
-      "factual_assertion": "The order amount is 75.00.",
-      "normalized_value": null,
-      "supporting_sources": [
-        {
-          "source_type": "ORDER_INVOICE",
-          "source_identifier": "ORD-LIVE-7701",
-          "field_path": "order_id",
-          "extracted_value": "Amount: 75.00",
-          "verification_status": "VERIFIED"
-        }
-      ],
-      "claim_status": "PROPOSED"
-    },
-    {
-      "claim_id": "claim-7",
-      "claim_type": "OTHER",
-      "factual_assertion": "The postal code for the order is 95113.",
-      "normalized_value": null,
-      "supporting_sources": [
-        {
-          "source_type": "ORDER_INVOICE",
-          "source_identifier": "ORD-LIVE-7701",
-          "field_path": "order_id",
-          "extracted_value": "Postal: 95113",
-          "verification_status": "VERIFIED"
-        }
-      ],
-      "claim_status": "PROPOSED"
-    },
-    {
-      "claim_id": "claim-8",
-      "claim_type": "OTHER",
-      "factual_assertion": "The shipment carrier is USPS.",
-      "normalized_value": null,
-      "supporting_sources": [
-        {
-          "source_type": "CARRIER_TRACKING",
-          "source_identifier": "SRC-USPS-TRACKING-API",
-          "field_path": "tracking_status",
-          "extracted_value": "Carrier: USPS",
-          "verification_status": "VERIFIED"
-        }
-      ],
-      "claim_status": "PROPOSED"
-    },
-    {
-      "claim_id": "claim-9",
-      "claim_type": "OTHER",
-      "factual_assertion": "The tracking number is 9400111899223197428490.",
-      "normalized_value": null,
-      "supporting_sources": [
-        {
-          "source_type": "CARRIER_TRACKING",
-          "source_identifier": "SRC-USPS-TRACKING-API",
-          "field_path": "tracking_status",
-          "extracted_value": "Tracking: 9400111899223197428490",
-          "verification_status": "VERIFIED"
-        }
-      ],
-      "claim_status": "PROPOSED"
-    },
-    {
-      "claim_id": "claim-10",
-      "claim_type": "DELIVERY_COMPLETED",
-      "factual_assertion": "The shipment status is DELIVERED.",
-      "normalized_value": null,
-      "supporting_sources": [
-        {
-          "source_type": "CARRIER_TRACKING",
-          "source_identifier": "SRC-USPS-TRACKING-API",
-          "field_path": "tracking_status",
-          "extracted_value": "Status: DELIVERED",
-          "verification_status": "VERIFIED"
-        }
-      ],
-      "claim_status": "PROPOSED"
-    },
-    {
-      "claim_id": "claim-11",
-      "claim_type": "DELIVERY_COMPLETED",
-      "factual_assertion": "The shipment was delivered on 2026-11-07T14:22:00+00:00.",
-      "normalized_value": null,
-      "supporting_sources": [
-        {
-          "source_type": "CARRIER_TRACKING",
-          "source_identifier": "SRC-USPS-TRACKING-API",
-          "field_path": "tracking_status",
-          "extracted_value": "Delivery Date: 2026-11-07T14:22:00+00:00",
-          "verification_status": "VERIFIED"
-        }
-      ],
-      "claim_status": "PROPOSED"
-    },
-    {
-      "claim_id": "claim-12",
-      "claim_type": "OTHER",
-      "factual_assertion": "The buyer claims the tracking page indicates the package was delivered yesterday.",
+      "factual_assertion": "Buyer states the tracking page indicates the package was delivered yesterday.",
       "normalized_value": null,
       "supporting_sources": [
         {
@@ -211,25 +35,25 @@
       "claim_status": "PROPOSED"
     },
     {
-      "claim_id": "claim-13",
+      "claim_id": "PP-D-LIVE-2026-CL002",
       "claim_type": "OTHER",
-      "factual_assertion": "The buyer claims they never received the package.",
+      "factual_assertion": "Buyer asserts they never received the package.",
       "normalized_value": null,
       "supporting_sources": [
         {
           "source_type": "CUSTOMER_COMMUNICATION",
           "source_identifier": "MSG-00",
           "field_path": "content",
-          "extracted_value": "but I never received it.",
+          "extracted_value": "I never received it.",
           "verification_status": "VERIFIED"
         }
       ],
       "claim_status": "PROPOSED"
     },
     {
-      "claim_id": "claim-14",
-      "claim_type": "OTHER",
-      "factual_assertion": "The buyer states they contacted the courier.",
+      "claim_id": "PP-D-LIVE-2026-CL003",
+      "claim_type": "COMMUNICATION_ACKNOWLEDGED",
+      "factual_assertion": "Buyer states they contacted the courier.",
       "normalized_value": null,
       "supporting_sources": [
         {
@@ -243,16 +67,16 @@
       "claim_status": "PROPOSED"
     },
     {
-      "claim_id": "claim-15",
+      "claim_id": "PP-D-LIVE-2026-CL004",
       "claim_type": "OTHER",
-      "factual_assertion": "The buyer states the courier informed them the parcel might have been delivered to a different address.",
+      "factual_assertion": "Buyer reports that the courier stated the parcel might have been left at another address.",
       "normalized_value": null,
       "supporting_sources": [
         {
           "source_type": "CUSTOMER_COMMUNICATION",
           "source_identifier": "MSG-00",
           "field_path": "content",
-          "extracted_value": "and they told me the parcel may have been left at another address.",
+          "extracted_value": "they told me the parcel may have been left at another address.",
           "verification_status": "VERIFIED"
         }
       ],
@@ -260,155 +84,6 @@
     }
   ],
   "citations": [
-    {
-      "is_verified": false,
-      "start_offset": null,
-      "end_offset": null,
-      "citation": {
-        "source_type": "CUSTOMER_COMMUNICATION",
-        "source_identifier": "PP-D-LIVE-2026",
-        "field_path": "raw_messages.0.content",
-        "extracted_value": "Dispute ID: PP-D-LIVE-2026",
-        "verification_status": "UNVERIFIED"
-      },
-      "flags": [
-        "CITATION_NOT_FOUND"
-      ]
-    },
-    {
-      "is_verified": false,
-      "start_offset": null,
-      "end_offset": null,
-      "citation": {
-        "source_type": "CUSTOMER_COMMUNICATION",
-        "source_identifier": "PP-D-LIVE-2026",
-        "field_path": "raw_messages.0.content",
-        "extracted_value": "Dispute Reason: DisputeReason.MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
-        "verification_status": "UNVERIFIED"
-      },
-      "flags": [
-        "CITATION_NOT_FOUND"
-      ]
-    },
-    {
-      "is_verified": false,
-      "start_offset": null,
-      "end_offset": null,
-      "citation": {
-        "source_type": "CUSTOMER_COMMUNICATION",
-        "source_identifier": "PP-D-LIVE-2026",
-        "field_path": "raw_messages.0.content",
-        "extracted_value": "Dispute Amount: 75.00 USD",
-        "verification_status": "UNVERIFIED"
-      },
-      "flags": [
-        "CITATION_NOT_FOUND"
-      ]
-    },
-    {
-      "is_verified": true,
-      "start_offset": null,
-      "end_offset": null,
-      "citation": {
-        "source_type": "ORDER_INVOICE",
-        "source_identifier": "ORD-LIVE-7701",
-        "field_path": "order_id",
-        "extracted_value": "Order ID: ORD-LIVE-7701",
-        "verification_status": "VERIFIED"
-      },
-      "flags": []
-    },
-    {
-      "is_verified": true,
-      "start_offset": null,
-      "end_offset": null,
-      "citation": {
-        "source_type": "ORDER_INVOICE",
-        "source_identifier": "ORD-LIVE-7701",
-        "field_path": "order_id",
-        "extracted_value": "Transaction: TX-LIVE-7701",
-        "verification_status": "VERIFIED"
-      },
-      "flags": []
-    },
-    {
-      "is_verified": true,
-      "start_offset": null,
-      "end_offset": null,
-      "citation": {
-        "source_type": "ORDER_INVOICE",
-        "source_identifier": "ORD-LIVE-7701",
-        "field_path": "order_id",
-        "extracted_value": "Amount: 75.00",
-        "verification_status": "VERIFIED"
-      },
-      "flags": []
-    },
-    {
-      "is_verified": true,
-      "start_offset": null,
-      "end_offset": null,
-      "citation": {
-        "source_type": "ORDER_INVOICE",
-        "source_identifier": "ORD-LIVE-7701",
-        "field_path": "order_id",
-        "extracted_value": "Postal: 95113",
-        "verification_status": "VERIFIED"
-      },
-      "flags": []
-    },
-    {
-      "is_verified": true,
-      "start_offset": null,
-      "end_offset": null,
-      "citation": {
-        "source_type": "CARRIER_TRACKING",
-        "source_identifier": "SRC-USPS-TRACKING-API",
-        "field_path": "tracking_status",
-        "extracted_value": "Carrier: USPS",
-        "verification_status": "VERIFIED"
-      },
-      "flags": []
-    },
-    {
-      "is_verified": true,
-      "start_offset": null,
-      "end_offset": null,
-      "citation": {
-        "source_type": "CARRIER_TRACKING",
-        "source_identifier": "SRC-USPS-TRACKING-API",
-        "field_path": "tracking_status",
-        "extracted_value": "Tracking: 9400111899223197428490",
-        "verification_status": "VERIFIED"
-      },
-      "flags": []
-    },
-    {
-      "is_verified": true,
-      "start_offset": null,
-      "end_offset": null,
-      "citation": {
-        "source_type": "CARRIER_TRACKING",
-        "source_identifier": "SRC-USPS-TRACKING-API",
-        "field_path": "tracking_status",
-        "extracted_value": "Status: DELIVERED",
-        "verification_status": "VERIFIED"
-      },
-      "flags": []
-    },
-    {
-      "is_verified": true,
-      "start_offset": null,
-      "end_offset": null,
-      "citation": {
-        "source_type": "CARRIER_TRACKING",
-        "source_identifier": "SRC-USPS-TRACKING-API",
-        "field_path": "tracking_status",
-        "extracted_value": "Delivery Date: 2026-11-07T14:22:00+00:00",
-        "verification_status": "VERIFIED"
-      },
-      "flags": []
-    },
     {
       "is_verified": true,
       "start_offset": 0,
@@ -424,13 +99,13 @@
     },
     {
       "is_verified": true,
-      "start_offset": 59,
+      "start_offset": 63,
       "end_offset": 83,
       "citation": {
         "source_type": "CUSTOMER_COMMUNICATION",
         "source_identifier": "MSG-00",
         "field_path": "content",
-        "extracted_value": "but I never received it.",
+        "extracted_value": "I never received it.",
         "verification_status": "VERIFIED"
       },
       "flags": []
@@ -450,13 +125,13 @@
     },
     {
       "is_verified": true,
-      "start_offset": 109,
+      "start_offset": 113,
       "end_offset": 175,
       "citation": {
         "source_type": "CUSTOMER_COMMUNICATION",
         "source_identifier": "MSG-00",
         "field_path": "content",
-        "extracted_value": "and they told me the parcel may have been left at another address.",
+        "extracted_value": "they told me the parcel may have been left at another address.",
         "verification_status": "VERIFIED"
       },
       "flags": []
@@ -467,9 +142,9 @@
       "code": "DELIVERY_DISPUTE_EVIDENCE_EXISTS",
       "severity": "HIGH",
       "description": "Buyer asserts non-delivery, but carrier USPS tracking 9400111899223197428490 shows package was DELIVERED.",
-      "conflicting_claim_id": "claim-2"
+      "conflicting_claim_id": "PP-D-LIVE-2026-CL002"
     }
   ],
-  "decision": "BLOCK",
-  "recommended_action": "Authenticate source record with official merchant or carrier channels."
+  "decision": "REVIEW",
+  "recommended_action": "Contact carrier to request GPS delivery scan coordinates and delivery confirmation before submitting rebuttal."
 }

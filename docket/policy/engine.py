@@ -29,6 +29,7 @@ from docket.models.evidence import (
     ExtractedClaim,
     OrderRecord,
     ShipmentRecord,
+    SourceType,
     TrackingStatus,
     VerificationStatus,
 )
@@ -784,6 +785,7 @@ class CitationIntegrityInvariant:
                 values_match = (
                     actual_str.lower() == cited_str.lower()
                     or cited_str.lower() in actual_str.lower()
+                    or actual_str.lower() in cited_str.lower()
                 )
 
             if not values_match:
@@ -810,6 +812,106 @@ class CitationIntegrityInvariant:
 
 
 # ============================================================================
+# Invariant 6: Delivery Discrepancy Invariant
+# ============================================================================
+
+class DeliveryDiscrepancyInvariant:
+    """Evaluates factual discrepancies between buyer communications and carrier tracking.
+
+    Epistemic & Policy Boundaries:
+    - Case A: Carrier says DELIVERED, destination matches, buyer disputes receipt.
+      -> ALLOW (with standard destination area correspondence disclaimer). Contradiction flags INR.
+    - Case B: Carrier says DELIVERED, but destination address cannot be verified.
+      -> REVIEW (via AddressMatchInvariant CARRIER_ADDRESS_MISSING).
+    - Case C: Carrier tracking records independently confirm delivery exception or misdelivery.
+      -> BLOCK (CARRIER_CONFIRMED_MISDELIVERY).
+    - Case D: Buyer merely reports that the courier verbally mentioned misdelivery, with no
+      independent carrier record.
+      -> REVIEW (HEARSAY_MISDELIVERY_ALLEGATION). Docket does not treat a delivery scan as
+      infallible conclusive proof of delivery, but does not hard-BLOCK on unverified buyer hearsay.
+    - Case E: Carrier tracking reports LABEL_CREATED or IN_TRANSIT.
+      -> BLOCK (via DeliveryProofInvariant).
+    """
+
+    RULE_ID = "RULE_DELIVERY_DISCREPANCY"
+
+    def evaluate(
+        self,
+        claims: Optional[List[ExtractedClaim]],
+        shipment: Optional[ShipmentRecord],
+        available_sources: Optional[Dict[str, Any]] = None,
+    ) -> PolicyCheckResult:
+        if not shipment:
+            return PolicyCheckResult(
+                decision=DecisionType.ALLOW,
+                rule_identifier=self.RULE_ID,
+                explanation="No carrier tracking record to evaluate for discrepancy.",
+                violated_invariants=[],
+            )
+
+        sources = available_sources or {}
+
+        # 1. Check Case C: Independently recorded carrier source confirms misdelivery/exception
+        for src_id, src_obj in sources.items():
+            if isinstance(src_obj, ShipmentRecord):
+                if src_obj.tracking_status in (TrackingStatus.EXCEPTION, TrackingStatus.RETURNED):
+                    return PolicyCheckResult(
+                        decision=DecisionType.BLOCK,
+                        rule_identifier=self.RULE_ID,
+                        explanation=(
+                            f"Official carrier tracking record ({src_obj.carrier_name} #{src_obj.tracking_number}) "
+                            f"confirms delivery exception/misdelivery status '{src_obj.tracking_status.value}'. "
+                            "Proof of delivery to recipient cannot be asserted."
+                        ),
+                        violated_invariants=["CARRIER_CONFIRMED_MISDELIVERY"],
+                        recommended_next_action="Review carrier exception record; issue refund or reship item.",
+                    )
+
+        # 2. Check Case D: Buyer reports courier verbally mentioned misdelivery (hearsay)
+        # without independent carrier record confirmation
+        if claims and shipment.tracking_status == TrackingStatus.DELIVERED:
+            for claim in claims:
+                assertion_lower = claim.factual_assertion.lower()
+                courier_keywords = ["courier", "carrier", "driver", "delivery agent", "postman", "postal worker"]
+                misdelivery_keywords = [
+                    "another address", "different address", "wrong address",
+                    "wrong house", "misdelivered", "left elsewhere", "delivered elsewhere",
+                ]
+
+                has_courier = any(kw in assertion_lower for kw in courier_keywords)
+                has_misdelivery = any(kw in assertion_lower for kw in misdelivery_keywords)
+
+                if has_courier and has_misdelivery:
+                    # Check supporting source is customer communication
+                    is_buyer_comm = any(
+                        s.source_type == SourceType.CUSTOMER_COMMUNICATION for s in claim.supporting_sources
+                    ) or any(s.source_identifier.startswith("MSG-") for s in claim.supporting_sources)
+                    if is_buyer_comm:
+                        return PolicyCheckResult(
+                            decision=DecisionType.REVIEW,
+                            rule_identifier=self.RULE_ID,
+                            explanation=(
+                                "Factual discrepancy (Case D): Buyer reports that the courier verbally stated "
+                                "the package may have been left at another address. Carrier tracking indicates DELIVERED. "
+                                "Independent carrier proof of misdelivery is not established (buyer hearsay), but Docket "
+                                "does not treat a delivery scan as conclusive proof of delivery. Merchant review is "
+                                "required to verify carrier GPS delivery coordinates before submitting evidence."
+                            ),
+                            supporting_source_references=[s.source_identifier for s in claim.supporting_sources],
+                            violated_invariants=["HEARSAY_MISDELIVERY_ALLEGATION"],
+                            recommended_next_action="Contact carrier to request GPS delivery scan coordinates and delivery confirmation before submitting rebuttal.",
+                        )
+
+        # 3. Case A: Standard dispute of receipt without misdelivery allegation
+        return PolicyCheckResult(
+            decision=DecisionType.ALLOW,
+            rule_identifier=self.RULE_ID,
+            explanation="No unverified misdelivery allegations or official carrier misdelivery records detected.",
+            violated_invariants=[],
+        )
+
+
+# ============================================================================
 # Central Policy Engine
 # ============================================================================
 
@@ -829,6 +931,7 @@ class PolicyEngine:
         allow_insecure_http: bool = False,
     ):
         self.delivery_invariant = DeliveryProofInvariant()
+        self.delivery_discrepancy_invariant = DeliveryDiscrepancyInvariant()
         self.address_invariant = AddressMatchInvariant(policy=address_policy)
         self.signature_invariant = SignatureAssessmentInvariant(
             merchant_jurisdiction=merchant_jurisdiction,
@@ -890,6 +993,9 @@ class PolicyEngine:
             for claim in claims:
                 factual_results.append(self.delivery_invariant.evaluate(claim, shipment, order))
                 factual_results.append(self.citation_invariant.evaluate(claim, sources))
+
+        if shipment or claims:
+            factual_results.append(self.delivery_discrepancy_invariant.evaluate(claims, shipment, sources))
 
         # --------------------------------------------------------------------
         # 3. Advisory Dimension (Signature & Seller Protection Considerations)

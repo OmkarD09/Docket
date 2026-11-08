@@ -40,7 +40,7 @@ class ContradictionDetector:
         if is_inr and shipment and shipment.tracking_status == TrackingStatus.DELIVERED:
             # Check if claim asserts non-receipt
             assertion_lower = proposed_claim.factual_assertion.lower()
-            if any(term in assertion_lower for term in ["never arrived", "not received", "never delivered", "missing package"]):
+            if any(term in assertion_lower for term in ["never arrived", "not received", "never received", "did not receive", "never delivered", "missing package"]):
                 findings.append(
                     ContradictionFinding(
                         code="DELIVERY_DISPUTE_EVIDENCE_EXISTS",

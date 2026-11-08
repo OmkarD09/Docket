@@ -44,7 +44,7 @@ def run_live_smoke_test():
         print("[ERROR] GEMINI_API_KEY is not set in environment or .env file.")
         sys.exit(1)
 
-    model_name = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+    model_name = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
     masked_key = f"{api_key[:6]}...{api_key[-4:]}" if len(api_key) > 10 else "***"
     print("=" * 78)
     print(" DOCKET — LIVE GEMINI API SMOKE TEST EXECUTION")

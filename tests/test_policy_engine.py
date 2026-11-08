@@ -1436,3 +1436,186 @@ class TestSeparatedDecisionDimensions:
         assert evaluation.overall_decision == DecisionType.REVIEW  # Promoted to REVIEW for merchant awareness
 
 
+# ============================================================================
+# Test Cases for Delivery Discrepancy & Phase 4 Five Distinct Evidential Cases
+# ============================================================================
+
+class TestDeliveryDiscrepancyCases:
+    """Verifies the five evidential delivery cases (A through E) specified in Docket Phase 4:
+    - Case A: Carrier DELIVERED, destination matched, buyer disputes receipt (ALLOW).
+    - Case B: Carrier DELIVERED, but destination address cannot be verified (REVIEW).
+    - Case C: Carrier DELIVERED, but independent carrier source confirms misdelivery/exception (BLOCK).
+    - Case D: Buyer merely reports courier verbally mentioned misdelivery (hearsay) (REVIEW).
+    - Case E: Carrier tracking is LABEL_CREATED or IN_TRANSIT (BLOCK on delivery claims).
+    """
+
+    def test_case_a_delivered_matching_destination_buyer_disputes_receipt(
+        self, sample_dispute, sample_order, sample_shipment_delivered
+    ):
+        """Case A: Carrier tracking says DELIVERED, valid timestamp and matching destination exist,
+        buyer disputes receipt ('did not receive'). Docket allows evidence submission."""
+        engine = PolicyEngine()
+        buyer_msg = "I never received the item."
+        sample_dispute.raw_messages = [{"posted_by": "BUYER", "content": buyer_msg}]
+        claim = ExtractedClaim(
+            claim_id="CLM-CASE-A",
+            claim_type=ClaimType.OTHER,
+            factual_assertion="Buyer asserts that they did not receive the package.",
+            supporting_sources=[
+                SourceCitation(
+                    source_type=SourceType.CUSTOMER_COMMUNICATION,
+                    source_identifier="MSG-00",
+                    field_path="content",
+                    extracted_value=buyer_msg,
+                    verification_status=VerificationStatus.VERIFIED,
+                )
+            ],
+        )
+
+        sources = {
+            "MSG-00": {"content": buyer_msg, "text": buyer_msg},
+            sample_order.order_id: sample_order,
+            sample_shipment_delivered.source_identifier: sample_shipment_delivered,
+        }
+
+        res = engine.evaluate(
+            dispute=sample_dispute,
+            order=sample_order,
+            shipment=sample_shipment_delivered,
+            claims=[claim],
+            available_sources=sources,
+        )
+
+        assert res.overall_decision == DecisionType.ALLOW
+        assert res.factual_readiness == DecisionType.ALLOW
+        assert res.action_readiness == DecisionType.ALLOW
+        assert "HEARSAY_MISDELIVERY_ALLEGATION" not in res.get_violations()
+        assert "CARRIER_CONFIRMED_MISDELIVERY" not in res.get_violations()
+
+    def test_case_b_delivered_unverified_destination_address(
+        self, sample_dispute, sample_order, sample_shipment_delivered
+    ):
+        """Case B: Carrier says DELIVERED, but carrier destination address cannot be verified.
+        Docket yields REVIEW via AddressMatchInvariant."""
+        engine = PolicyEngine()
+        sample_shipment_delivered.shipment_address = None  # Missing address data
+
+        res = engine.evaluate(
+            dispute=sample_dispute,
+            order=sample_order,
+            shipment=sample_shipment_delivered,
+        )
+
+        assert res.overall_decision == DecisionType.REVIEW
+        assert res.factual_readiness == DecisionType.REVIEW
+        assert "CARRIER_ADDRESS_MISSING" in res.get_violations()
+
+    def test_case_c_carrier_record_confirms_misdelivery(
+        self, sample_dispute, sample_order, sample_shipment_delivered
+    ):
+        """Case C: Official carrier record confirms delivery exception/misdelivery.
+        Docket blocks evidence submission claiming valid delivery."""
+        engine = PolicyEngine()
+        sample_shipment_delivered.tracking_status = TrackingStatus.EXCEPTION
+
+        sources = {
+            sample_order.order_id: sample_order,
+            sample_shipment_delivered.source_identifier: sample_shipment_delivered,
+        }
+
+        res = engine.evaluate(
+            dispute=sample_dispute,
+            order=sample_order,
+            shipment=sample_shipment_delivered,
+            claims=[],
+            available_sources=sources,
+        )
+
+        assert res.overall_decision == DecisionType.BLOCK
+        assert res.factual_readiness == DecisionType.BLOCK
+        assert "CARRIER_CONFIRMED_MISDELIVERY" in res.get_violations()
+
+    def test_case_d_buyer_hearsay_courier_verbal_misdelivery_report(
+        self, sample_dispute, sample_order, sample_shipment_delivered
+    ):
+        """Case D: Buyer merely reports that courier verbally stated the package may have been
+        left at another address. Official tracking reports DELIVERED. Docket refuses to treat
+        delivery scan as infallible, producing REVIEW rather than hard-BLOCK or uncritical ALLOW."""
+        engine = PolicyEngine()
+        buyer_msg = "I contacted the courier, and they told me the parcel may have been left at another address."
+        sample_dispute.raw_messages = [{"posted_by": "BUYER", "content": buyer_msg}]
+
+        claim = ExtractedClaim(
+            claim_id="CLM-CASE-D",
+            claim_type=ClaimType.COMMUNICATION_ACKNOWLEDGED,
+            factual_assertion="Buyer reports that the courier stated the parcel may have been left at another address.",
+            supporting_sources=[
+                SourceCitation(
+                    source_type=SourceType.CUSTOMER_COMMUNICATION,
+                    source_identifier="MSG-00",
+                    field_path="content",
+                    extracted_value="they told me the parcel may have been left at another address",
+                    verification_status=VerificationStatus.VERIFIED,
+                )
+            ],
+        )
+
+        sources = {
+            "MSG-00": {"content": buyer_msg, "text": buyer_msg},
+            sample_order.order_id: sample_order,
+            sample_shipment_delivered.source_identifier: sample_shipment_delivered,
+        }
+
+        res = engine.evaluate(
+            dispute=sample_dispute,
+            order=sample_order,
+            shipment=sample_shipment_delivered,
+            claims=[claim],
+            available_sources=sources,
+        )
+
+        assert res.overall_decision == DecisionType.REVIEW
+        assert res.factual_readiness == DecisionType.REVIEW
+        assert "HEARSAY_MISDELIVERY_ALLEGATION" in res.get_violations()
+        assert "Contact carrier to request GPS delivery scan coordinates" in res.check_results[-1].recommended_next_action
+
+    def test_case_e_carrier_label_created_or_in_transit(
+        self, sample_dispute, sample_order, sample_shipment_label_created
+    ):
+        """Case E: Carrier tracking says LABEL_CREATED, but claim asserts delivery completed.
+        Docket enforces strict DeliveryProofInvariant BLOCK."""
+        engine = PolicyEngine()
+        claim = ExtractedClaim(
+            claim_id="CLM-CASE-E",
+            claim_type=ClaimType.DELIVERY_COMPLETED,
+            factual_assertion="Package was delivered to recipient.",
+            supporting_sources=[
+                SourceCitation(
+                    source_type=SourceType.CARRIER_TRACKING,
+                    source_identifier="TRK-94001118992231002",
+                    field_path="tracking_status",
+                    extracted_value="DELIVERED",
+                    verification_status=VerificationStatus.VERIFIED,
+                )
+            ],
+        )
+
+        sources = {
+            sample_order.order_id: sample_order,
+            sample_shipment_label_created.source_identifier: sample_shipment_label_created,
+        }
+
+        res = engine.evaluate(
+            dispute=sample_dispute,
+            order=sample_order,
+            shipment=sample_shipment_label_created,
+            claims=[claim],
+            available_sources=sources,
+        )
+
+        assert res.overall_decision == DecisionType.BLOCK
+        assert res.factual_readiness == DecisionType.BLOCK
+        assert "LABEL_CREATED" in res.get_violations()
+
+
+
