@@ -1,0 +1,45 @@
+{
+  "provenance": {
+    "source_task": "task-2859",
+    "timestamp": "2026-11-08T12:13:14Z",
+    "invocation_command": "python -c (requests.post to https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:streamGenerateContent)",
+    "target_model": "gemini-3.8-flash",
+    "http_endpoint": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:streamGenerateContent",
+    "http_status": 200,
+    "function_name": "record_extracted_claims",
+    "credential_status": "Configured (Present - Redacted)"
+  },
+  "raw_model_function_call_args": {
+    "claims": [
+      {
+        "claim_id": "CLAIM-01",
+        "claim_type": "OTHER",
+        "factual_assertion": "Buyer states that the tracking page indicates the package was delivered yesterday.",
+        "exact_citation_excerpt": "The tracking page says my package was delivered yesterday",
+        "source_id": "MSG-00"
+      },
+      {
+        "claim_id": "CLAIM-02",
+        "claim_type": "OTHER",
+        "factual_assertion": "Buyer asserts that they never received the package.",
+        "exact_citation_excerpt": "I never received it",
+        "source_id": "MSG-00"
+      },
+      {
+        "claim_id": "CLAIM-03",
+        "claim_type": "COMMUNICATION_ACKNOWLEDGED",
+        "factual_assertion": "Buyer states that they contacted the courier.",
+        "exact_citation_excerpt": "I contacted the courier",
+        "source_id": "MSG-00"
+      },
+      {
+        "claim_id": "CLAIM-04",
+        "claim_type": "COMMUNICATION_ACKNOWLEDGED",
+        "factual_assertion": "Buyer reports that the courier stated the parcel may have been left at another address.",
+        "exact_citation_excerpt": "they told me the parcel may have been left at another address",
+        "source_id": "MSG-00"
+      }
+    ]
+  },
+  "verification_status": "HISTORICAL_CALL_VERIFIED_BEFORE_QUOTA_EXHAUSTION"
+}

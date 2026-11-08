@@ -316,7 +316,8 @@ class TestContradictionAndPromptInjection:
 
         assert len(findings) >= 1
         finding = findings[0]
-        assert finding.code == "DELIVERY_DISPUTE_EVIDENCE_EXISTS"
+        assert finding.matches_code("DELIVERY_DISPUTE_EVIDENCE_EXISTS")
+        assert finding.code == "DELIVERY_STATUS_DISCREPANCY"
         assert finding.severity == "HIGH"
         assert "shows package was DELIVERED" in finding.description
 

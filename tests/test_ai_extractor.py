@@ -294,9 +294,10 @@ class TestContradictionDetector:
         )
 
         codes = [f.code for f in findings]
-        assert "DELIVERY_DISPUTE_EVIDENCE_EXISTS" in codes
-        finding = next(f for f in findings if f.code == "DELIVERY_DISPUTE_EVIDENCE_EXISTS")
+        assert "DELIVERY_STATUS_DISCREPANCY" in codes or "DELIVERY_DISPUTE_EVIDENCE_EXISTS" in codes
+        finding = next(f for f in findings if f.matches_code("DELIVERY_DISPUTE_EVIDENCE_EXISTS"))
         assert finding.severity == "HIGH"
+        assert finding.code == "DELIVERY_STATUS_DISCREPANCY"
 
     def test_inr_agreement_when_tracking_is_label_created(self, sample_bundle):
         # Buyer asserts tracking only shows label created; carrier confirms LABEL_CREATED
@@ -315,7 +316,8 @@ class TestContradictionDetector:
         )
 
         # Carrier confirms label created, so there is no contradiction against merchant tracking
-        assert not any(f.code == "DELIVERY_DISPUTE_EVIDENCE_EXISTS" for f in findings)
+        assert not any(f.matches_code("DELIVERY_DISPUTE_EVIDENCE_EXISTS") for f in findings)
+        assert not any(f.code == "DELIVERY_STATUS_DISCREPANCY" for f in findings)
 
     def test_refund_overlap_contradiction(self, sample_bundle):
         # Buyer files dispute, but prior refund already processed

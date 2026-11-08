@@ -65,10 +65,21 @@ class GeminiFactExtractor(BaseFactExtractor):
             raise AIProviderError(f"Gemini API network request failed: {exc}") from exc
 
         if resp.status_code != 200:
-            error_body = resp.text[:500]
-            raise AIProviderError(
-                f"Gemini API returned HTTP {resp.status_code} ({resp.reason}): {error_body}"
-            )
+            try:
+                err_data = resp.json()
+                err_json = err_data.get("error", {}) if isinstance(err_data, dict) else {}
+                err_msg = err_json.get("message") or resp.text[:500]
+                err_status = err_json.get("status") or resp.reason
+                raise AIProviderError(
+                    f"Gemini API returned HTTP {resp.status_code} ({err_status}): {err_msg}"
+                )
+            except Exception as parse_err:
+                if isinstance(parse_err, AIProviderError):
+                    raise
+                error_body = resp.text[:500]
+                raise AIProviderError(
+                    f"Gemini API returned HTTP {resp.status_code} ({resp.reason}): {error_body}"
+                )
 
         try:
             data = resp.json()

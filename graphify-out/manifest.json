@@ -426,9 +426,9 @@
     "semantic_hash": ""
   },
   "artifacts/docket_evaluation_matrix.json": {
-    "mtime": 1794143535.4952178,
-    "seen": 1794143688.472084,
-    "ast_hash": "1a6ae78cc576e50848dc44551191d152",
+    "mtime": 1794145826.6233494,
+    "seen": 1794145996.183145,
+    "ast_hash": "726aac27e25f1d2839556a42a96f9a07",
     "semantic_hash": ""
   },
   "docket/__init__.py": {
@@ -456,9 +456,9 @@
     "semantic_hash": ""
   },
   "docket/ai/contradiction.py": {
-    "mtime": 1794143218.8595936,
-    "seen": 1794143688.472084,
-    "ast_hash": "2b774cab97a0813350dedd26369733a7",
+    "mtime": 1794145375.5440745,
+    "seen": 1794145996.183145,
+    "ast_hash": "1875c256503eab1545241bbdb7cebda4",
     "semantic_hash": ""
   },
   "docket/ai/deterministic.py": {
@@ -486,9 +486,9 @@
     "semantic_hash": ""
   },
   "docket/ai/provider_gemini.py": {
-    "mtime": 1794143309.906135,
-    "seen": 1794143688.472084,
-    "ast_hash": "468855283e560c7cf12e5bcef88a0fbd",
+    "mtime": 1794145525.310409,
+    "seen": 1794145996.183145,
+    "ast_hash": "5588d21a9ed05219dceb5f7ec56d4a79",
     "semantic_hash": ""
   },
   "docket/ai/provider_openai.py": {
@@ -612,9 +612,9 @@
     "semantic_hash": ""
   },
   "docket/policy/engine.py": {
-    "mtime": 1794143271.2866457,
-    "seen": 1794143688.4730835,
-    "ast_hash": "01780d3d6eb3cb00aecde6474349e286",
+    "mtime": 1794145731.497888,
+    "seen": 1794145996.183145,
+    "ast_hash": "426d4c5c673d21f7dd28a1e694970265",
     "semantic_hash": ""
   },
   "docket/reconciliation/__init__.py": {
@@ -660,8 +660,8 @@
     "semantic_hash": ""
   },
   "frontend/src/components/DisputeDetailPanel.tsx": {
-    "mtime": 1794143391.9845493,
-    "seen": 1794143688.4730835,
+    "mtime": 1794144628.3116922,
+    "seen": 1794145996.183145,
     "ast_hash": "6350f1069a33d22686a1a008e2705177",
     "semantic_hash": ""
   },
@@ -798,9 +798,9 @@
     "semantic_hash": ""
   },
   "tests/test_ai_extractor.py": {
-    "mtime": 1794141792.107949,
-    "seen": 1794143688.4730835,
-    "ast_hash": "6d6277e7241a311d45a02364a09437f9",
+    "mtime": 1794145401.3332577,
+    "seen": 1794145996.183145,
+    "ast_hash": "671283399c49c4665c890cb08a99dfd5",
     "semantic_hash": ""
   },
   "tests/test_api_endpoints.py": {
@@ -3774,9 +3774,9 @@
     "semantic_hash": ""
   },
   "tests/test_ai_live_workflow.py": {
-    "mtime": 1794141792.107949,
-    "seen": 1794143688.4730835,
-    "ast_hash": "37963b40577ba2d2e502686a2f4d181c",
+    "mtime": 1794145435.554857,
+    "seen": 1794145996.183145,
+    "ast_hash": "a3704c4995fea079baf733a26a0db5ce",
     "semantic_hash": ""
   },
   "artifacts/live_gemini_smoke_test_result.json": {
@@ -3792,15 +3792,27 @@
     "semantic_hash": ""
   },
   "docs/DOCKET_AI_INTEGRATION_VERIFICATION.md": {
-    "mtime": 1794143654.734873,
-    "seen": 1794143688.4730835,
-    "ast_hash": "e7db49d0cde726b0c289f1204837cbce",
+    "mtime": 1794145946.3424969,
+    "seen": 1794145996.185043,
+    "ast_hash": "1421e5a37cc8c86d320c97ddba02d32c",
     "semantic_hash": ""
   },
   "artifacts/live_gemini_38_smoke_test_result.json": {
-    "mtime": 1794143425.7156804,
-    "seen": 1794143688.472084,
-    "ast_hash": "08d6cfaa99e57d09b0f7847e8141e3e2",
+    "mtime": 1794145550.8857293,
+    "seen": 1794145996.183145,
+    "ast_hash": "8dae95b4178faad213d3d24152378d3a",
+    "semantic_hash": ""
+  },
+  "artifacts/task_2859_raw_gemini_38_evidence.json": {
+    "mtime": 1794145537.984385,
+    "seen": 1794145996.183145,
+    "ast_hash": "0917d9a887344ef3ef8baa8c3a4724e0",
+    "semantic_hash": ""
+  },
+  "tests/test_milestone4_audit.py": {
+    "mtime": 1794145804.8787572,
+    "seen": 1794145996.183145,
+    "ast_hash": "c1f8ba59e5cbce83e0bb62a8ab86fb57",
     "semantic_hash": ""
   },
   "frontend/package-lock.json": {

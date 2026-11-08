@@ -96,6 +96,8 @@ class DeliveryProofInvariant:
     """
 
     RULE_ID = "RULE_DELIVERY_PROOF"
+    RULE_VERSION = "2026.1"
+    AUTHORITATIVE_SOURCE = "PayPal Seller Protection Policy — Proof of Delivery Requirements (US / Global)"
 
     def evaluate(
         self,
@@ -242,6 +244,8 @@ class AddressMatchInvariant:
     """
 
     RULE_ID = "RULE_ADDRESS_MATCH"
+    RULE_VERSION = "2026.1"
+    AUTHORITATIVE_SOURCE = "PayPal Seller Protection Policy — Shipping Address Verification (US / Global)"
 
     def __init__(self, policy: AddressMatchPolicy = AddressMatchPolicy.STANDARD):
         self.policy = policy
@@ -835,6 +839,8 @@ class DeliveryDiscrepancyInvariant:
     """
 
     RULE_ID = "RULE_DELIVERY_DISCREPANCY"
+    RULE_VERSION = "2026.1"
+    AUTHORITATIVE_SOURCE = "PayPal Seller Protection Policy — Disputed Delivery & Hearsay Reconciliation (US / Global)"
 
     def evaluate(
         self,
@@ -909,8 +915,13 @@ class DeliveryDiscrepancyInvariant:
             rule_identifier=self.RULE_ID,
             explanation=(
                 "Case A: Verified carrier delivery scan corresponds to transaction delivery area (postal code and country verified). "
-                "Scope: Confirms carrier tracking status and destination delivery area correspondence only. "
-                "Does NOT establish street-level recipient delivery confirmation or guarantee PayPal Seller Protection eligibility or dispute outcome."
+                "Distinctions: (1) Carrier delivered status is verified; "
+                "(2) Delivery date and verifiable tracking number are established; "
+                "(3) Destination postal code and country correspond with order record; "
+                "(4) Recipient street-level dropoff confirmation cannot be independently verified; "
+                "(5) Other PayPal Seller Protection eligibility conditions (e.g. account standing, payment eligibility, chargeback channel) are outside local evidence scope. "
+                "Scope Disclaimer: Confirms carrier tracking status and destination delivery area correspondence only. "
+                "Does NOT establish street-level recipient delivery confirmation or guarantee PayPal Seller Protection eligibility or dispute success."
             ),
             violated_invariants=[],
             recommended_next_action="Evidence package satisfies destination area delivery check. Final rebuttal submission requires affirmative merchant authorization.",
@@ -978,6 +989,13 @@ class PolicyEngine:
             if order.paypal_transaction_id:
                 sources[order.paypal_transaction_id] = order
         sources[dispute.dispute_id] = dispute
+        for idx, msg in enumerate(dispute.raw_messages or []):
+            if isinstance(msg, dict):
+                msg_id = msg.get("message_id") or f"MSG-{idx:02d}"
+                content = msg.get("content", "")
+                sources[msg_id] = content
+            elif isinstance(msg, str):
+                sources[f"MSG-{idx:02d}"] = msg
 
         # --------------------------------------------------------------------
         # 1. Action Eligibility Dimension (HATEOAS & Dispute Lifecycle)

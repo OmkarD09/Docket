@@ -3,37 +3,68 @@
 from __future__ import annotations
 
 from typing import Any, List, Optional
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_validator
 
 from docket.models.dispute import DisputeReason
 from docket.models.evidence import ClaimType, ExtractedClaim, TrackingStatus
 from docket.models.reconciliation import ReconciledDisputeBundle
 
 
+CANONICAL_DELIVERY_STATUS_DISCREPANCY = "DELIVERY_STATUS_DISCREPANCY"
+LEGACY_DELIVERY_DISPUTE_EVIDENCE_EXISTS = "DELIVERY_DISPUTE_EVIDENCE_EXISTS"
+
+LEGACY_CONTRADICTION_MAP = {
+    LEGACY_DELIVERY_DISPUTE_EVIDENCE_EXISTS: CANONICAL_DELIVERY_STATUS_DISCREPANCY,
+}
+
+
+def normalize_contradiction_code(code: str) -> str:
+    """Explicitly normalize legacy contradiction codes to their canonical form.
+
+    Maps 'DELIVERY_DISPUTE_EVIDENCE_EXISTS' -> 'DELIVERY_STATUS_DISCREPANCY'.
+    Preserves all other codes unchanged.
+    """
+    if not isinstance(code, str):
+        return str(code)
+    return LEGACY_CONTRADICTION_MAP.get(code.strip(), code.strip())
+
+
 class ContradictionCode(str):
-    """String subclass providing clearer finding identifiers while maintaining backwards compatibility."""
-    legacy_alias: Optional[str] = None
+    """Canonical contradiction code type with automatic legacy code normalization upon creation.
+
+    Ensures that both new ('DELIVERY_STATUS_DISCREPANCY') and legacy ('DELIVERY_DISPUTE_EVIDENCE_EXISTS')
+    inputs construct an identical canonical string value, guaranteeing:
+    - Standard symmetric string equality in both comparison directions (code == "X" and "X" == code).
+    - Stable hash consistency: hash(code) == hash(canonical).
+    - Native set membership and dictionary key lookup behavior.
+    - Clean JSON serialization without custom encoder requirements.
+    """
 
     def __new__(cls, value: str, legacy_alias: Optional[str] = None):
-        obj = str.__new__(cls, value)
-        obj.legacy_alias = legacy_alias
-        return obj
-
-    def __eq__(self, other: Any) -> bool:
-        return super().__eq__(other) or (self.legacy_alias is not None and self.legacy_alias == other)
-
-    def __hash__(self) -> int:
-        return super().__hash__()
+        canonical = normalize_contradiction_code(str(value))
+        return super().__new__(cls, canonical)
 
 
 class ContradictionFinding(BaseModel):
     """An identified factual contradiction or delivery discrepancy between evidence sources."""
-    model_config = ConfigDict(frozen=True, arbitrary_types_allowed=True)
+    model_config = ConfigDict(frozen=True)
 
-    code: Any
+    code: str
     severity: str  # "HIGH", "MEDIUM", "LOW"
     description: str
     conflicting_claim_id: Optional[str] = None
+
+    @field_validator("code", mode="before")
+    @classmethod
+    def normalize_finding_code(cls, v: Any) -> str:
+        """Normalize legacy contradiction codes at deserialization and boundary validation."""
+        if isinstance(v, str):
+            return normalize_contradiction_code(v)
+        return str(v)
+
+    def matches_code(self, candidate_code: str) -> bool:
+        """Check if this finding matches candidate_code, accounting for legacy aliases."""
+        return self.code == normalize_contradiction_code(candidate_code)
 
 
 class ContradictionDetector:
@@ -66,7 +97,7 @@ class ContradictionDetector:
             if is_non_receipt:
                 findings.append(
                     ContradictionFinding(
-                        code=ContradictionCode("DELIVERY_STATUS_DISCREPANCY", legacy_alias="DELIVERY_DISPUTE_EVIDENCE_EXISTS"),
+                        code=CANONICAL_DELIVERY_STATUS_DISCREPANCY,
                         severity="HIGH",
                         description=(
                             f"Delivery discrepancy: Buyer asserts non-delivery, but carrier {shipment.carrier_name} tracking "
