@@ -132,3 +132,4 @@ def initialize_schema(conn: sqlite3.Connection) -> None:
         cur.executescript(SCHEMA_DDL)
     finally:
         cur.close()
+

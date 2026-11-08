@@ -560,3 +560,4 @@ def test_fastapi_server_restart_with_webhook_and_approval(tmp_path):
     assert detail_resp.status_code == 200
     assert detail_resp.json()["approval_record"]["decision"] == "APPROVE"
     assert detail_resp.json()["approval_record"]["merchant_user_id"] == "lead_agent"
+

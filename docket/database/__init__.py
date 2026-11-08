@@ -14,3 +14,4 @@ __all__ = [
     "SCHEMA_DDL",
     "initialize_schema",
 ]
+

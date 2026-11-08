@@ -116,3 +116,4 @@ class DatabaseConnection:
         """Close database connection."""
         with self._lock:
             self._conn.close()
+
