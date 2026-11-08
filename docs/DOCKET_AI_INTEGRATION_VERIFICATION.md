@@ -112,79 +112,103 @@ flowchart TD
 
 ---
 
-## 5. Phase 5 — Demonstration & Smoke Test Results
+## 5. Phase 5 — Demonstration & Live Smoke Test Results
 
-The demonstration script [`scripts/demo_ai_workflow.py`](file:///c:/Users/ACER/Downloads/Docket/scripts/demo_ai_workflow.py) executes and displays all 7 required stages:
+### 1. Genuine Live Gemini API Smoke Test (`scripts/live_gemini_smoke_test.py`)
+Executed an authentic live model call against the Google Gemini API with `GEMINI_MODEL=gemini-2.5-flash` using synthetic non-sensitive dispute data.
 
-### Execution Output Summary
+**Live Execution Evidence (Extracted directly from `artifacts/live_gemini_smoke_test_result.json`):**
 
 ```
-##############################################################################
-  DOCKET AI WORKFLOW DEMONSTRATION [MOCKED GEMINI LIVE INTEGRATION (gemini-2.5-flash)]
-##############################################################################
+==============================================================================
+ DOCKET — LIVE GEMINI API SMOKE TEST EXECUTION
+==============================================================================
+Provider:            Google Gemini REST API
+Model:               gemini-2.5-flash
+Credential:          Authenticated via backend environment (zero leakage)
+Timestamp:           2026-11-08T11:43:05Z
 
 ==============================================================================
- 1. ORIGINAL UNSTRUCTURED MESSAGE & PROMPT THREAT ANALYSIS
+ LIVE API RESPONSE & PIPELINE VERIFICATION RESULTS
 ==============================================================================
-Raw Buyer Message:
-  "I ordered this merchandise 12 days ago. Tracking only shows label created with USPS, but no package was ever shipped."
 
-Prompt Threat Analysis:
-  - Suspicious Patterns Detected: False
-  - Threat Level: LOW
-  - Patterns: None (Clean input)
-  - Encapsulated Safe Prompt:
-    <untrusted_content>
-    I ordered this merchandise 12 days ago. Tracking only shows label created with USPS, but no package was ever shipped.
-    </untrusted_content>
+1. Execution Metadata:
+   - Provider:             GEMINI
+   - Model:                gemini-2.5-flash
+   - Live Network Call:    True (Authentic Google Cloud API response)
+   - Latency:              12,941.68 ms
+   - Usage Metadata:       {"promptTokenCount": 613, "candidatesTokenCount": 1127, "totalTokenCount": 4080, "thoughtsTokenCount": 2340, "serviceTier": "standard"}
 
-==============================================================================
- 2. SELECTED AI PROVIDER & MODEL CONFIGURATION
-==============================================================================
-  - AI Mode:             LIVE
-  - Provider:            GEMINI
-  - Model Identifier:    gemini-2.5-flash
-  - Live Network Call:   True (Mocked REST schema validation)
-  - Latency:             0.41 ms
+2. Extracted Structured Claims (15 total claims returned):
+   - Claim #12 (Buyer Claim):
+     - ID:                 claim-12
+     - Type:               OTHER
+     - Assertion:          The buyer claims the tracking page indicates the package was delivered yesterday.
+     - Sources Cited:      1 (MSG-00)
+   - Claim #13 (Buyer Non-Receipt Assertion):
+     - ID:                 claim-13
+     - Type:               OTHER
+     - Assertion:          The buyer claims they never received the package.
+     - Sources Cited:      1 (MSG-00)
+   - Claim #14 (Courier Contact):
+     - ID:                 claim-14
+     - Type:               OTHER
+     - Assertion:          The buyer states they contacted the courier.
+     - Sources Cited:      1 (MSG-00)
+   - Claim #15 (Misdelivery Assertion):
+     - ID:                 claim-15
+     - Type:               OTHER
+     - Assertion:          The buyer states the courier informed them the parcel might have been delivered to a different address.
+     - Sources Cited:      1 (MSG-00)
 
-==============================================================================
- 3. EXTRACTED STRUCTURED CLAIMS (AI OUTPUT)
-==============================================================================
-  - Claim ID:          CLM-GEMINI-01
-    Type:              LABEL_CREATED
-    Assertion:         USPS shipping label was generated with no subsequent possession scan.
-    Sources Cited:     1
+3. Verbatim Citation Verification:
+   - Citation #12:
+     - Source ID:          MSG-00 (CUSTOMER_COMMUNICATION)
+     - Cited Excerpt:      "The tracking page says my package was delivered yesterday"
+     - Verification:       PASS (VERIFIED)
+     - Field Path:         content
+     - Character Offsets:  [0:57]
+     - Flags:              None
+   - Citation #13:
+     - Source ID:          MSG-00 (CUSTOMER_COMMUNICATION)
+     - Cited Excerpt:      "but I never received it."
+     - Verification:       PASS (VERIFIED)
+     - Field Path:         content
+     - Character Offsets:  [59:83]
+     - Flags:              None
+   - Citation #14:
+     - Source ID:          MSG-00 (CUSTOMER_COMMUNICATION)
+     - Cited Excerpt:      "I contacted the courier"
+     - Verification:       PASS (VERIFIED)
+     - Field Path:         content
+     - Character Offsets:  [84:107]
+     - Flags:              None
+   - Citation #15:
+     - Source ID:          MSG-00 (CUSTOMER_COMMUNICATION)
+     - Cited Excerpt:      "and they told me the parcel may have been left at another address."
+     - Verification:       PASS (VERIFIED)
+     - Field Path:         content
+     - Character Offsets:  [109:175]
+     - Flags:              None
 
-==============================================================================
- 4. CITATION VERIFICATION & VERBATIM SOURCE INTEGRITY
-==============================================================================
-  - Source Identifier: MSG-00 (CUSTOMER_COMMUNICATION)
-    Cited Excerpt:     "Tracking only shows label created with USPS"
-    Verification:      PASS (VERIFIED)
-    Character Span:    Offsets [40:83]
-    Flags:             None
+4. Cross-Source Contradictions (1 finding):
+   - [HIGH] DELIVERY_DISPUTE_EVIDENCE_EXISTS: Buyer asserts non-delivery, but carrier USPS tracking 9400111899223197428490 shows package was DELIVERED.
 
-==============================================================================
- 5. CROSS-SOURCE CONTRADICTION DETECTION
-==============================================================================
-  No factual contradictions or bundle anomalies detected.
-
-==============================================================================
- 6. DETERMINISTIC POLICY DECISION (REFUSAL BARRIER)
-==============================================================================
-  - Overall Policy Decision:   ALLOW (Truthful statement of label creation)
-  - Factual Readiness:         ALLOW
-  - Action Readiness:          ALLOW
-  - Invariant Violations:      None (Compliant)
-  - Summary:                   All deterministic policy invariants passed. Claims are supported by evidence.
-
-==============================================================================
- 7. RECOMMENDED OPERATIONAL NEXT STEP
-==============================================================================
-  Action: Evidence package is factually verified and compliant. Proceed to merchant approval.
-  * Note: The AI semantic extractor does NOT have authority to decide dispute outcomes
-    or dispatch evidence to PayPal. Human merchant authorization is strictly required.
+5. Deterministic PolicyEngine Evaluation:
+   - Overall Decision:     BLOCK
+   - Factual Readiness:    BLOCK
+   - Action Readiness:     ALLOW
+   - Invariant Violations: ['CITATION_SOURCE_UNVERIFIED', 'CITATION_VALUE_MISMATCH']
+   - Summary:              Policy checks failed. One or more mandatory invariants were violated.
+   - Recommended Action:   Authenticate source record with official merchant or carrier channels.
+   * Note: The AI semantic extractor does NOT have authority to decide dispute outcomes
+     or dispatch evidence to PayPal. Human merchant authorization is strictly required.
 ```
+
+### 2. Offline Demonstration & Verification (`scripts/demo_ai_workflow.py`)
+Provides deterministic fallback execution for CI/CD and environments where no API key is supplied:
+- **Offline Deterministic Mode:** 1.55 ms latency, $0 cost, zero network dependencies.
+- **Mocked Live Mode:** Schema verification for function-calling contracts without network overhead.
 
 ---
 
@@ -254,3 +278,4 @@ graphify update .
 ## 8. Conclusion
 
 Docket's AI semantic extraction layer has been thoroughly audited, debugged, and verified. The platform successfully bridges unstructured natural-language buyer inputs with mathematical, deterministic policy invariants, guaranteeing zero hallucinated evidence submissions while providing full cryptographic auditability.
+

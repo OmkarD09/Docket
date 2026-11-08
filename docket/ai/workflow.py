@@ -46,6 +46,7 @@ class SemanticWorkflowResult(BaseModel):
     final_policy_decision: str
     recommended_next_action: str
     execution_time_ms: float
+    usage_metadata: Optional[Dict[str, Any]] = None
     error: Optional[str] = None
 
 
@@ -199,6 +200,10 @@ class SemanticExtractionWorkflow:
         )
         model_name = getattr(self.extractor, "model", "deterministic-rules-engine")
 
+        usage_meta = None
+        if extraction_res.raw_model_response and isinstance(extraction_res.raw_model_response, dict):
+            usage_meta = extraction_res.raw_model_response.get("usageMetadata")
+
         return SemanticWorkflowResult(
             original_message=buyer_message,
             ai_mode="live" if is_live else "offline",
@@ -215,5 +220,6 @@ class SemanticExtractionWorkflow:
             final_policy_decision=policy_eval.overall_decision.value,
             recommended_next_action=recommended_action,
             execution_time_ms=round(elapsed_ms, 2),
+            usage_metadata=usage_meta,
             error=error_msg,
         )

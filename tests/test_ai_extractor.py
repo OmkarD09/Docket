@@ -504,6 +504,8 @@ class TestFactExtractorFactory:
         assert isinstance(extractor, DeterministicFactExtractor)
 
     def test_factory_returns_openai_when_configured(self, monkeypatch):
+        monkeypatch.setenv("DOCKET_AI_MODE", "live")
+        monkeypatch.setenv("DOCKET_AI_PROVIDER", "openai")
         monkeypatch.setenv("OPENAI_API_KEY", "test-key-openai")
         monkeypatch.setenv("DOCKET_LLM_PROVIDER", "openai")
 
@@ -511,6 +513,8 @@ class TestFactExtractorFactory:
         assert isinstance(extractor, OpenAIFactExtractor)
 
     def test_factory_returns_anthropic_when_configured(self, monkeypatch):
+        monkeypatch.setenv("DOCKET_AI_MODE", "live")
+        monkeypatch.setenv("DOCKET_AI_PROVIDER", "anthropic")
         monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key-anthropic")
         monkeypatch.setenv("DOCKET_LLM_PROVIDER", "anthropic")
 
@@ -518,6 +522,8 @@ class TestFactExtractorFactory:
         assert isinstance(extractor, AnthropicFactExtractor)
 
     def test_factory_returns_gemini_when_configured(self, monkeypatch):
+        monkeypatch.setenv("DOCKET_AI_MODE", "live")
+        monkeypatch.setenv("DOCKET_AI_PROVIDER", "gemini")
         monkeypatch.setenv("GEMINI_API_KEY", "test-key-gemini")
         monkeypatch.setenv("DOCKET_LLM_PROVIDER", "gemini")
 

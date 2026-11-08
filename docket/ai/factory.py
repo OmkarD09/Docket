@@ -5,6 +5,12 @@ from __future__ import annotations
 import os
 from typing import Optional
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 from docket.ai.base import BaseFactExtractor
 from docket.ai.deterministic import DeterministicFactExtractor
 from docket.ai.provider_openai import OpenAIFactExtractor
