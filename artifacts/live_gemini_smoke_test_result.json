@@ -1,27 +1,27 @@
 {
-  "timestamp": "2026-11-08T12:33:26.703017+00:00",
+  "timestamp": "2026-11-08T13:10:39.025492+00:00",
   "provider": "gemini",
   "model": "gemini-2.5-flash",
-  "latency_ms": 5457.13,
+  "latency_ms": 4479.3,
   "usage_metadata": {
-    "promptTokenCount": 721,
-    "candidatesTokenCount": 317,
-    "totalTokenCount": 1700,
+    "promptTokenCount": 782,
+    "candidatesTokenCount": 346,
+    "totalTokenCount": 1564,
     "promptTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 721
+        "tokenCount": 782
       }
     ],
-    "thoughtsTokenCount": 662,
+    "thoughtsTokenCount": 436,
     "serviceTier": "standard"
   },
   "claims_count": 4,
   "claims": [
     {
-      "claim_id": "PP-D-LIVE-2026-CL001",
-      "claim_type": "OTHER",
-      "factual_assertion": "Buyer states the tracking page indicates the package was delivered yesterday.",
+      "claim_id": "PP-D-LIVE-2026-MSG-00-1",
+      "claim_type": "COMMUNICATION_ACKNOWLEDGED",
+      "factual_assertion": "Buyer reports that the tracking page states the package was delivered yesterday.",
       "normalized_value": null,
       "supporting_sources": [
         {
@@ -35,9 +35,9 @@
       "claim_status": "PROPOSED"
     },
     {
-      "claim_id": "PP-D-LIVE-2026-CL002",
-      "claim_type": "OTHER",
-      "factual_assertion": "Buyer asserts they never received the package.",
+      "claim_id": "PP-D-LIVE-2026-MSG-00-2",
+      "claim_type": "NON_RECEIPT_ASSERTED",
+      "factual_assertion": "Buyer asserts that they never received the package.",
       "normalized_value": null,
       "supporting_sources": [
         {
@@ -51,9 +51,9 @@
       "claim_status": "PROPOSED"
     },
     {
-      "claim_id": "PP-D-LIVE-2026-CL003",
+      "claim_id": "PP-D-LIVE-2026-MSG-00-3",
       "claim_type": "COMMUNICATION_ACKNOWLEDGED",
-      "factual_assertion": "Buyer states they contacted the courier.",
+      "factual_assertion": "Buyer asserts that they contacted the courier.",
       "normalized_value": null,
       "supporting_sources": [
         {
@@ -67,9 +67,9 @@
       "claim_status": "PROPOSED"
     },
     {
-      "claim_id": "PP-D-LIVE-2026-CL004",
-      "claim_type": "OTHER",
-      "factual_assertion": "Buyer reports that the courier stated the parcel might have been left at another address.",
+      "claim_id": "PP-D-LIVE-2026-MSG-00-4",
+      "claim_type": "COMMUNICATION_ACKNOWLEDGED",
+      "factual_assertion": "Buyer reports that the courier stated the parcel may have been left at another address.",
       "normalized_value": null,
       "supporting_sources": [
         {
@@ -139,10 +139,10 @@
   ],
   "contradictions": [
     {
-      "code": "DELIVERY_DISPUTE_EVIDENCE_EXISTS",
+      "code": "DELIVERY_STATUS_DISCREPANCY",
       "severity": "HIGH",
-      "description": "Buyer asserts non-delivery, but carrier USPS tracking 9400111899223197428490 shows package was DELIVERED.",
-      "conflicting_claim_id": "PP-D-LIVE-2026-CL002"
+      "description": "Delivery discrepancy: Buyer asserts non-delivery, but carrier USPS tracking 9400111899223197428490 shows package was DELIVERED.",
+      "conflicting_claim_id": "PP-D-LIVE-2026-MSG-00-2"
     }
   ],
   "decision": "REVIEW",

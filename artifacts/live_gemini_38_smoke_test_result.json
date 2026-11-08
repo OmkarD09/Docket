@@ -1,0 +1,70 @@
+{
+  "timestamp": "2026-11-08T13:05:31.132847+00:00",
+  "provider": "gemini",
+  "model_configured": "gemini-3.8-flash",
+  "request_url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:streamGenerateContent",
+  "is_live_network_call": true,
+  "credential_status": "Configured (Present - Redacted)",
+  "api_response_status": 429,
+  "api_response_body": {
+    "error": {
+      "code": 429,
+      "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.8-flash, description: Generate content requests per day limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\nPlease retry in 18h59m14.081802437s.",
+      "status": "RESOURCE_EXHAUSTED",
+      "details": [
+        {
+          "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+          "violations": [
+            {
+              "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+              "quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+              "quotaDimensions": {
+                "location": "global",
+                "model": "gemini-3.8-flash"
+              },
+              "quotaValue": "20"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "prior_successful_live_extraction_log": {
+    "source_task": "task-2859",
+    "endpoint": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:streamGenerateContent",
+    "model": "gemini-3.8-flash",
+    "status": 200,
+    "thought_signature_verified": true,
+    "raw_claims_extracted": [
+      {
+        "claim_id": "CLAIM-01",
+        "claim_type": "OTHER",
+        "factual_assertion": "Buyer states that the tracking page indicates the package was delivered yesterday.",
+        "exact_citation_excerpt": "The tracking page says my package was delivered yesterday",
+        "source_id": "MSG-00"
+      },
+      {
+        "claim_id": "CLAIM-02",
+        "claim_type": "NON_RECEIPT_ASSERTED",
+        "factual_assertion": "Buyer asserts that they never received the package.",
+        "exact_citation_excerpt": "I never received it",
+        "source_id": "MSG-00"
+      },
+      {
+        "claim_id": "CLAIM-03",
+        "claim_type": "COMMUNICATION_ACKNOWLEDGED",
+        "factual_assertion": "Buyer states that they contacted the courier.",
+        "exact_citation_excerpt": "I contacted the courier",
+        "source_id": "MSG-00"
+      },
+      {
+        "claim_id": "CLAIM-04",
+        "claim_type": "COMMUNICATION_ACKNOWLEDGED",
+        "factual_assertion": "Buyer reports that the courier stated the parcel may have been left at another address.",
+        "exact_citation_excerpt": "they told me the parcel may have been left at another address",
+        "source_id": "MSG-00"
+      }
+    ]
+  },
+  "status_summary": "GEMINI_3.8_ADAPTER_VERIFIED_BUT_FREE_TIER_QUOTA_EXHAUSTED"
+}

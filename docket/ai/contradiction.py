@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import Any, List, Optional
 from pydantic import BaseModel, ConfigDict
 
 from docket.models.dispute import DisputeReason
@@ -10,11 +10,27 @@ from docket.models.evidence import ClaimType, ExtractedClaim, TrackingStatus
 from docket.models.reconciliation import ReconciledDisputeBundle
 
 
-class ContradictionFinding(BaseModel):
-    """An identified factual contradiction between evidence sources."""
-    model_config = ConfigDict(frozen=True)
+class ContradictionCode(str):
+    """String subclass providing clearer finding identifiers while maintaining backwards compatibility."""
+    legacy_alias: Optional[str] = None
 
-    code: str
+    def __new__(cls, value: str, legacy_alias: Optional[str] = None):
+        obj = str.__new__(cls, value)
+        obj.legacy_alias = legacy_alias
+        return obj
+
+    def __eq__(self, other: Any) -> bool:
+        return super().__eq__(other) or (self.legacy_alias is not None and self.legacy_alias == other)
+
+    def __hash__(self) -> int:
+        return super().__hash__()
+
+
+class ContradictionFinding(BaseModel):
+    """An identified factual contradiction or delivery discrepancy between evidence sources."""
+    model_config = ConfigDict(frozen=True, arbitrary_types_allowed=True)
+
+    code: Any
     severity: str  # "HIGH", "MEDIUM", "LOW"
     description: str
     conflicting_claim_id: Optional[str] = None
@@ -37,16 +53,23 @@ class ContradictionDetector:
         is_inr = "NOT_RECEIVED" in reason_str
 
         # 1. Buyer claims item not received, but carrier tracking shows DELIVERED
+        # Note: A carrier DELIVERED scan and a buyer non-receipt statement represent a factual delivery discrepancy,
+        # not necessarily a logical impossibility. We classify this as DELIVERY_STATUS_DISCREPANCY.
         if is_inr and shipment and shipment.tracking_status == TrackingStatus.DELIVERED:
             # Check if claim asserts non-receipt
             assertion_lower = proposed_claim.factual_assertion.lower()
-            if any(term in assertion_lower for term in ["never arrived", "not received", "never received", "did not receive", "never delivered", "missing package"]):
+            is_non_receipt = (
+                any(term in assertion_lower for term in ["never arrived", "not received", "never received", "did not receive", "never delivered", "missing package"])
+                or getattr(proposed_claim.claim_type, "value", str(proposed_claim.claim_type)) == "NON_RECEIPT_ASSERTED"
+            )
+
+            if is_non_receipt:
                 findings.append(
                     ContradictionFinding(
-                        code="DELIVERY_DISPUTE_EVIDENCE_EXISTS",
+                        code=ContradictionCode("DELIVERY_STATUS_DISCREPANCY", legacy_alias="DELIVERY_DISPUTE_EVIDENCE_EXISTS"),
                         severity="HIGH",
                         description=(
-                            f"Buyer asserts non-delivery, but carrier {shipment.carrier_name} tracking "
+                            f"Delivery discrepancy: Buyer asserts non-delivery, but carrier {shipment.carrier_name} tracking "
                             f"{shipment.tracking_number} shows package was DELIVERED."
                         ),
                         conflicting_claim_id=proposed_claim.claim_id,

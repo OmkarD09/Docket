@@ -212,7 +212,6 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
 
   const isReal = dispute?.dispute_id === 'PP-R-NKI-10193390';
   const overallDecision = evaluation?.overall_decision || 'REVIEW';
-  const isReady = evaluation?.is_ready_for_submission || false;
 
   const reasonReadable = (dispute?.reason || '')
     .replace(/_/g, ' ')
@@ -409,18 +408,63 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
               </div>
             </div>
 
-            {/* Compact Readiness Strip (no nested boxed borders) */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', padding: '8px 12px', backgroundColor: 'var(--bg-subtle)', borderRadius: '5px' }}>
+            {/* Tri-Partite Readiness Strip: Factual Readiness | Action Eligibility | Recommendation */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', padding: '8px 12px', backgroundColor: 'var(--bg-subtle)', borderRadius: '5px' }}>
               <div>
                 <span className="kv-key">Factual Readiness</span>
-                <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)', display: 'block', marginTop: '1px' }}>
+                <span
+                  style={{
+                    fontSize: '11.5px',
+                    fontWeight: 700,
+                    color:
+                      evaluation?.factual_readiness === 'ALLOW'
+                        ? 'var(--status-allow-text)'
+                        : evaluation?.factual_readiness === 'BLOCK'
+                        ? 'var(--status-block-text)'
+                        : 'var(--status-review-text)',
+                    display: 'block',
+                    marginTop: '2px',
+                  }}
+                >
                   {evaluation?.factual_readiness || 'N/A'}
                 </span>
               </div>
               <div>
                 <span className="kv-key">Action Eligibility</span>
-                <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)', display: 'block', marginTop: '1px' }}>
+                <span
+                  style={{
+                    fontSize: '11.5px',
+                    fontWeight: 700,
+                    color:
+                      evaluation?.action_readiness === 'ALLOW'
+                        ? 'var(--status-allow-text)'
+                        : evaluation?.action_readiness === 'BLOCK'
+                        ? 'var(--status-block-text)'
+                        : 'var(--status-review-text)',
+                    display: 'block',
+                    marginTop: '2px',
+                  }}
+                >
                   {evaluation?.action_readiness || 'N/A'}
+                </span>
+              </div>
+              <div>
+                <span className="kv-key">Recommendation</span>
+                <span
+                  style={{
+                    fontSize: '11.5px',
+                    fontWeight: 700,
+                    color:
+                      overallDecision === 'ALLOW'
+                        ? 'var(--status-allow-text)'
+                        : overallDecision === 'BLOCK'
+                        ? 'var(--status-block-text)'
+                        : 'var(--status-review-text)',
+                    display: 'block',
+                    marginTop: '2px',
+                  }}
+                >
+                  {overallDecision === 'ALLOW' ? 'AUTHORIZE' : overallDecision === 'REVIEW' ? 'INVESTIGATE' : 'HOLD / REFUND'}
                 </span>
               </div>
             </div>
@@ -619,23 +663,34 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
               className={`badge ${
                 approval_record?.decision === 'APPROVE'
                   ? 'badge-allow'
-                  : isReady
+                  : overallDecision === 'ALLOW'
+                  ? 'badge-allow'
+                  : overallDecision === 'REVIEW'
                   ? 'badge-review'
                   : 'badge-block'
               }`}
             >
               {approval_record?.decision === 'APPROVE'
                 ? 'AUTHORIZED'
-                : isReady
+                : overallDecision === 'ALLOW'
                 ? 'AWAITING APPROVAL'
+                : overallDecision === 'REVIEW'
+                ? 'REVIEW REQUIRED'
                 : 'SUBMISSION BARRED'}
             </span>
           </div>
 
           <div className="panel-card-body">
-            {!isReady ? (
+            {overallDecision === 'BLOCK' ? (
               <div style={{ padding: '10px 12px', borderRadius: '5px', backgroundColor: 'var(--status-block-bg)', border: '1px solid var(--status-block-border)', color: 'var(--status-block-text)', fontSize: '12px', lineHeight: 1.45 }}>
-                <strong>External Submission Barred:</strong> Deterministic policy engine blocked counter-claim. PayPal API submission is locked to prevent false representation.
+                <strong>External Submission Barred:</strong> Deterministic policy invariants blocked evidence dispatch. Carrier tracking has not confirmed completed delivery to the recipient postal code.
+              </div>
+            ) : overallDecision === 'REVIEW' ? (
+              <div style={{ padding: '10px 12px', borderRadius: '5px', backgroundColor: 'var(--status-review-bg)', border: '1px solid var(--status-review-border)', color: 'var(--status-review-text)', fontSize: '12px', lineHeight: 1.45 }}>
+                <strong>Factual Review Outstanding:</strong> PayPal dispute lifecycle permits response (Action Eligibility: ALLOW), but factual readiness requires merchant resolution of data discrepancies or courier inquiries before evidence can be dispatched.
+                <div style={{ marginTop: '6px', fontSize: '11.5px', color: 'var(--text-secondary)' }}>
+                  <strong>Directive:</strong> {recommendedDirective}
+                </div>
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>

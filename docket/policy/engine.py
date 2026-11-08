@@ -178,12 +178,13 @@ class DeliveryProofInvariant:
                     decision=DecisionType.ALLOW,
                     rule_identifier=self.RULE_ID,
                     explanation=(
-                        f"Verified carrier delivery established via {shipment.carrier_name} "
-                        f"#{shipment.tracking_number} on {shipment.delivery_timestamp.isoformat()}."
+                        f"Verified carrier delivery scan established via {shipment.carrier_name} "
+                        f"#{shipment.tracking_number} on {shipment.delivery_timestamp.isoformat()}. "
+                        "Confirms carrier completed-delivery tracking status; does not verify street-level recipient delivery."
                     ),
                     supporting_source_references=[shipment.source_identifier],
                     violated_invariants=[],
-                    recommended_next_action="Evidence package may proceed with verified delivery documentation.",
+                    recommended_next_action="Evidence package may proceed with verified carrier tracking scan.",
                 )
 
             # Other invalid statuses (EXCEPTION, RETURNED, UNKNOWN)
@@ -906,8 +907,13 @@ class DeliveryDiscrepancyInvariant:
         return PolicyCheckResult(
             decision=DecisionType.ALLOW,
             rule_identifier=self.RULE_ID,
-            explanation="No unverified misdelivery allegations or official carrier misdelivery records detected.",
+            explanation=(
+                "Case A: Verified carrier delivery scan corresponds to transaction delivery area (postal code and country verified). "
+                "Scope: Confirms carrier tracking status and destination delivery area correspondence only. "
+                "Does NOT establish street-level recipient delivery confirmation or guarantee PayPal Seller Protection eligibility or dispute outcome."
+            ),
             violated_invariants=[],
+            recommended_next_action="Evidence package satisfies destination area delivery check. Final rebuttal submission requires affirmative merchant authorization.",
         )
 
 

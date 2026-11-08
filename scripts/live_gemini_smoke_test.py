@@ -45,13 +45,12 @@ def run_live_smoke_test():
         sys.exit(1)
 
     model_name = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
-    masked_key = f"{api_key[:6]}...{api_key[-4:]}" if len(api_key) > 10 else "***"
     print("=" * 78)
     print(" DOCKET — LIVE GEMINI API SMOKE TEST EXECUTION")
     print("=" * 78)
     print(f"Provider:            Google Gemini REST API")
     print(f"Model:               {model_name}")
-    print(f"Credential:          Loaded ({masked_key})")
+    print(f"Credential:          Configured (Present)")
     print(f"Timestamp:           {datetime.now(timezone.utc).isoformat()}")
 
     # 1. Synthetic test data matching the exact user prompt
