@@ -12,8 +12,10 @@ from docket.ai.citation_verifier import VerbatimCitationVerifier
 from docket.ai.prompt_guard import PromptInjectionGuard
 from docket.models.dispute import DisputeCase
 from docket.models.evidence import (
+    ClaimEpistemicMetadata,
     ClaimStatus,
     ClaimType,
+    EvidenceBasis,
     ExtractedClaim,
     SourceCitation,
     SourceType,
@@ -46,7 +48,13 @@ class GeminiFactExtractor(BaseFactExtractor):
         self.verifier = VerbatimCitationVerifier()
 
     def _post_generate(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        """Execute request via streamGenerateContent, supporting thinking models like gemini-3.8-flash."""
+        """Execute request via streamGenerateContent.
+        
+        Technical Rationale: Uses streaming for incremental response delivery and as a
+        mitigation for long-running request behavior during extended reasoning / thinking
+        token generation (e.g. on gemini-3.8-flash). Does not claim a guarantee against
+        all transport-level TCP idle timeouts across intermediate proxies.
+        """
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}:streamGenerateContent?key={self.api_key}"
         headers = {"Content-Type": "application/json"}
 
@@ -86,18 +94,38 @@ class GeminiFactExtractor(BaseFactExtractor):
         except Exception as exc:
             raise AIProviderError(f"Gemini API returned malformed JSON: {exc}") from exc
 
-        # When streamGenerateContent returns a JSON array of stream events
+        # When streamGenerateContent returns a JSON array of stream event chunks
         if isinstance(data, list):
-            all_candidates = []
+            candidates_by_index: Dict[int, Dict[str, Any]] = {}
             usage_metadata = None
             for chunk in data:
                 if isinstance(chunk, dict):
-                    if "candidates" in chunk and isinstance(chunk["candidates"], list):
-                        all_candidates.extend(chunk["candidates"])
+                    for cand in chunk.get("candidates", []):
+                        if not isinstance(cand, dict):
+                            continue
+                        idx = cand.get("index", 0)
+                        if idx not in candidates_by_index:
+                            candidates_by_index[idx] = {
+                                "index": idx,
+                                "content": {
+                                    "parts": [],
+                                    "role": cand.get("content", {}).get("role", "model"),
+                                },
+                            }
+                        if cand.get("finishReason"):
+                            candidates_by_index[idx]["finishReason"] = cand.get("finishReason")
+                        
+                        # Preserve part boundaries, text, functionCall, and thoughtSignature on original parts
+                        incoming_parts = cand.get("content", {}).get("parts", [])
+                        for p in incoming_parts:
+                            candidates_by_index[idx]["content"]["parts"].append(dict(p))
+
                     if "usageMetadata" in chunk:
                         usage_metadata = chunk["usageMetadata"]
+
+            candidates_list = [candidates_by_index[k] for k in sorted(candidates_by_index.keys())] if candidates_by_index else []
             return {
-                "candidates": all_candidates,
+                "candidates": candidates_list,
                 "usageMetadata": usage_metadata,
                 "chunks_count": len(data),
             }
@@ -300,6 +328,61 @@ class GeminiFactExtractor(BaseFactExtractor):
                                 verification_status=VerificationStatus.REJECTED,
                             )
 
+                        # Evaluate explicit epistemic provenance
+                        assertion_lower = item.get("factual_assertion", "").lower()
+                        excerpt_lower = raw_excerpt.lower()
+                        courier_kw = ["courier", "carrier", "driver", "delivery agent", "postman", "postal worker"]
+                        misdeliv_kw = ["another address", "different address", "wrong address", "wrong house", "misdelivered", "left elsewhere", "delivered elsewhere"]
+
+                        has_courier = any(kw in assertion_lower or kw in excerpt_lower for kw in courier_kw)
+                        has_misdeliv = any(kw in assertion_lower or kw in excerpt_lower for kw in misdeliv_kw)
+
+                        if has_courier and has_misdeliv and (
+                            raw_source_id.startswith("MSG-")
+                            or (raw_source_id in source_map and source_map[raw_source_id][1] == SourceType.CUSTOMER_COMMUNICATION)
+                        ):
+                            epistemic = ClaimEpistemicMetadata(
+                                source_category="CUSTOMER_COMMUNICATION",
+                                attribution="BUYER_REPORTS_COURIER_STATEMENT",
+                                evidence_basis=EvidenceBasis.SECOND_HAND_HEARSAY,
+                                independent_carrier_confirmation=False,
+                                supporting_source_id=raw_source_id,
+                            )
+                        elif raw_source_id in source_map:
+                            _, src_type, _ = source_map[raw_source_id]
+                            if src_type == SourceType.CUSTOMER_COMMUNICATION:
+                                epistemic = ClaimEpistemicMetadata(
+                                    source_category="CUSTOMER_COMMUNICATION",
+                                    attribution="FIRST_PARTY_BUYER_STATEMENT",
+                                    evidence_basis=EvidenceBasis.FIRST_PARTY_STATEMENT,
+                                    independent_carrier_confirmation=False,
+                                    supporting_source_id=raw_source_id,
+                                )
+                            elif src_type == SourceType.CARRIER_TRACKING:
+                                epistemic = ClaimEpistemicMetadata(
+                                    source_category="CARRIER_TRACKING",
+                                    attribution="CARRIER_SCAN_EVENT",
+                                    evidence_basis=EvidenceBasis.DIRECT_RECORD,
+                                    independent_carrier_confirmation=True,
+                                    supporting_source_id=raw_source_id,
+                                )
+                            else:
+                                epistemic = ClaimEpistemicMetadata(
+                                    source_category=src_type.value,
+                                    attribution="SYSTEM_ORDER_RECORD",
+                                    evidence_basis=EvidenceBasis.DIRECT_RECORD,
+                                    independent_carrier_confirmation=False,
+                                    supporting_source_id=raw_source_id,
+                                )
+                        else:
+                            epistemic = ClaimEpistemicMetadata(
+                                source_category="UNVERIFIED",
+                                attribution="UNKNOWN_PROVENANCE",
+                                evidence_basis=EvidenceBasis.UNVERIFIED,
+                                independent_carrier_confirmation=False,
+                                supporting_source_id=raw_source_id or None,
+                            )
+
                         claims.append(
                             ExtractedClaim(
                                 claim_id=item.get("claim_id", f"CLM-GEMINI-{len(claims)+1:02d}"),
@@ -307,6 +390,7 @@ class GeminiFactExtractor(BaseFactExtractor):
                                 factual_assertion=item.get("factual_assertion", ""),
                                 supporting_sources=[citation],
                                 claim_status=ClaimStatus.PROPOSED,
+                                epistemic_metadata=epistemic,
                             )
                         )
 

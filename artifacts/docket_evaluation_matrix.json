@@ -306,7 +306,9 @@
       "actual_action_readiness": "ALLOW",
       "actual_overall_decision": "BLOCK",
       "actual_violated_invariants": [
+        "CUSTOMER_COMMUNICATION_CANNOT_PROVE_DELIVERY",
         "CITATION_SOURCE_NONEXISTENT",
+        "RULE_DELIVERY_PROOF",
         "RULE_CITATION_INTEGRITY",
         "RULE_SIGNATURE_ASSESSMENT"
       ],
@@ -350,5 +352,5 @@
       "failure_reasons": []
     }
   ],
-  "evaluated_at": "2026-11-08T13:50:26.622716+00:00"
+  "evaluated_at": "2026-11-08T15:25:59.248957+00:00"
 }

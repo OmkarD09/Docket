@@ -13,7 +13,7 @@ Exposes RESTful endpoints for the Merchant Command Desk UI:
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 import json
 import os
@@ -25,7 +25,13 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from docket.models.dispute import DisputeCase, Money
+from docket.models.dispute import (
+    DisputeCase,
+    DisputeLifecycleStage,
+    DisputeReason,
+    DisputeStatus,
+    Money,
+)
 from docket.models.evidence import (
     Address,
     ExtractedClaim,
@@ -55,6 +61,7 @@ from docket.dispatch.dispatcher import (
     SubmissionRejectedError,
 )
 from docket.audit.logger import AuditLogger
+from docket.database.repository import DocketRepository
 from docket.ai.prompt_guard import PromptInjectionGuard
 from docket.eval.scenarios import load_all_scenarios
 
@@ -98,6 +105,7 @@ class AuthorizeRequest(BaseModel):
 
 
 class DispatchRequest(BaseModel):
+    merchant_user_id: Optional[str] = None
     idempotency_key: Optional[str] = None
     custom_notes: Optional[str] = None
 
@@ -305,6 +313,7 @@ def load_initial_cases(policy_engine: PolicyEngine) -> Dict[str, CaseData]:
 def create_app(
     audit_log_path: Optional[str] = None,
     secret_key: Optional[str] = None,
+    db_path: Optional[str] = None,
 ) -> FastAPI:
     """Create and configure the Docket API FastAPI instance."""
     app = FastAPI(
@@ -322,8 +331,17 @@ def create_app(
         allow_headers=["*"],
     )
 
+    # Database resolution & initialization
+    if db_path is None:
+        if audit_log_path:
+            db_path = str(Path(audit_log_path).with_suffix(".db"))
+        else:
+            db_path = os.getenv("DOCKET_DB_PATH", "artifacts/docket.db")
+
+    repository = DocketRepository(db_path=db_path)
+
     # Dependencies & Services
-    audit_logger = AuditLogger(storage_path=audit_log_path)
+    audit_logger = AuditLogger(storage_path=audit_log_path, repository=repository)
     approval_service = ApprovalService(secret_key=secret_key)
     formatter = EvidencePayloadFormatter()
     dispatcher = EvidenceDispatcher(
@@ -333,7 +351,53 @@ def create_app(
     )
     policy_engine = PolicyEngine()
 
-    cases_store: Dict[str, CaseData] = load_initial_cases(policy_engine)
+    # Load cases from relational SQLite persistence or seed from fixtures
+    cases_store: Dict[str, CaseData] = {}
+    persisted_cases = repository.load_persisted_cases()
+
+    if persisted_cases:
+        for c in persisted_cases:
+            case_obj = CaseData(
+                dispute=c["dispute"],
+                bundle=c["bundle"],
+                evaluation=c["evaluation"] or policy_engine.evaluate(
+                    dispute=c["dispute"],
+                    order=c["bundle"].matched_order,
+                    shipment=c["bundle"].get_primary_shipment(),
+                    claims=c["claims"],
+                ),
+                claims=c["claims"],
+                has_prompt_threat=c["has_prompt_threat"],
+                scenario_id=c["scenario_id"],
+            )
+            case_obj.approval_request = c["approval_request"]
+            case_obj.approval_record = c["approval_record"]
+            case_obj.dispatch_result = c["dispatch_result"]
+            cases_store[c["dispute"].dispute_id] = case_obj
+            if c["scenario_id"]:
+                cases_store[c["scenario_id"]] = case_obj
+
+    # Seed baseline fixtures if not yet persisted
+    initial_cases = load_initial_cases(policy_engine)
+    for key, initial_case in initial_cases.items():
+        if initial_case.dispute.dispute_id not in cases_store:
+            cases_store[initial_case.dispute.dispute_id] = initial_case
+            if initial_case.scenario_id:
+                cases_store[initial_case.scenario_id] = initial_case
+            try:
+                repository.save_full_case(
+                    dispute=initial_case.dispute,
+                    bundle=initial_case.bundle,
+                    evaluation=initial_case.evaluation,
+                    claims=initial_case.claims,
+                    scenario_id=initial_case.scenario_id,
+                    has_prompt_threat=initial_case.has_prompt_threat,
+                    approval_request=initial_case.approval_request,
+                    approval_record=initial_case.approval_record,
+                    dispatch_result=initial_case.dispatch_result,
+                )
+            except Exception:
+                pass
 
     # ------------------------------------------------------------------------
     # Health Endpoint
@@ -350,6 +414,11 @@ def create_app(
             "version": "1.0.0",
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "total_cases_loaded": len(cases_store),
+            "database": {
+                "type": "sqlite",
+                "path": str(repository.conn.raw_path),
+                "total_disputes": repository.count_disputes(),
+            },
             "ai_mode": ai_mode,
             "ai_extractor": type(active_extractor).__name__,
             "ai_provider": ai_provider,
@@ -464,6 +533,14 @@ def create_app(
             bundle=c_data.bundle,
         )
         c_data.approval_request = ticket
+        try:
+            repository.update_dispute_status(
+                dispute_id=dispute_id,
+                status=c_data.dispute.status.value,
+                approval_request=ticket,
+            )
+        except Exception:
+            pass
 
         audit_logger.log_event(
             event_type=AuditEventType.APPROVAL_REQUESTED,
@@ -504,6 +581,15 @@ def create_app(
             client_ip="127.0.0.1",
         )
         c_data.approval_record = record
+        try:
+            repository.save_approval_record(record)
+            repository.update_dispute_status(
+                dispute_id=dispute_id,
+                status=c_data.dispute.status.value,
+                approval_request=c_data.approval_request,
+            )
+        except Exception:
+            pass
 
         evt_type = (
             AuditEventType.APPROVAL_GRANTED
@@ -538,10 +624,20 @@ def create_app(
                 bundle=c_data.bundle,
                 evaluation=c_data.evaluation,
                 approval_record=c_data.approval_record,
+                caller_merchant_id=req.merchant_user_id,
                 idempotency_key=req.idempotency_key or f"idemp_{uuid4().hex[:8]}",
                 custom_notes=req.custom_notes,
             )
             c_data.dispatch_result = result
+            try:
+                new_status = "RESOLVED" if result.success else c_data.dispute.status.value
+                repository.update_dispute_status(
+                    dispute_id=dispute_id,
+                    status=new_status,
+                    dispatch_result=result,
+                )
+            except Exception:
+                pass
             return result.model_dump()
 
         except SubmissionBlockedError as e:
@@ -579,6 +675,44 @@ def create_app(
             if is_duplicate
             else "New dispute ingested and recorded in cryptographic audit ledger."
         )
+
+        if not is_duplicate:
+            try:
+                new_dispute = DisputeCase(
+                    dispute_id=req.dispute_id,
+                    reason=req.reason,
+                    lifecycle_stage=DisputeLifecycleStage.INQUIRY,
+                    status=DisputeStatus.WAITING_FOR_SELLER_RESPONSE,
+                    dispute_amount=Money(value=Decimal(req.amount), currency_code=req.currency),
+                    seller_response_due_date=datetime.now(timezone.utc) + timedelta(days=10),
+                    dispute_create_time=datetime.now(timezone.utc),
+                    raw_messages=[{"sender": req.actor, "content": f"Webhook dispute notification for {req.dispute_id}"}],
+                )
+                new_reconciler = EvidenceReconciler()
+                new_bundle = new_reconciler.reconcile_dispute(new_dispute)
+                new_eval = policy_engine.evaluate(
+                    dispute=new_dispute,
+                    order=None,
+                    shipment=None,
+                    claims=[],
+                )
+                new_case = CaseData(
+                    dispute=new_dispute,
+                    bundle=new_bundle,
+                    evaluation=new_eval,
+                    claims=[],
+                    has_prompt_threat=False,
+                )
+                cases_store[req.dispute_id] = new_case
+                repository.save_full_case(
+                    dispute=new_dispute,
+                    bundle=new_bundle,
+                    evaluation=new_eval,
+                    claims=[],
+                )
+            except Exception:
+                pass
+
         return WebhookIngestResponse(
             event_id=event.event_id,
             dispute_id=event.dispute_id,

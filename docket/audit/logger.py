@@ -1,8 +1,25 @@
-"""Docket Immutable Audit Logger & Cryptographic Hash-Chain Engine.
+"""Docket Tamper-Evident Audit Logger & Cryptographic Hash-Chain Engine.
 
 Maintains an append-only, tamper-evident JSONL audit ledger where each event
-records the SHA-256 hash of its predecessor, establishing mathematical
-integrity verification for dispute evidence and merchant approvals.
+records the SHA-256 hash of its predecessor, establishing interior chain-integrity
+verification for dispute evidence and merchant approvals.
+
+Architectural Guarantees & Operational Boundaries:
+- Tamper-Evident Hash Chain: Detects modification of any existing event payload,
+  modification of parent_hash links, reordering of events, and deletion of any
+  interior event.
+- Interior Chain-Integrity Verification: Guarantees that the sequence from the
+  genesis event up to any verified event has not been tampered with or modified.
+- No Guaranteed Tail-Truncation Detection Without External Anchor: A backward-pointing
+  hash chain cannot independently detect deletion of its final event or multiple
+  trailing events from disk, as any valid prefix remains internally consistent.
+  Independent detection of tail truncation requires a trusted external head-hash
+  checkpoint or external commitment.
+- No Guaranteed Protection Against Full-Chain Rewriting: Without external root
+  anchoring, a local adversary with full file write access could recompute hashes
+  from a new genesis root.
+- Terminology: This component is a tamper-evident audit ledger with interior
+  integrity verification, not an immutable external consensus ledger.
 """
 
 from __future__ import annotations
@@ -35,15 +52,30 @@ class AuditVerificationError(AuditError):
 # ============================================================================
 
 class AuditLogger:
-    """Append-only cryptographic hash-chain ledger for Docket dispute operations."""
+    """Append-only tamper-evident cryptographic hash-chain ledger for Docket dispute operations.
+    
+    Provides interior chain-integrity verification over dispute lifecycle events.
+    Notice: Does not provide guaranteed protection against malicious full-chain rewriting
+    or guaranteed tail-truncation detection without an external anchor.
+    """
 
     DEFAULT_LOG_PATH = Path("artifacts/audit_trail.jsonl")
 
-    def __init__(self, storage_path: Optional[Union[str, Path]] = None):
+    def __init__(
+        self,
+        storage_path: Optional[Union[str, Path]] = None,
+        repository: Optional[Any] = None,
+    ):
         self.storage_path = Path(storage_path) if storage_path else self.DEFAULT_LOG_PATH
         self.storage_path.parent.mkdir(parents=True, exist_ok=True)
+        self.repository = repository
         self._events: List[AuditEvent] = []
         self._load_existing_events()
+        if self.repository and self._events:
+            try:
+                self.repository.sync_audit_events_from_jsonl(self._events)
+            except Exception:
+                pass
 
     def _load_existing_events(self) -> None:
         """Load and parse any existing audit events from the storage file."""
@@ -126,6 +158,13 @@ class AuditLogger:
         with open(self.storage_path, "a", encoding="utf-8") as f:
             f.write(json.dumps(event_dict, separators=(",", ":")) + "\n")
 
+        # Mirror to relational SQLite audit ledger if repository configured
+        if self.repository:
+            try:
+                self.repository.save_audit_event(event)
+            except Exception:
+                pass
+
         return event
 
     def get_events(self, dispute_id: Optional[str] = None) -> List[AuditEvent]:
@@ -161,6 +200,7 @@ class AuditLogger:
         amount = payload.get("amount")
         currency = payload.get("currency")
 
+        # 1. Check in-memory/JSONL history for duplicate
         for existing_event in self._events:
             if existing_event.event_type == AuditEventType.DISPUTE_INGESTED and existing_event.dispute_id == dispute_id:
                 p = existing_event.payload
@@ -189,6 +229,35 @@ class AuditLogger:
                         return dup_event, True
                     return existing_event, True
 
+        # 2. Check relational database unique constraint if available
+        if self.repository and idempotency_key:
+            try:
+                is_db_dup, orig_event_id = self.repository.record_webhook_receipt(
+                    event_id=f"rec_{uuid4().hex[:12]}",
+                    dispute_id=dispute_id,
+                    event_type="DISPUTE_INGESTED",
+                    idempotency_key=idempotency_key,
+                    payload=payload,
+                )
+                if is_db_dup:
+                    if record_duplicate_attempt:
+                        dup_payload = {
+                            "original_event_id": orig_event_id,
+                            "idempotency_key": idempotency_key,
+                            "delivery_reason": "REPEATED_WEBHOOK_DELIVERY",
+                            **payload,
+                        }
+                        dup_event = self.log_event(
+                            event_type=AuditEventType.DUPLICATE_WEBHOOK_RECEIVED,
+                            dispute_id=dispute_id,
+                            actor=actor,
+                            payload=dup_payload,
+                        )
+                        return dup_event, True
+                    return self._events[-1], True
+            except Exception:
+                pass
+
         ingest_payload = dict(payload)
         if idempotency_key:
             ingest_payload["idempotency_key"] = idempotency_key
@@ -199,6 +268,19 @@ class AuditLogger:
             actor=actor,
             payload=ingest_payload,
         )
+
+        if self.repository and not idempotency_key:
+            try:
+                self.repository.record_webhook_receipt(
+                    event_id=event.event_id,
+                    dispute_id=dispute_id,
+                    event_type="DISPUTE_INGESTED",
+                    idempotency_key=f"auto_{dispute_id}_{event.event_id}",
+                    payload=payload,
+                )
+            except Exception:
+                pass
+
         return event, False
 
     def verify_chain_detailed(self) -> Dict[str, Any]:

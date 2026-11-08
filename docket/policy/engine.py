@@ -25,7 +25,9 @@ from urllib.parse import urlparse
 from docket.models.dispute import DisputeCase, DisputeLifecycleStage, DisputeStatus
 from docket.models.evidence import (
     Address,
+    ClaimEpistemicMetadata,
     ClaimType,
+    EvidenceBasis,
     ExtractedClaim,
     OrderRecord,
     ShipmentRecord,
@@ -93,11 +95,27 @@ class DeliveryProofInvariant:
     Docket's defining rule: Rejects asserting 'Delivery Verified' if carrier tracking
     is only 'Label Created' or 'In Transit'. Never confuses shipment in progress
     with completed delivery.
+
+    Policy Attribution & Scope Boundaries:
+    - Authoritative Source: PayPal Seller Protection Policy (India), displayed last-updated
+      date: January 26, 2026.
+    - Official Proof of Delivery Requirements: Requires online or physical documentation from
+      a shipping company including: (1) delivery status showing 'delivered' and delivery date,
+      (2) recipient address displaying matching recipient name and address from the Transaction
+      Details page, and (3) signature confirmation for eligible high-value transactions.
+    - Transaction Details Address vs Delivery Destination: Tangible item protection strictly
+      requires shipping to the exact shipping address listed on the Transaction Details page;
+      subsequent buyer requests to ship to an alternative address void protection.
+    - Docket Stricter Heuristic: Docket requires matching BOTH country AND postal code, and
+      distinguishes postal-code destination correspondence from street-level recipient delivery.
     """
 
     RULE_ID = "RULE_DELIVERY_PROOF"
     RULE_VERSION = "2026.1"
-    AUTHORITATIVE_SOURCE = "PayPal Seller Protection Policy — Proof of Delivery Requirements (US / Global)"
+    AUTHORITATIVE_SOURCE = "https://www.paypal.com/in/legalhub/paypal/seller-protection"
+    POLICY_JURISDICTION = "India"
+    POLICY_SECTION = "Basic Requirements — Proof of Delivery for Tangible Items"
+    POLICY_LAST_UPDATED = "January 26, 2026"
 
     def evaluate(
         self,
@@ -106,6 +124,36 @@ class DeliveryProofInvariant:
         order: Optional[OrderRecord] = None,
     ) -> PolicyCheckResult:
         supporting_refs = [s.source_identifier for s in claim.supporting_sources]
+
+        # Epistemic check: Second-hand hearsay cannot assert delivery completion
+        if claim.epistemic_metadata and not claim.epistemic_metadata.independent_carrier_confirmation:
+            if claim.claim_type == ClaimType.DELIVERY_COMPLETED:
+                return PolicyCheckResult(
+                    decision=DecisionType.BLOCK,
+                    rule_identifier=self.RULE_ID,
+                    explanation=(
+                        f"Cannot assert delivery from epistemic hearsay: Claim '{claim.claim_id}' is classified as "
+                        f"{claim.epistemic_metadata.evidence_basis.value} without independent carrier confirmation."
+                    ),
+                    supporting_source_references=supporting_refs,
+                    violated_invariants=["HEARSAY_CANNOT_PROVE_DELIVERY"],
+                    recommended_next_action="Obtain official carrier proof of delivery rather than customer statement.",
+                )
+
+        # Missing provenance boundary: customer communications alone cannot assert delivery completed
+        if claim.claim_type == ClaimType.DELIVERY_COMPLETED:
+            if claim.supporting_sources and all(s.source_type == SourceType.CUSTOMER_COMMUNICATION for s in claim.supporting_sources):
+                return PolicyCheckResult(
+                    decision=DecisionType.BLOCK,
+                    rule_identifier=self.RULE_ID,
+                    explanation=(
+                        f"Cannot assert delivery from customer communication: Claim '{claim.claim_id}' only cites "
+                        "customer communication sources. Missing carrier provenance cannot silently become verified delivery evidence."
+                    ),
+                    supporting_source_references=supporting_refs,
+                    violated_invariants=["CUSTOMER_COMMUNICATION_CANNOT_PROVE_DELIVERY"],
+                    recommended_next_action="Attach carrier tracking record to establish delivery.",
+                )
 
         # Case A: Claim explicitly asserts delivery completed
         if claim.claim_type == ClaimType.DELIVERY_COMPLETED:
@@ -238,14 +286,25 @@ class DeliveryProofInvariant:
 class AddressMatchInvariant:
     """Verifies recipient delivery address against transaction shipping address.
 
-    Distinguishes MISMATCH from INSUFFICIENT_DATA and supports configurable
-    matching depth. Explicitly clarifies destination delivery area correspondence
-    without claiming guaranteed Seller Protection eligibility.
+    Policy Attribution & Scope Boundaries:
+    - Authoritative Source: PayPal Seller Protection Policy (India), displayed last-updated
+      date: January 26, 2026.
+    - Exact Transaction-Details Shipping Address Requirement: Physical item protection strictly
+      requires dispatching to the address listed on the Transaction Details page. Shipping to
+      an alternative address (e.g. requested by buyer via message) voids Seller Protection.
+    - Proof of Delivery Geographic Detail Requirement: For proof of delivery, PayPal accepts
+      carrier documentation showing at least the recipient's city/state or zip code (or equivalent).
+    - Docket Stricter Matching Heuristic: Docket deterministically requires matching BOTH country
+      AND postal code, and distinguishes destination area correspondence from street-level recipient
+      delivery confirmation without claiming guaranteed Seller Protection eligibility.
     """
 
     RULE_ID = "RULE_ADDRESS_MATCH"
     RULE_VERSION = "2026.1"
-    AUTHORITATIVE_SOURCE = "PayPal Seller Protection Policy — Shipping Address Verification (US / Global)"
+    AUTHORITATIVE_SOURCE = "https://www.paypal.com/in/legalhub/paypal/seller-protection"
+    POLICY_JURISDICTION = "India"
+    POLICY_SECTION = "Basic Requirements — Shipping Address Verification"
+    POLICY_LAST_UPDATED = "January 26, 2026"
 
     def __init__(self, policy: AddressMatchPolicy = AddressMatchPolicy.STANDARD):
         self.policy = policy
@@ -823,6 +882,15 @@ class CitationIntegrityInvariant:
 class DeliveryDiscrepancyInvariant:
     """Evaluates factual discrepancies between buyer communications and carrier tracking.
 
+    Policy & Epistemic Framework:
+    - Official PayPal Policy Distinction: Official PayPal requirements (Proof of Delivery,
+      Address Matching) are governed by PayPal's User Agreement and Seller Protection Policy (India).
+      In contrast, DeliveryDiscrepancyInvariant is a Docket-owned internal dispute policy heuristic
+      designed to reconcile conflicting evidence and mitigate merchant dispute risk.
+    - Neither GPS delivery coordinates nor physical recipient signatures are universally mandatory
+      for standard physical INR disputes under official PayPal Seller Protection policy. Rather, Docket
+      recommends carrier GPS coordinate verification as an internal risk control when misdelivery is alleged.
+
     Epistemic & Policy Boundaries:
     - Case A: Carrier says DELIVERED, destination matches, buyer disputes receipt.
       -> ALLOW (with standard destination area correspondence disclaimer). Contradiction flags INR.
@@ -840,7 +908,9 @@ class DeliveryDiscrepancyInvariant:
 
     RULE_ID = "RULE_DELIVERY_DISCREPANCY"
     RULE_VERSION = "2026.1"
-    AUTHORITATIVE_SOURCE = "PayPal Seller Protection Policy — Disputed Delivery & Hearsay Reconciliation (US / Global)"
+    POLICY_KIND = "DOCKET_INTERNAL_REASONING"
+    AUTHORITATIVE_SOURCE = "Docket Dispute Policy Framework — Evidence Reconciliation & Hearsay Heuristics (Docket Heuristic)"
+    POLICY_JURISDICTION = "Docket Internal Framework"
 
     def evaluate(
         self,
@@ -888,11 +958,19 @@ class DeliveryDiscrepancyInvariant:
                 has_courier = any(kw in assertion_lower for kw in courier_keywords)
                 has_misdelivery = any(kw in assertion_lower for kw in misdelivery_keywords)
 
+                is_hearsay_allegation = False
                 if has_courier and has_misdelivery:
+                    is_hearsay_allegation = True
+                elif claim.epistemic_metadata and claim.epistemic_metadata.evidence_basis == EvidenceBasis.SECOND_HAND_HEARSAY and has_misdelivery:
+                    is_hearsay_allegation = True
+
+                if is_hearsay_allegation:
                     # Check supporting source is customer communication
-                    is_buyer_comm = any(
-                        s.source_type == SourceType.CUSTOMER_COMMUNICATION for s in claim.supporting_sources
-                    ) or any(s.source_identifier.startswith("MSG-") for s in claim.supporting_sources)
+                    is_buyer_comm = (
+                        (claim.epistemic_metadata and claim.epistemic_metadata.source_category == "CUSTOMER_COMMUNICATION")
+                        or any(s.source_type == SourceType.CUSTOMER_COMMUNICATION for s in claim.supporting_sources)
+                        or any(s.source_identifier.startswith("MSG-") for s in claim.supporting_sources)
+                    )
                     if is_buyer_comm:
                         return PolicyCheckResult(
                             decision=DecisionType.REVIEW,
@@ -900,9 +978,11 @@ class DeliveryDiscrepancyInvariant:
                             explanation=(
                                 "Factual discrepancy (Case D): Buyer reports that the courier verbally stated "
                                 "the package may have been left at another address. Carrier tracking indicates DELIVERED. "
-                                "Independent carrier proof of misdelivery is not established (buyer hearsay), but Docket "
-                                "does not treat a delivery scan as conclusive proof of delivery. Merchant review is "
-                                "required to verify carrier GPS delivery coordinates before submitting evidence."
+                                "Independent carrier proof of misdelivery is not established (buyer hearsay), but Docket's "
+                                "internal reasoning heuristic does not treat a delivery scan as conclusive proof of delivery. "
+                                "Merchant review is advised to request carrier GPS delivery scan coordinates before submitting rebuttal. "
+                                "Note: GPS scan coordinates and signature confirmation are Docket investigative directives, "
+                                "not universally mandatory requirements under official PayPal Seller Protection policy."
                             ),
                             supporting_source_references=[s.source_identifier for s in claim.supporting_sources],
                             violated_invariants=["HEARSAY_MISDELIVERY_ALLEGATION"],

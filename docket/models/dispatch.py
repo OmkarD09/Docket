@@ -47,6 +47,8 @@ class ApprovalRequest(BaseModel):
     """Merchant approval ticket awaiting affirmative authorization."""
     approval_id: str
     dispute_id: str
+    merchant_user_id: str = "merchant_admin"
+    action: str = "provide_evidence"
     overall_decision: str
     factual_readiness: str
     action_readiness: str

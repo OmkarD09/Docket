@@ -141,6 +141,29 @@ class ClaimStatus(str, Enum):
     CONFLICTING = "CONFLICTING"
 
 
+class EvidenceBasis(str, Enum):
+    """Epistemic classification of evidence supporting a claim."""
+    DIRECT_RECORD = "DIRECT_RECORD"
+    FIRST_PARTY_STATEMENT = "FIRST_PARTY_STATEMENT"
+    SECOND_HAND_HEARSAY = "SECOND_HAND_HEARSAY"
+    UNVERIFIED = "UNVERIFIED"
+
+
+class ClaimEpistemicMetadata(BaseModel):
+    """Structured epistemic classification and attribution for an extracted claim.
+    
+    Prevents confusing customer communications or hearsay with direct carrier records.
+    Requires explicit provenance metadata upon construction to avoid leaking attribution.
+    """
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    source_category: str
+    attribution: str
+    evidence_basis: EvidenceBasis
+    independent_carrier_confirmation: bool
+    supporting_source_id: Optional[str] = None
+
+
 class ExtractedClaim(BaseModel):
     """A structured assertion of fact with supporting citations."""
     model_config = ConfigDict(arbitrary_types_allowed=True)
@@ -151,6 +174,7 @@ class ExtractedClaim(BaseModel):
     normalized_value: Optional[Dict[str, Any]] = None
     supporting_sources: List[SourceCitation] = Field(default_factory=list)
     claim_status: ClaimStatus = ClaimStatus.PROPOSED
+    epistemic_metadata: Optional[ClaimEpistemicMetadata] = None
 
 
 class OrderRecord(BaseModel):

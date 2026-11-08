@@ -426,9 +426,9 @@
     "semantic_hash": ""
   },
   "artifacts/docket_evaluation_matrix.json": {
-    "mtime": 1794145826.6233494,
-    "seen": 1794145996.183145,
-    "ast_hash": "726aac27e25f1d2839556a42a96f9a07",
+    "mtime": 1794151559.25097,
+    "seen": 1794151613.355225,
+    "ast_hash": "6b86c08e2836524293afc72828cd5108",
     "semantic_hash": ""
   },
   "docket/__init__.py": {
@@ -456,8 +456,8 @@
     "semantic_hash": ""
   },
   "docket/ai/contradiction.py": {
-    "mtime": 1794145375.5440745,
-    "seen": 1794145996.183145,
+    "mtime": 1794146081.500764,
+    "seen": 1794147999.4412124,
     "ast_hash": "1875c256503eab1545241bbdb7cebda4",
     "semantic_hash": ""
   },
@@ -486,9 +486,9 @@
     "semantic_hash": ""
   },
   "docket/ai/provider_gemini.py": {
-    "mtime": 1794145525.310409,
-    "seen": 1794145996.183145,
-    "ast_hash": "5588d21a9ed05219dceb5f7ec56d4a79",
+    "mtime": 1794150112.8500972,
+    "seen": 1794151613.355225,
+    "ast_hash": "095de879ef5adfbb9ec8a577f926d563",
     "semantic_hash": ""
   },
   "docket/ai/provider_openai.py": {
@@ -504,9 +504,9 @@
     "semantic_hash": ""
   },
   "docket/api/app.py": {
-    "mtime": 1794141792.0296204,
-    "seen": 1794143688.472084,
-    "ast_hash": "f0d9138ed9b27ec0bda5f6a6d833513b",
+    "mtime": 1794151400.3268404,
+    "seen": 1794151613.355225,
+    "ast_hash": "e01291740c7c2aa2bba538878420655a",
     "semantic_hash": ""
   },
   "docket/audit/__init__.py": {
@@ -516,9 +516,9 @@
     "semantic_hash": ""
   },
   "docket/audit/logger.py": {
-    "mtime": 1793994299.3729756,
-    "seen": 1793994472.7162445,
-    "ast_hash": "a3c4c3775f11c2b7fabf9a0ac9cfc7e9",
+    "mtime": 1794151285.2563658,
+    "seen": 1794151613.355225,
+    "ast_hash": "f5f9cabed6c1b2cae5012251f4254235",
     "semantic_hash": ""
   },
   "docket/dispatch/__init__.py": {
@@ -528,15 +528,15 @@
     "semantic_hash": ""
   },
   "docket/dispatch/approval.py": {
-    "mtime": 1793709471.6090603,
-    "seen": 1793987231.8527722,
-    "ast_hash": "c283e856a61bc304d450bcbbb49ae254",
+    "mtime": 1794150113.1996634,
+    "seen": 1794151613.355225,
+    "ast_hash": "ab2e31a0ea3221ecfc780a8b0c9eff97",
     "semantic_hash": ""
   },
   "docket/dispatch/dispatcher.py": {
-    "mtime": 1793709849.8791113,
-    "seen": 1793987231.8527722,
-    "ast_hash": "73b608bb7c1b651a90e8d8a5f129dc12",
+    "mtime": 1794149689.355438,
+    "seen": 1794149975.3583899,
+    "ast_hash": "0437ed1425f5d693cf6a85e1be4f2e68",
     "semantic_hash": ""
   },
   "docket/eval/__init__.py": {
@@ -576,9 +576,9 @@
     "semantic_hash": ""
   },
   "docket/models/dispatch.py": {
-    "mtime": 1793709472.690421,
-    "seen": 1793987231.8527722,
-    "ast_hash": "aa95e6b76fc690e2145eff01d17cdb99",
+    "mtime": 1794147633.5834792,
+    "seen": 1794147999.4412124,
+    "ast_hash": "a706d988158aaa259872c20466c77e66",
     "semantic_hash": ""
   },
   "docket/models/dispute.py": {
@@ -588,9 +588,9 @@
     "semantic_hash": ""
   },
   "docket/models/evidence.py": {
-    "mtime": 1794143282.6883447,
-    "seen": 1794143688.4730835,
-    "ast_hash": "47bdcd724a822c77b9f4aa3fae5e12da",
+    "mtime": 1794150113.819316,
+    "seen": 1794151613.355225,
+    "ast_hash": "ff3bb6cdf5dbe29ade1e90c3db98e410",
     "semantic_hash": ""
   },
   "docket/models/policy.py": {
@@ -612,9 +612,9 @@
     "semantic_hash": ""
   },
   "docket/policy/engine.py": {
-    "mtime": 1794145731.497888,
-    "seen": 1794145996.183145,
-    "ast_hash": "426d4c5c673d21f7dd28a1e694970265",
+    "mtime": 1794150435.2441418,
+    "seen": 1794151613.355225,
+    "ast_hash": "24663e709bdc728e72b62dfb8f522021",
     "semantic_hash": ""
   },
   "docket/reconciliation/__init__.py": {
@@ -798,8 +798,8 @@
     "semantic_hash": ""
   },
   "tests/test_ai_extractor.py": {
-    "mtime": 1794145401.3332577,
-    "seen": 1794145996.183145,
+    "mtime": 1794146082.089788,
+    "seen": 1794147999.4422119,
     "ast_hash": "671283399c49c4665c890cb08a99dfd5",
     "semantic_hash": ""
   },
@@ -3774,8 +3774,8 @@
     "semantic_hash": ""
   },
   "tests/test_ai_live_workflow.py": {
-    "mtime": 1794145435.554857,
-    "seen": 1794145996.183145,
+    "mtime": 1794146082.2087119,
+    "seen": 1794147999.4422119,
     "ast_hash": "a3704c4995fea079baf733a26a0db5ce",
     "semantic_hash": ""
   },
@@ -3792,27 +3792,57 @@
     "semantic_hash": ""
   },
   "docs/DOCKET_AI_INTEGRATION_VERIFICATION.md": {
-    "mtime": 1794145946.3424969,
-    "seen": 1794145996.185043,
-    "ast_hash": "1421e5a37cc8c86d320c97ddba02d32c",
+    "mtime": 1794150114.649379,
+    "seen": 1794151613.3583472,
+    "ast_hash": "074874b928ba900f7bb5f37777dcacbe",
     "semantic_hash": ""
   },
   "artifacts/live_gemini_38_smoke_test_result.json": {
-    "mtime": 1794145550.8857293,
-    "seen": 1794145996.183145,
+    "mtime": 1794146081.2679403,
+    "seen": 1794147999.4412124,
     "ast_hash": "8dae95b4178faad213d3d24152378d3a",
     "semantic_hash": ""
   },
   "artifacts/task_2859_raw_gemini_38_evidence.json": {
-    "mtime": 1794145537.984385,
-    "seen": 1794145996.183145,
-    "ast_hash": "0917d9a887344ef3ef8baa8c3a4724e0",
+    "mtime": 1794146063.8657799,
+    "seen": 1794147999.4412124,
+    "ast_hash": "a46a3ea8321b3ba60dcd4b0628271470",
     "semantic_hash": ""
   },
   "tests/test_milestone4_audit.py": {
-    "mtime": 1794145804.8787572,
-    "seen": 1794145996.183145,
-    "ast_hash": "c1f8ba59e5cbce83e0bb62a8ab86fb57",
+    "mtime": 1794149802.688914,
+    "seen": 1794149975.3583899,
+    "ast_hash": "faa5fd15f143274af09ead98ae8c7b22",
+    "semantic_hash": ""
+  },
+  "docket/database/__init__.py": {
+    "mtime": 1794151241.45645,
+    "seen": 1794151613.355225,
+    "ast_hash": "ff9b8f244b1b6e4f3705ad70115359f3",
+    "semantic_hash": ""
+  },
+  "docket/database/connection.py": {
+    "mtime": 1794151144.1989174,
+    "seen": 1794151613.355225,
+    "ast_hash": "b2bea02da72c03075e5bab05eecfb713",
+    "semantic_hash": ""
+  },
+  "docket/database/repository.py": {
+    "mtime": 1794151538.875945,
+    "seen": 1794151613.355225,
+    "ast_hash": "486d2baf50c3502fe5d43e397ff927bd",
+    "semantic_hash": ""
+  },
+  "docket/database/schema.py": {
+    "mtime": 1794151125.8855617,
+    "seen": 1794151613.355225,
+    "ast_hash": "a001a35d0522b5e5282c77ac59d7440f",
+    "semantic_hash": ""
+  },
+  "tests/test_sqlite_persistence.py": {
+    "mtime": 1794151465.4818223,
+    "seen": 1794151613.3558776,
+    "ast_hash": "287ef856e477d5ea107f93a9adafad8d",
     "semantic_hash": ""
   },
   "frontend/package-lock.json": {

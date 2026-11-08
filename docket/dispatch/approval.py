@@ -13,6 +13,7 @@ import hmac
 import json
 import os
 import secrets
+import threading
 from typing import Any, Dict, Optional
 from uuid import uuid4
 
@@ -50,25 +51,62 @@ class DisputeMismatchError(ApprovalError):
     """Raised when approval token was issued for a different dispute ID."""
 
 
+class MerchantMismatchError(ApprovalError):
+    """Raised when approval token was issued for a different merchant user ID."""
+
+
+class ActionMismatchError(ApprovalError):
+    """Raised when approval token was issued for a different action."""
+
+
+class TokenAlreadyUsedError(ApprovalError):
+    """Raised when an approval token nonce has already been consumed (replay attack detected)."""
+
+
 # ============================================================================
 # Approval Service
 # ============================================================================
 
 class ApprovalService:
-    """Manages cryptographic approval tokens and merchant authorization gates."""
+    """Manages cryptographic approval tokens and merchant authorization gates.
+
+    Architectural & Concurrency Boundaries:
+    - Thread-Safe Single-Process Replay Protection: Nonce checking and consumption are
+      synchronized via an internal threading.Lock to guarantee atomic check-and-consume
+      under concurrent requests.
+    - Process-Restart & Multi-Worker Boundary: `_consumed_nonces` is an in-memory set.
+      It does NOT provide durable persistence across process restarts or cross-process
+      synchronization across multiple OS worker processes (e.g. gunicorn/uvicorn multi-worker
+      deployments) without an external distributed store such as Redis or a shared database.
+    """
 
     DEFAULT_TTL_SECONDS = 86400  # 24 hours
 
     def __init__(self, secret_key: Optional[str] = None):
         self.secret_key = secret_key or os.environ.get("DOCKET_APPROVAL_SECRET", "docket-default-dev-secret-key-replace-in-prod")
+        self._consumed_nonces: set[str] = set()
+        self._lock = threading.Lock()
 
     def _hash_payload(self, payload: Dict[str, Any]) -> str:
         """Compute canonical SHA-256 hex digest of JSON payload."""
         canonical_json = json.dumps(payload, sort_keys=True, separators=(",", ":"))
         return hashlib.sha256(canonical_json.encode("utf-8")).hexdigest()
 
-    def _generate_signature(self, dispute_id: str, nonce: str, exp_ts: int, payload_hash: str) -> str:
-        """Generate HMAC-SHA256 signature over token payload elements."""
+    def _generate_signature(
+        self,
+        dispute_id: str,
+        merchant_user_id: str,
+        action: str,
+        nonce: str,
+        exp_ts: int,
+        payload_hash: str,
+    ) -> str:
+        """Generate HMAC-SHA256 signature binding all critical authorization parameters."""
+        message = f"{dispute_id}:{merchant_user_id}:{action}:{nonce}:{exp_ts}:{payload_hash}".encode("utf-8")
+        return hmac.new(self.secret_key.encode("utf-8"), message, hashlib.sha256).hexdigest()
+
+    def _generate_legacy_signature(self, dispute_id: str, nonce: str, exp_ts: int, payload_hash: str) -> str:
+        """Fallback generator for legacy 5-part token compatibility."""
         message = f"{dispute_id}:{nonce}:{exp_ts}:{payload_hash}".encode("utf-8")
         return hmac.new(self.secret_key.encode("utf-8"), message, hashlib.sha256).hexdigest()
 
@@ -77,10 +115,12 @@ class ApprovalService:
         dispute: DisputeCase,
         policy_evaluation: OverallPolicyEvaluation,
         proposed_payload: Dict[str, Any],
+        merchant_user_id: str = "merchant_admin",
+        action: str = "provide_evidence",
         ttl_seconds: Optional[int] = None,
         bundle: Optional[ReconciledDisputeBundle] = None,
     ) -> ApprovalRequest:
-        """Create a new approval request ticket with an HMAC authorization token."""
+        """Create a new approval request ticket with an HMAC authorization token binding merchant and action."""
         approval_id = f"appr_{uuid4().hex[:12]}"
         nonce = secrets.token_hex(8)
         
@@ -89,14 +129,16 @@ class ApprovalService:
         exp_ts = int(expires_at.timestamp())
         
         payload_hash = self._hash_payload(proposed_payload)
-        sig = self._generate_signature(dispute.dispute_id, nonce, exp_ts, payload_hash)
+        sig = self._generate_signature(dispute.dispute_id, merchant_user_id, action, nonce, exp_ts, payload_hash)
         
-        token = f"{dispute.dispute_id}.{nonce}.{exp_ts}.{payload_hash}.{sig}"
+        token = f"{dispute.dispute_id}.{merchant_user_id}.{action}.{nonce}.{exp_ts}.{payload_hash}.{sig}"
         human_summary = self.generate_human_summary(dispute, bundle, policy_evaluation)
 
         return ApprovalRequest(
             approval_id=approval_id,
             dispute_id=dispute.dispute_id,
+            merchant_user_id=merchant_user_id,
+            action=action,
             overall_decision=policy_evaluation.overall_decision.value,
             factual_readiness=policy_evaluation.factual_readiness.value,
             action_readiness=policy_evaluation.action_readiness.value,
@@ -109,24 +151,51 @@ class ApprovalService:
             token=token,
         )
 
-    def verify_token(self, token: str, dispute_id: str, payload: Dict[str, Any]) -> bool:
-        """Verify token signature, expiration, and payload integrity.
+    def verify_token(
+        self,
+        token: str,
+        dispute_id: str,
+        payload: Dict[str, Any],
+        merchant_user_id: Optional[str] = None,
+        action: Optional[str] = None,
+        consume_nonce: bool = True,
+    ) -> bool:
+        """Verify token signature, expiration, bound parameters, and atomic nonce replay prevention.
         
         Raises:
             InvalidSignatureError: If signature is invalid or token malformed.
             DisputeMismatchError: If token dispute ID doesn't match target dispute.
+            MerchantMismatchError: If token merchant user ID doesn't match target merchant.
+            ActionMismatchError: If token action doesn't match target action.
             TokenExpiredError: If token has expired.
             PayloadTamperedError: If payload doesn't match signed payload hash.
+            TokenAlreadyUsedError: If token nonce has already been consumed (replay attack).
         """
         parts = token.split(".")
-        if len(parts) != 5:
+        if len(parts) == 7:
+            tok_dispute_id, tok_merchant_id, tok_action, tok_nonce, tok_exp_ts_str, tok_payload_hash, tok_sig = parts
+            is_legacy = False
+        elif len(parts) == 5:
+            tok_dispute_id, tok_nonce, tok_exp_ts_str, tok_payload_hash, tok_sig = parts
+            tok_merchant_id = merchant_user_id or "merchant_admin"
+            tok_action = action or "provide_evidence"
+            is_legacy = True
+        else:
             raise InvalidSignatureError("Malformed approval token: invalid segment count.")
-
-        tok_dispute_id, tok_nonce, tok_exp_ts_str, tok_payload_hash, tok_sig = parts
 
         if tok_dispute_id != dispute_id:
             raise DisputeMismatchError(
                 f"Dispute mismatch: token was issued for {tok_dispute_id}, but attempted on {dispute_id}."
+            )
+
+        if merchant_user_id and tok_merchant_id != merchant_user_id:
+            raise MerchantMismatchError(
+                f"Merchant mismatch: token was issued for {tok_merchant_id}, but presented by {merchant_user_id}."
+            )
+
+        if action and tok_action != action:
+            raise ActionMismatchError(
+                f"Action mismatch: token was issued for action '{tok_action}', but attempted for '{action}'."
             )
 
         try:
@@ -149,9 +218,25 @@ class ApprovalService:
             )
 
         # Verify cryptographic signature
-        expected_sig = self._generate_signature(tok_dispute_id, tok_nonce, tok_exp_ts, tok_payload_hash)
+        if is_legacy:
+            expected_sig = self._generate_legacy_signature(tok_dispute_id, tok_nonce, tok_exp_ts, tok_payload_hash)
+        else:
+            expected_sig = self._generate_signature(
+                tok_dispute_id, tok_merchant_id, tok_action, tok_nonce, tok_exp_ts, tok_payload_hash
+            )
+
         if not hmac.compare_digest(expected_sig, tok_sig):
             raise InvalidSignatureError("Approval token cryptographic signature verification failed.")
+
+        # Atomic anti-replay check under concurrent execution
+        with self._lock:
+            if tok_nonce in self._consumed_nonces:
+                raise TokenAlreadyUsedError(
+                    f"Approval token nonce '{tok_nonce}' has already been consumed. Replay attack blocked."
+                )
+
+            if consume_nonce:
+                self._consumed_nonces.add(tok_nonce)
 
         return True
 

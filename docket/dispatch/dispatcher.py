@@ -200,6 +200,7 @@ class EvidenceDispatcher:
         bundle: ReconciledDisputeBundle,
         evaluation: OverallPolicyEvaluation,
         approval_record: Optional[MerchantApprovalRecord],
+        caller_merchant_id: Optional[str] = None,
         idempotency_key: Optional[str] = None,
         custom_notes: Optional[str] = None,
         auth_token: Optional[str] = None,
@@ -215,7 +216,13 @@ class EvidenceDispatcher:
                 f"Violated rules: {violated}"
             )
 
-        # 2. Merchant Approval Verification Gate
+        # 2. Idempotency Lock (Reject duplicate submissions before token consumption or network calls)
+        if dispute.dispute_id in self._submitted_disputes or dispute.dispute_id in self._in_progress_disputes:
+            raise DuplicateSubmissionError(
+                f"Evidence submission for dispute {dispute.dispute_id} is already in progress or completed."
+            )
+
+        # 3. Merchant Approval Verification Gate
         if approval_record is None:
             raise MerchantApprovalRequiredError(
                 f"Merchant approval is strictly required before dispatching evidence for dispute {dispute.dispute_id}."
@@ -227,21 +234,23 @@ class EvidenceDispatcher:
                 f"{approval_record.rejection_reason or 'No rejection reason specified.'}"
             )
 
+        # Verify authenticated caller matches authorized merchant identity
+        if caller_merchant_id and approval_record.merchant_user_id != caller_merchant_id:
+            raise MerchantApprovalRequiredError(
+                f"Authenticated caller '{caller_merchant_id}' does not match authorized merchant '{approval_record.merchant_user_id}'."
+            )
+
         # Format target payload
         payload = self.formatter.format_fulfillment_evidence(bundle=bundle, notes=custom_notes)
 
-        # Verify cryptographic token and payload integrity
+        # Verify cryptographic token, bound parameters, and payload integrity (consumes single-use nonce)
         self.approval_service.verify_token(
             token=approval_record.approval_token,
             dispute_id=dispute.dispute_id,
             payload=payload,
+            merchant_user_id=approval_record.merchant_user_id,
+            action="provide_evidence",
         )
-
-        # 3. Idempotency Lock
-        if dispute.dispute_id in self._submitted_disputes or dispute.dispute_id in self._in_progress_disputes:
-            raise DuplicateSubmissionError(
-                f"Evidence submission for dispute {dispute.dispute_id} is already in progress or completed."
-            )
 
         self._in_progress_disputes.add(dispute.dispute_id)
 
