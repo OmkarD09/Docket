@@ -293,42 +293,19 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
 
   return (
     <div className="audit-workspace-container">
-      {/* 1. Header Area */}
+      {/* 1. Operational Header Area */}
       <div className="audit-header-area">
         <div className="audit-header-top">
           <div>
-            <h2 className="audit-title">Audit Trail</h2>
+            <div style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.015em' }}>
+              Cryptographic Audit Ledger
+            </div>
             <div className="audit-subtitle">
-              Recorded events, decisions and actions with verifiable cryptographic integrity.
+              Immutable append-only audit trail with deterministic SHA-256 parent-hash chaining and tamper detection.
             </div>
           </div>
 
           <div className="audit-header-actions">
-            {/* PayPal Sandbox Environment Badge */}
-            <div
-              className="badge badge-neutral"
-              style={{
-                padding: '5px 10px',
-                fontSize: '11px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                border: '1px solid var(--border-subtle)',
-              }}
-            >
-              <span
-                style={{
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  backgroundColor: '#059669',
-                }}
-              />
-              <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>
-                PayPal Sandbox Active
-              </span>
-            </div>
-
             {/* Cryptographic Chain Integrity Indicator */}
             {chainIntact ? (
               <div
@@ -336,9 +313,9 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  padding: '5px 12px',
-                  borderRadius: '6px',
-                  fontSize: '11.5px',
+                  padding: '4px 10px',
+                  borderRadius: '5px',
+                  fontSize: '11px',
                   fontWeight: 600,
                   backgroundColor: 'var(--status-allow-bg)',
                   color: 'var(--status-allow-text)',
@@ -346,7 +323,7 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
                 }}
                 title={`Last verified: ${formatAuditTimestamp(lastVerifiedAt)}`}
               >
-                <ShieldCheck size={14} color="#059669" />
+                <ShieldCheck size={13} color="#059669" />
                 <span>
                   Chain Intact · {verifiedCount} / {totalEvents} Verified · {formatAuditTimestamp(lastVerifiedAt)}
                 </span>
@@ -357,9 +334,9 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  padding: '5px 12px',
-                  borderRadius: '6px',
-                  fontSize: '11.5px',
+                  padding: '4px 10px',
+                  borderRadius: '5px',
+                  fontSize: '11px',
                   fontWeight: 600,
                   backgroundColor: 'var(--status-block-bg)',
                   color: 'var(--status-block-text)',
@@ -367,7 +344,7 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
                 }}
                 title={verificationDetails?.error_message || 'Hash chain verification failed'}
               >
-                <AlertOctagon size={14} color="#dc2626" />
+                <AlertOctagon size={13} color="#dc2626" />
                 <span>
                   Integrity Compromised · {failedCount} Failure{failedCount > 1 ? 's' : ''} Detected
                 </span>
@@ -379,10 +356,11 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
               className="btn btn-secondary"
               onClick={fetchAuditTrail}
               disabled={loading}
-              style={{ height: '30px', fontSize: '11.5px' }}
+              style={{ height: '28px', fontSize: '11px', padding: '3px 9px', gap: '5px' }}
+              title="Re-verify entire SHA-256 cryptographic hash chain"
             >
-              <RefreshCw size={12} className={loading ? 'spin' : ''} />
-              <span>Refresh</span>
+              <RefreshCw size={11} className={loading ? 'spin' : ''} />
+              <span>Verify Chain</span>
             </button>
           </div>
         </div>
@@ -396,7 +374,9 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
           </div>
 
           <div className="audit-metric-card">
-            <span className="audit-metric-label">Verified Intact Records</span>
+            <span className="audit-metric-label" style={{ color: 'var(--status-allow-text)' }}>
+              Verified Intact Records
+            </span>
             <span className="audit-metric-val" style={{ color: '#059669' }}>
               {verifiedCount}
             </span>
@@ -653,10 +633,10 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
 
             {/* Drawer Body */}
             <div className="audit-drawer-body">
-              {/* Section 1: Event Overview */}
+              {/* Section: Event Overview */}
               <div className="panel-card">
                 <div className="panel-card-header">
-                  <span className="panel-card-title">1. Event Overview</span>
+                  <span className="panel-card-title">Event Overview</span>
                   <span className="badge badge-neutral" style={{ fontSize: '10.5px' }}>
                     Metadata
                   </span>
@@ -736,12 +716,12 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
                 </div>
               </div>
 
-              {/* Section 2: Cryptographic Verification */}
+              {/* Section: Cryptographic Verification */}
               <div className="panel-card">
                 <div className="panel-card-header">
                   <span className="panel-card-title">
                     <Lock size={12} />
-                    <span>2. Cryptographic Verification</span>
+                    <span>Cryptographic Verification</span>
                   </span>
                   {selectedEvent.is_verified !== false ? (
                     <span className="badge badge-allow" style={{ fontSize: '10.5px' }}>
@@ -892,10 +872,10 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
                 </div>
               </div>
 
-              {/* Section 3: Original Event Payload */}
+              {/* Section: Original Event Payload */}
               <div className="panel-card">
                 <div className="panel-card-header">
-                  <span className="panel-card-title">3. Original Event Payload</span>
+                  <span className="panel-card-title">Original Event Payload</span>
                   <button
                     className="btn btn-secondary"
                     onClick={() => handleCopy(JSON.stringify(selectedEvent.payload, null, 2), 'payload')}
@@ -935,10 +915,10 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
                 </div>
               </div>
 
-              {/* Section 4: Related Dispute Timeline */}
+              {/* Section: Related Dispute Timeline */}
               <div className="panel-card">
                 <div className="panel-card-header">
-                  <span className="panel-card-title">4. Related Dispute Lifecycle</span>
+                  <span className="panel-card-title">Related Dispute Lifecycle</span>
                   <span className="badge badge-neutral" style={{ fontSize: '10.5px' }}>
                     {relatedDisputeEvents.length} Event{relatedDisputeEvents.length > 1 ? 's' : ''}
                   </span>

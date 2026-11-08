@@ -504,6 +504,8 @@ class TestFactExtractorFactory:
         assert isinstance(extractor, DeterministicFactExtractor)
 
     def test_factory_returns_openai_when_configured(self, monkeypatch):
+        monkeypatch.setenv("DOCKET_AI_MODE", "live")
+        monkeypatch.setenv("DOCKET_AI_PROVIDER", "openai")
         monkeypatch.setenv("OPENAI_API_KEY", "test-key-openai")
         monkeypatch.setenv("DOCKET_LLM_PROVIDER", "openai")
 
@@ -511,6 +513,8 @@ class TestFactExtractorFactory:
         assert isinstance(extractor, OpenAIFactExtractor)
 
     def test_factory_returns_anthropic_when_configured(self, monkeypatch):
+        monkeypatch.setenv("DOCKET_AI_MODE", "live")
+        monkeypatch.setenv("DOCKET_AI_PROVIDER", "anthropic")
         monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key-anthropic")
         monkeypatch.setenv("DOCKET_LLM_PROVIDER", "anthropic")
 
@@ -518,6 +522,8 @@ class TestFactExtractorFactory:
         assert isinstance(extractor, AnthropicFactExtractor)
 
     def test_factory_returns_gemini_when_configured(self, monkeypatch):
+        monkeypatch.setenv("DOCKET_AI_MODE", "live")
+        monkeypatch.setenv("DOCKET_AI_PROVIDER", "gemini")
         monkeypatch.setenv("GEMINI_API_KEY", "test-key-gemini")
         monkeypatch.setenv("DOCKET_LLM_PROVIDER", "gemini")
 
@@ -628,16 +634,36 @@ class TestEndToEndAIPolicyPipeline:
         assert res.safe_prompt_text == "<untrusted_content></untrusted_content>"
         assert not res.is_suspicious
 
-    def test_factory_automatic_fallback_by_keys(self, monkeypatch):
-        monkeypatch.delenv("DOCKET_LLM_PROVIDER", raising=False)
+    def test_factory_no_silent_fallback_when_keys_present_in_offline_mode(self, monkeypatch):
+        """Verify that available API keys DO NOT silently hijack the deterministic extractor in offline mode."""
+        monkeypatch.setenv("DOCKET_AI_MODE", "offline")
+        monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
+        monkeypatch.setenv("ANTHROPIC_API_KEY", "ant-test")
+        monkeypatch.setenv("GEMINI_API_KEY", "gem-test")
+        assert isinstance(get_fact_extractor(), DeterministicFactExtractor)
+
+    def test_factory_live_mode_explicit_configuration(self, monkeypatch):
+        """Verify that live mode returns requested provider when configured."""
+        monkeypatch.setenv("DOCKET_AI_MODE", "live")
+        monkeypatch.setenv("DOCKET_AI_PROVIDER", "gemini")
+        monkeypatch.setenv("GEMINI_API_KEY", "gem-test")
+        assert isinstance(get_fact_extractor(), GeminiFactExtractor)
+
+        monkeypatch.setenv("DOCKET_AI_PROVIDER", "openai")
         monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
         assert isinstance(get_fact_extractor(), OpenAIFactExtractor)
 
-        monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+        monkeypatch.setenv("DOCKET_AI_PROVIDER", "anthropic")
         monkeypatch.setenv("ANTHROPIC_API_KEY", "ant-test")
         assert isinstance(get_fact_extractor(), AnthropicFactExtractor)
 
-        monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
-        monkeypatch.setenv("GEMINI_API_KEY", "gem-test")
-        assert isinstance(get_fact_extractor(), GeminiFactExtractor)
+    def test_factory_live_mode_missing_key_raises_configuration_error(self, monkeypatch):
+        """Verify that live mode without required API key raises AIConfigurationError without silent fallback."""
+        from docket.ai.factory import AIConfigurationError
+        monkeypatch.setenv("DOCKET_AI_MODE", "live")
+        monkeypatch.setenv("DOCKET_AI_PROVIDER", "gemini")
+        monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+        with pytest.raises(AIConfigurationError) as exc_info:
+            get_fact_extractor()
+        assert "GEMINI_API_KEY is not set" in str(exc_info.value)
 

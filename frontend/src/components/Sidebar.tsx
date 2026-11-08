@@ -30,23 +30,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
     {
       id: 'overview' as NavSection,
       label: 'Overview',
-      icon: <LayoutDashboard size={16} strokeWidth={2} />,
+      shortcut: '1',
+      icon: <LayoutDashboard size={15} strokeWidth={2} />,
     },
     {
       id: 'disputes' as NavSection,
       label: 'Disputes',
-      icon: <Layers size={16} strokeWidth={2} />,
+      shortcut: '2',
+      icon: <Layers size={15} strokeWidth={2} />,
       badge: disputeCount > 0 ? disputeCount : undefined,
     },
     {
       id: 'audit' as NavSection,
       label: 'Audit Trail',
-      icon: <ShieldCheck size={16} strokeWidth={2} />,
+      shortcut: '3',
+      icon: <ShieldCheck size={15} strokeWidth={2} />,
     },
     {
       id: 'benchmark' as NavSection,
       label: 'Benchmark Scorecard',
-      icon: <BarChart3 size={16} strokeWidth={2} />,
+      shortcut: '4',
+      icon: <BarChart3 size={15} strokeWidth={2} />,
     },
   ];
 
@@ -56,7 +60,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Brand Header */}
         <div className="sidebar-brand">
           <div className="brand-icon-box" title="Docket - Dispute Operations">
-            <Scale size={16} strokeWidth={2.5} />
+            <Scale size={15} strokeWidth={2.5} />
           </div>
           {!collapsed && (
             <div className="brand-text-block">
@@ -77,15 +81,33 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 className={`nav-link ${isActive ? 'active' : ''}`}
                 title={collapsed ? item.label : undefined}
               >
-                <span style={{ display: 'flex', alignItems: 'center', color: isActive ? 'var(--signal-blue)' : 'inherit' }}>
+                <span
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: isActive ? 'var(--signal-blue)' : 'var(--text-muted)',
+                    transition: 'color var(--transition-fast)',
+                  }}
+                >
                   {item.icon}
                 </span>
                 {!collapsed && (
                   <>
-                    <span>{item.label}</span>
+                    <span style={{ flex: 1, letterSpacing: '-0.01em' }}>{item.label}</span>
                     {item.badge !== undefined && (
                       <span className="nav-badge">{item.badge}</span>
                     )}
+                    <span
+                      style={{
+                        fontSize: '10px',
+                        color: 'var(--text-tertiary)',
+                        fontFamily: 'var(--font-mono)',
+                        marginLeft: item.badge === undefined ? 'auto' : '4px',
+                        opacity: isActive ? 0.9 : 0.6,
+                      }}
+                    >
+                      {item.shortcut}
+                    </span>
                   </>
                 )}
               </button>
@@ -98,19 +120,49 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="sidebar-footer">
         {!collapsed ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <div className="env-pill">
-              <span className="env-indicator-dot" />
-              <span>PayPal Sandbox: Live</span>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '6px 8px',
+                borderRadius: '5px',
+                backgroundColor: 'var(--bg-surface)',
+                border: '1px solid var(--border-light)',
+              }}
+            >
+              <div className="env-pill">
+                <span className="env-indicator-dot" />
+                <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                  PayPal Sandbox
+                </span>
+              </div>
+              <span
+                style={{
+                  fontSize: '9.5px',
+                  fontWeight: 600,
+                  color: 'var(--status-allow-text)',
+                  backgroundColor: 'var(--status-allow-bg)',
+                  padding: '1px 5px',
+                  borderRadius: '3px',
+                  border: '1px solid var(--status-allow-border)',
+                }}
+              >
+                LIVE
+              </span>
             </div>
+
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '10.5px', color: 'var(--text-muted)' }}>v1.4.0 (Policy Ready)</span>
+              <span style={{ fontSize: '10.5px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                v1.4.0 (Policy Ready)
+              </span>
               <button
                 onClick={onToggleCollapse}
                 className="btn btn-secondary"
-                style={{ padding: '3px 6px', height: '24px' }}
+                style={{ padding: '2px 5px', height: '22px' }}
                 title="Collapse sidebar"
               >
-                <ChevronLeft size={13} />
+                <ChevronLeft size={12} />
               </button>
             </div>
           </div>
@@ -120,10 +172,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               onClick={onToggleCollapse}
               className="btn btn-secondary"
-              style={{ padding: '3px 6px', height: '24px' }}
+              style={{ padding: '2px 5px', height: '22px' }}
               title="Expand sidebar"
             >
-              <ChevronRight size={13} />
+              <ChevronRight size={12} />
             </button>
           </div>
         )}
@@ -131,3 +183,4 @@ export const Sidebar: React.FC<SidebarProps> = ({
     </aside>
   );
 };
+

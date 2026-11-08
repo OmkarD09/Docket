@@ -120,6 +120,11 @@ class WebhookIngestResponse(BaseModel):
     message: str
 
 
+class SemanticWorkflowRequest(BaseModel):
+    dispute_id: str
+    message_text: Optional[str] = None
+
+
 # ============================================================================
 # Dispute Case Store
 # ============================================================================
@@ -228,8 +233,8 @@ def load_initial_cases(policy_engine: PolicyEngine) -> Dict[str, CaseData]:
         cases["SCENARIO_20_REAL_SANDBOX_FIXTURE_BASELINE"] = real_case
 
     # 2. 20 Benchmark Scenarios
-    from docket.ai.deterministic import DeterministicFactExtractor
-    fact_extractor = DeterministicFactExtractor()
+    from docket.ai.factory import get_fact_extractor
+    fact_extractor = get_fact_extractor()
 
     for scen in load_all_scenarios():
         reconciler = EvidenceReconciler(
@@ -335,11 +340,20 @@ def create_app(
     # ------------------------------------------------------------------------
     @app.get("/api/health")
     def health():
+        from docket.ai.factory import get_fact_extractor
+        active_extractor = get_fact_extractor()
+        ai_mode = os.getenv("DOCKET_AI_MODE", "offline").strip().lower()
+        ai_provider = os.getenv("DOCKET_AI_PROVIDER", "gemini" if ai_mode == "live" else "offline-deterministic")
+        ai_model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash") if ai_mode == "live" else None
         return {
             "status": "ok",
             "version": "1.0.0",
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "total_cases_loaded": len(cases_store),
+            "ai_mode": ai_mode,
+            "ai_extractor": type(active_extractor).__name__,
+            "ai_provider": ai_provider,
+            "ai_model": ai_model,
         }
 
     # ------------------------------------------------------------------------
@@ -654,6 +668,33 @@ def create_app(
     def run_eval_benchmark():
         from docket.eval.service import execute_and_persist_benchmark
         return execute_and_persist_benchmark()
+
+    # ------------------------------------------------------------------------
+    # Semantic Extraction & Policy Verification Workflow Endpoint
+    # ------------------------------------------------------------------------
+    @app.post("/api/ai/extract-workflow")
+    def run_semantic_extraction_workflow_endpoint(payload: SemanticWorkflowRequest):
+        from docket.ai.workflow import SemanticExtractionWorkflow
+        case_data = cases_store.get(payload.dispute_id)
+        if not case_data:
+            raise HTTPException(status_code=404, detail=f"Dispute case '{payload.dispute_id}' not found.")
+
+        msg_text = payload.message_text
+        if not msg_text:
+            for msg in case_data.dispute.raw_messages:
+                if isinstance(msg, dict):
+                    msg_text = msg.get("content", "")
+                    break
+        if not msg_text:
+            msg_text = "I ordered this merchandise but it never arrived. Tracking shows only label created."
+
+        workflow = SemanticExtractionWorkflow(policy_engine=policy_engine)
+        result = workflow.run(
+            buyer_message=msg_text,
+            dispute=case_data.dispute,
+            bundle=case_data.bundle,
+        )
+        return result.model_dump()
 
     return app
 

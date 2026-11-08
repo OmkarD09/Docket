@@ -1,0 +1,150 @@
+{
+  "timestamp": "2026-11-08T12:33:26.703017+00:00",
+  "provider": "gemini",
+  "model": "gemini-2.5-flash",
+  "latency_ms": 5457.13,
+  "usage_metadata": {
+    "promptTokenCount": 721,
+    "candidatesTokenCount": 317,
+    "totalTokenCount": 1700,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 721
+      }
+    ],
+    "thoughtsTokenCount": 662,
+    "serviceTier": "standard"
+  },
+  "claims_count": 4,
+  "claims": [
+    {
+      "claim_id": "PP-D-LIVE-2026-CL001",
+      "claim_type": "OTHER",
+      "factual_assertion": "Buyer states the tracking page indicates the package was delivered yesterday.",
+      "normalized_value": null,
+      "supporting_sources": [
+        {
+          "source_type": "CUSTOMER_COMMUNICATION",
+          "source_identifier": "MSG-00",
+          "field_path": "content",
+          "extracted_value": "The tracking page says my package was delivered yesterday",
+          "verification_status": "VERIFIED"
+        }
+      ],
+      "claim_status": "PROPOSED"
+    },
+    {
+      "claim_id": "PP-D-LIVE-2026-CL002",
+      "claim_type": "OTHER",
+      "factual_assertion": "Buyer asserts they never received the package.",
+      "normalized_value": null,
+      "supporting_sources": [
+        {
+          "source_type": "CUSTOMER_COMMUNICATION",
+          "source_identifier": "MSG-00",
+          "field_path": "content",
+          "extracted_value": "I never received it.",
+          "verification_status": "VERIFIED"
+        }
+      ],
+      "claim_status": "PROPOSED"
+    },
+    {
+      "claim_id": "PP-D-LIVE-2026-CL003",
+      "claim_type": "COMMUNICATION_ACKNOWLEDGED",
+      "factual_assertion": "Buyer states they contacted the courier.",
+      "normalized_value": null,
+      "supporting_sources": [
+        {
+          "source_type": "CUSTOMER_COMMUNICATION",
+          "source_identifier": "MSG-00",
+          "field_path": "content",
+          "extracted_value": "I contacted the courier",
+          "verification_status": "VERIFIED"
+        }
+      ],
+      "claim_status": "PROPOSED"
+    },
+    {
+      "claim_id": "PP-D-LIVE-2026-CL004",
+      "claim_type": "OTHER",
+      "factual_assertion": "Buyer reports that the courier stated the parcel might have been left at another address.",
+      "normalized_value": null,
+      "supporting_sources": [
+        {
+          "source_type": "CUSTOMER_COMMUNICATION",
+          "source_identifier": "MSG-00",
+          "field_path": "content",
+          "extracted_value": "they told me the parcel may have been left at another address.",
+          "verification_status": "VERIFIED"
+        }
+      ],
+      "claim_status": "PROPOSED"
+    }
+  ],
+  "citations": [
+    {
+      "is_verified": true,
+      "start_offset": 0,
+      "end_offset": 57,
+      "citation": {
+        "source_type": "CUSTOMER_COMMUNICATION",
+        "source_identifier": "MSG-00",
+        "field_path": "content",
+        "extracted_value": "The tracking page says my package was delivered yesterday",
+        "verification_status": "VERIFIED"
+      },
+      "flags": []
+    },
+    {
+      "is_verified": true,
+      "start_offset": 63,
+      "end_offset": 83,
+      "citation": {
+        "source_type": "CUSTOMER_COMMUNICATION",
+        "source_identifier": "MSG-00",
+        "field_path": "content",
+        "extracted_value": "I never received it.",
+        "verification_status": "VERIFIED"
+      },
+      "flags": []
+    },
+    {
+      "is_verified": true,
+      "start_offset": 84,
+      "end_offset": 107,
+      "citation": {
+        "source_type": "CUSTOMER_COMMUNICATION",
+        "source_identifier": "MSG-00",
+        "field_path": "content",
+        "extracted_value": "I contacted the courier",
+        "verification_status": "VERIFIED"
+      },
+      "flags": []
+    },
+    {
+      "is_verified": true,
+      "start_offset": 113,
+      "end_offset": 175,
+      "citation": {
+        "source_type": "CUSTOMER_COMMUNICATION",
+        "source_identifier": "MSG-00",
+        "field_path": "content",
+        "extracted_value": "they told me the parcel may have been left at another address.",
+        "verification_status": "VERIFIED"
+      },
+      "flags": []
+    }
+  ],
+  "contradictions": [
+    {
+      "code": "DELIVERY_DISPUTE_EVIDENCE_EXISTS",
+      "severity": "HIGH",
+      "description": "Buyer asserts non-delivery, but carrier USPS tracking 9400111899223197428490 shows package was DELIVERED.",
+      "conflicting_claim_id": "PP-D-LIVE-2026-CL002"
+    }
+  ],
+  "decision": "REVIEW",
+  "recommended_action": "Contact carrier to request GPS delivery scan coordinates and delivery confirmation before submitting rebuttal."
+}

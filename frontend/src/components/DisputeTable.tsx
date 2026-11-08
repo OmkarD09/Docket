@@ -18,12 +18,12 @@ const docketLightTheme = themeQuartz.withParams({
   borderColor: '#e2e8f0',
   accentColor: '#0f172a',
   rowHoverColor: '#f8fafc',
-  fontSize: 12.5,
+  fontSize: 12,
   fontFamily: "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-  headerFontSize: 11.5,
+  headerFontSize: 11,
   headerFontWeight: 600,
-  rowHeight: 46,
-  headerHeight: 40,
+  rowHeight: 40,
+  headerHeight: 36,
 });
 
 interface DisputeTableProps {
@@ -56,7 +56,7 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({
       {
         headerName: 'Dispute Reference',
         field: 'dispute_id',
-        width: 175,
+        width: 155,
         pinned: 'left',
         cellRenderer: (params: any) => {
           const d: DisputeSummary = params.data;
@@ -86,7 +86,7 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({
       },
       {
         headerName: 'Origin',
-        width: 110,
+        width: 95,
         cellRenderer: (params: any) => {
           const d: DisputeSummary = params.data;
           if (!d) return null;
@@ -134,8 +134,8 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({
       {
         headerName: 'Dispute Reason',
         field: 'reason',
-        minWidth: 160,
-        flex: 1,
+        minWidth: 170,
+        flex: 1.2,
         cellRenderer: (params: any) => {
           const raw = params.value || '';
           const readable = raw
@@ -163,7 +163,7 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({
       {
         headerName: 'Amount',
         field: 'amount',
-        width: 110,
+        width: 90,
         headerClass: 'ag-right-aligned-header',
         cellRenderer: (params: any) => {
           const d = params.data;
@@ -183,7 +183,7 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({
       {
         headerName: 'PayPal Status',
         field: 'status',
-        width: 145,
+        width: 125,
         cellRenderer: (params: any) => {
           const val = params.value || '';
           let label = val.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, (c: string) => c.toUpperCase());
@@ -226,7 +226,7 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({
       {
         headerName: 'Docket Decision',
         field: 'overall_decision',
-        width: 110,
+        width: 105,
         cellRenderer: (params: any) => {
           const dec = params.value;
           if (dec === 'ALLOW') {
@@ -253,7 +253,7 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({
       {
         headerName: 'Deadline',
         field: 'due_date',
-        width: 125,
+        width: 110,
         cellRenderer: (params: any) => {
           const d = params.data;
           if (!d) return null;

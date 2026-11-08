@@ -12,17 +12,20 @@ import {
   RefreshCw,
   Copy,
   Check,
+  X,
 } from 'lucide-react';
 import type { DisputeDetail } from '../types';
 
 interface DisputeDetailPanelProps {
   disputeId: string | null;
   onRefresh: () => void;
+  onClose?: () => void;
 }
 
 export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
   disputeId,
   onRefresh,
+  onClose,
 }) => {
   const [detail, setDetail] = useState<DisputeDetail | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -30,6 +33,7 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
   const [actionError, setActionError] = useState<string | null>(null);
   const [actionSuccess, setActionSuccess] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<boolean>(false);
+  const [copiedPayload, setCopiedPayload] = useState<boolean>(false);
 
   useEffect(() => {
     if (!disputeId) {
@@ -277,14 +281,26 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
             )}
           </div>
 
-          <button
-            onClick={() => fetchDetail(disputeId)}
-            className="btn btn-secondary"
-            style={{ padding: '2px 8px', fontSize: '11px', height: '24px' }}
-            title="Refresh case state"
-          >
-            <RefreshCw size={11} /> Sync
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <button
+              onClick={() => fetchDetail(disputeId)}
+              className="btn btn-secondary"
+              style={{ padding: '2px 8px', fontSize: '11px', height: '24px' }}
+              title="Refresh case state"
+            >
+              <RefreshCw size={11} /> Sync
+            </button>
+            {onClose && (
+              <button
+                onClick={onClose}
+                className="btn btn-secondary"
+                style={{ padding: '4px', height: '24px', width: '24px', borderRadius: '4px' }}
+                title="Close inspection panel"
+              >
+                <X size={13} />
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Dispute ID & Amount */}
@@ -335,23 +351,22 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
         )}
 
         {/* 2 & 3. One Clear Docket Policy Decision & Concise Explanation */}
-        <div
-          className="panel-card"
-          style={{
-            borderLeft: `4px solid ${
-              overallDecision === 'ALLOW'
-                ? 'var(--status-allow-dot)'
-                : overallDecision === 'BLOCK'
-                ? 'var(--status-block-dot)'
-                : 'var(--status-review-dot)'
-            }`,
-          }}
-        >
+        <div className="panel-card">
           <div className="panel-card-header">
             <span className="panel-card-title">
-              {overallDecision === 'ALLOW' && <CheckCircle2 size={13} color="var(--status-allow-dot)" />}
-              {overallDecision === 'BLOCK' && <XCircle size={13} color="var(--status-block-dot)" />}
-              {overallDecision === 'REVIEW' && <AlertTriangle size={13} color="var(--status-review-dot)" />}
+              <span
+                style={{
+                  width: '7px',
+                  height: '7px',
+                  borderRadius: '50%',
+                  backgroundColor:
+                    overallDecision === 'ALLOW'
+                      ? 'var(--status-allow-dot)'
+                      : overallDecision === 'BLOCK'
+                      ? 'var(--status-block-dot)'
+                      : 'var(--status-review-dot)',
+                }}
+              />
               Docket Policy Assessment
             </span>
             <span
@@ -363,6 +378,9 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
                   : 'badge-review'
               }`}
             >
+              {overallDecision === 'ALLOW' && <CheckCircle2 size={11} />}
+              {overallDecision === 'BLOCK' && <XCircle size={11} />}
+              {overallDecision === 'REVIEW' && <AlertTriangle size={11} />}
               {overallDecision}
             </span>
           </div>
@@ -392,7 +410,7 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
             </div>
 
             {/* Compact Readiness Strip (no nested boxed borders) */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', padding: '8px 12px', backgroundColor: 'var(--bg-subtle)', borderRadius: '6px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', padding: '8px 12px', backgroundColor: 'var(--bg-subtle)', borderRadius: '5px' }}>
               <div>
                 <span className="kv-key">Factual Readiness</span>
                 <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)', display: 'block', marginTop: '1px' }}>
@@ -707,8 +725,26 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
             Inspect Technical Payloads & Citations (Developer View)
           </summary>
           <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-              Proposed PayPal <code>provide-evidence</code> Payload:
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                Proposed PayPal <code>provide-evidence</code> Payload:
+              </span>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (detail.proposed_payload) {
+                    navigator.clipboard.writeText(JSON.stringify(detail.proposed_payload, null, 2));
+                    setCopiedPayload(true);
+                    setTimeout(() => setCopiedPayload(false), 2000);
+                  }
+                }}
+                className="btn btn-secondary"
+                style={{ padding: '2px 7px', fontSize: '10.5px', height: '22px', gap: '4px' }}
+                title="Copy JSON Payload"
+              >
+                {copiedPayload ? <Check size={11} color="#059669" /> : <Copy size={11} />}
+                <span>{copiedPayload ? 'Copied' : 'Copy JSON'}</span>
+              </button>
             </div>
             <pre className="code-block">
               {JSON.stringify(detail.proposed_payload || {}, null, 2)}
