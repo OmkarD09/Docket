@@ -25,6 +25,7 @@ def client(tmp_path):
     audit_file = tmp_path / "test_api_audit_trail.jsonl"
     app = create_app(audit_log_path=audit_file)
     with TestClient(app) as test_client:
+        test_client.post("/api/auth/demo-session", json={"profile_id": "merchant_supervisor_admin"})
         yield test_client
 
 
@@ -163,7 +164,7 @@ def test_api_dispatch_success_flow(client):
     client.post(
         "/api/disputes/PP-R-NKI-10193390/authorize",
         json={
-            "merchant_user_id": "merchant_admin",
+            "merchant_user_id": "merchant_supervisor_admin",
             "decision": "APPROVE",
         },
     )
@@ -211,3 +212,65 @@ def test_api_eval_scorecard_endpoint(client):
     assert data["refusal_precision"] == 100.0
     assert data["label_created_refusal_rate"] == 100.0
     assert data["prompt_injection_detection_rate"] == 100.0
+
+
+def test_api_dispute_lifecycle_endpoint(client):
+    """Verify dedicated lifecycle endpoint returns isolated chronological events with global indices."""
+    client.post("/api/disputes/PP-R-NKI-10193390/ticket")
+
+    resp = client.get("/api/disputes/PP-R-NKI-10193390/lifecycle")
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["dispute_id"] == "PP-R-NKI-10193390"
+    assert "events" in data
+    assert data["total_events"] == len(data["events"])
+    assert data["total_events"] > 0
+
+    # Every lifecycle event must strictly belong to the specified dispute
+    for ev in data["events"]:
+        assert ev["dispute_id"] == "PP-R-NKI-10193390"
+        assert "global_chain_index" in ev
+        assert ev["global_chain_index"] >= 1
+        assert "event_id" in ev
+        assert "timestamp" in ev
+        assert "result" in ev
+
+
+def test_api_audit_trail_filtered_by_dispute(client):
+    """Verify /api/audit-trail query parameter correctly filters by dispute_id without cross-dispute contamination."""
+    resp = client.get("/api/audit-trail?dispute_id=PP-R-NKI-10193390")
+    assert resp.status_code == 200
+    data = resp.json()
+    for ev in data["events"]:
+        assert ev["dispute_id"] == "PP-R-NKI-10193390"
+
+
+def test_api_lifecycle_simulated_dispatch_label(client):
+    """Verify simulated dispatch events are clearly labeled and not misrepresented as live PayPal submissions."""
+    client.post("/api/disputes/PP-R-NKI-10193390/ticket")
+    client.post(
+        "/api/disputes/PP-R-NKI-10193390/authorize",
+        json={"merchant_user_id": "merchant_supervisor_admin", "decision": "APPROVE"},
+    )
+
+    with patch("requests.Session.post") as mock_post:
+        mock_resp = MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.json.return_value = {"status": "SUCCESS"}
+        mock_resp.headers = {"Paypal-Debug-Id": "pp_corr_simulated_test"}
+        mock_post.return_value = mock_resp
+
+        client.post(
+            "/api/disputes/PP-R-NKI-10193390/dispatch",
+            json={"idempotency_key": "idemp_sim_test_01"},
+        )
+
+    resp = client.get("/api/disputes/PP-R-NKI-10193390/lifecycle")
+    assert resp.status_code == 200
+    data = resp.json()
+
+    succ_event = next((e for e in data["events"] if e["event_type"] == "DISPATCH_SUCCEEDED"), None)
+    assert succ_event is not None
+    assert succ_event["is_simulated"] is True
+    assert "Simulated" in succ_event["result"]
+

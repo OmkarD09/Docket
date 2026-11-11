@@ -172,6 +172,7 @@ class TestEnrichedScorecardService:
         from fastapi.testclient import TestClient
         from docket.api.app import create_app
         client = TestClient(create_app())
+        client.post("/api/auth/demo-session", json={"profile_id": "merchant_admin"})
 
         resp = client.get("/api/eval/scorecard")
         assert resp.status_code == 200
@@ -185,3 +186,120 @@ class TestEnrichedScorecardService:
         assert run_resp.status_code == 200
         run_data = run_resp.json()
         assert run_data["total_scenarios"] == 20
+
+
+# ---------------------------------------------------------------------------
+# Pre-Submission Review Regression Tests (Milestone 5 Data Binding & Safety)
+# ---------------------------------------------------------------------------
+
+class TestBenchmarkDataBindingRegression:
+    """Regression tests verifying data binding isolation, evidence provenance, and safety."""
+
+    def test_scenario_04_exact_fixture_data_binding(self):
+        """Scenario 04 must bind to exact fixture: ORD-04, $850.00 USD, FEDEX TRK-04, DELIVERED."""
+        from docket.eval.service import build_enriched_scorecard
+        matrix_path = Path("artifacts/docket_evaluation_matrix.json")
+        with open(matrix_path, "r", encoding="utf-8") as f:
+            raw = json.load(f)
+        scorecard = build_enriched_scorecard(raw)
+
+        scen04 = next((r for r in scorecard["results"] if "SCENARIO_04" in r["scenario_id"]), None)
+        assert scen04 is not None, "Scenario 04 must exist in scorecard results"
+
+        ev = scen04["input_evidence"]
+        # Verify exact fixture attributes
+        assert ev["order_id"] == "ORD-04", f"Expected ORD-04, got {ev['order_id']}"
+        assert ev["order_amount"] == "$850.00 USD", f"Expected $850.00 USD, got {ev['order_amount']}"
+        assert ev["carrier"] == "FEDEX", f"Expected FEDEX, got {ev['carrier']}"
+        assert ev["tracking_number"] == "TRK-04", f"Expected TRK-04, got {ev['tracking_number']}"
+        assert ev["tracking_status"] == "DELIVERED", f"Expected DELIVERED, got {ev['tracking_status']}"
+        assert ev["recipient_signature_present"] is False, "Scenario 04 must explicitly reflect missing signature"
+        assert ev["source_provenance"] == "SYNTHETIC_FIXTURE"
+
+        # Explicitly verify absence of cross-contamination from Scenario 20 ($25.00, USPS)
+        assert ev["order_amount"] != "$25.00 USD", "Scenario 04 must not inherit $25 amount from Scenario 20"
+        assert ev["carrier"] != "USPS", "Scenario 04 must not inherit USPS carrier from Scenario 20"
+
+    def test_all_20_scenarios_have_exact_isolated_evidence(self):
+        """Verify all 20 scenario detail objects obtain all fields from exact fixture without leakage."""
+        from docket.eval.service import build_enriched_scorecard
+        scenarios = load_all_scenarios()
+        scenarios_by_id = {s.scenario_id: s for s in scenarios}
+
+        matrix_path = Path("artifacts/docket_evaluation_matrix.json")
+        with open(matrix_path, "r", encoding="utf-8") as f:
+            raw = json.load(f)
+        scorecard = build_enriched_scorecard(raw)
+
+        for r in scorecard["results"]:
+            s_id = r["scenario_id"]
+            fixture = scenarios_by_id[s_id]
+            ev = r["input_evidence"]
+
+            if fixture.orders:
+                expected_order_id = fixture.orders[0].order_id
+                assert ev["order_id"] == expected_order_id, f"Order ID mismatch in {s_id}"
+                expected_amt = f"${fixture.orders[0].gross_amount.value:.2f} {fixture.orders[0].gross_amount.currency_code}"
+                assert ev["order_amount"] == expected_amt, f"Amount mismatch in {s_id}"
+
+            if fixture.shipments:
+                expected_carrier = fixture.shipments[0].carrier_name
+                expected_trk = fixture.shipments[0].tracking_number
+                expected_status = fixture.shipments[0].tracking_status.value
+                assert ev["carrier"] == expected_carrier, f"Carrier mismatch in {s_id}"
+                assert ev["tracking_number"] == expected_trk, f"Tracking number mismatch in {s_id}"
+                assert ev["tracking_status"] == expected_status, f"Tracking status mismatch in {s_id}"
+
+    def test_supporting_evidence_provenance_labels(self):
+        """Verify OrderRecord and ShipmentRecord default to explicit SYNTHETIC_FIXTURE provenance."""
+        from docket.models.evidence import OrderRecord, ShipmentRecord, TrackingStatus
+        from decimal import Decimal
+        from docket.models.dispute import Money
+
+        order = OrderRecord(
+            order_id="ORD-TEST",
+            gross_amount=Money(value=Decimal("10.00"), currency_code="USD"),
+        )
+        assert order.source_provenance == "SYNTHETIC_FIXTURE"
+
+        shipment = ShipmentRecord(
+            internal_order_id="ORD-TEST",
+            tracking_number="TRK-TEST",
+            carrier_name="UPS",
+            tracking_status=TrackingStatus.DELIVERED,
+            source_identifier="SRC-TEST",
+        )
+        assert shipment.source_provenance == "SYNTHETIC_FIXTURE"
+
+    def test_address_match_explanation_limits_claims(self):
+        """AddressMatchInvariant explanation must not claim physical street-level delivery."""
+        from docket.policy.engine import AddressMatchInvariant
+        from docket.models.evidence import Address, OrderRecord, ShipmentRecord, TrackingStatus
+        from decimal import Decimal
+        from docket.models.dispute import Money
+
+        inv = AddressMatchInvariant()
+        order = OrderRecord(
+            order_id="ORD-1",
+            shipping_address=Address(postal_code="95131", country_code="US"),
+            gross_amount=Money(value=Decimal("25.00"), currency_code="USD"),
+        )
+        shipment = ShipmentRecord(
+            internal_order_id="ORD-1",
+            tracking_number="TRK-1",
+            carrier_name="USPS",
+            tracking_status=TrackingStatus.DELIVERED,
+            shipment_address=Address(postal_code="95131", country_code="US"),
+            source_identifier="SRC-USPS",
+        )
+        res = inv.evaluate(order, shipment)
+        assert "postal code and country verified" in res.explanation
+        assert "does not verify street-level delivery" in res.explanation
+
+    def test_audit_event_types_semantics(self):
+        """AuditEventType enum distinguishes ingestion, synchronization, and duplicate handling."""
+        from docket.models.audit import AuditEventType
+        assert AuditEventType.DISPUTE_INGESTED.value == "DISPUTE_INGESTED"
+        assert AuditEventType.DISPUTE_SYNCHRONIZED.value == "DISPUTE_SYNCHRONIZED"
+        assert AuditEventType.DUPLICATE_WEBHOOK_RECEIVED.value == "DUPLICATE_WEBHOOK_RECEIVED"
+        assert AuditEventType.DUPLICATE_WEBHOOK_IGNORED.value == "DUPLICATE_WEBHOOK_IGNORED"

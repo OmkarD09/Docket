@@ -988,7 +988,7 @@ export const EvalScorecardView: React.FC = () => {
                 <div className="panel-card-header">
                   <span className="panel-card-title">Input Evidence</span>
                   <span className="badge badge-neutral" style={{ fontSize: '10px' }}>
-                    Reconciled Facts
+                    Fixture-Bound Evidence
                   </span>
                 </div>
                 <div className="panel-card-body">
@@ -1002,8 +1002,8 @@ export const EvalScorecardView: React.FC = () => {
 
                     <div className="kv-item">
                       <span className="kv-key">Order Gross Amount</span>
-                      <span className="kv-val" style={{ fontSize: '11px' }}>
-                        {selectedScenario.input_evidence?.order_amount || '$100.00 USD'}
+                      <span className="kv-val" style={{ fontSize: '11px', fontWeight: 600 }}>
+                        {selectedScenario.input_evidence?.order_amount || 'N/A'}
                       </span>
                     </div>
 
@@ -1018,6 +1018,35 @@ export const EvalScorecardView: React.FC = () => {
                       <span className="kv-key">Tracking Status</span>
                       <span className="kv-val" style={{ fontSize: '11px' }}>
                         {selectedScenario.input_evidence?.tracking_status}
+                      </span>
+                    </div>
+
+                    <div className="kv-item">
+                      <span className="kv-key">Delivery Destination Area</span>
+                      <span className="font-mono kv-val" style={{ fontSize: '11px' }}>
+                        {selectedScenario.input_evidence?.shipping_address || 'N/A'}
+                      </span>
+                    </div>
+
+                    <div className="kv-item">
+                      <span className="kv-key">Recipient Signature</span>
+                      <span className="kv-val" style={{ fontSize: '11px' }}>
+                        {selectedScenario.input_evidence?.recipient_signature_present === false ? (
+                          <span style={{ color: '#dc2626', fontWeight: 600 }}>Missing (Deficiency &gt;$750)</span>
+                        ) : selectedScenario.input_evidence?.recipient_signature_present === true ? (
+                          <span style={{ color: '#059669', fontWeight: 600 }}>Confirmed Present</span>
+                        ) : (
+                          <span style={{ color: 'var(--text-muted)' }}>Not Required</span>
+                        )}
+                      </span>
+                    </div>
+
+                    <div className="kv-item">
+                      <span className="kv-key">Source Provenance</span>
+                      <span className="kv-val" style={{ fontSize: '10.5px' }}>
+                        <span className="badge badge-neutral" style={{ fontSize: '10px' }}>
+                          Synthetic Benchmark Fixture
+                        </span>
                       </span>
                     </div>
                   </div>
@@ -1166,10 +1195,10 @@ export const EvalScorecardView: React.FC = () => {
                 </div>
               </div>
 
-              {/* Technical Diagnostics */}
+              {/* Advanced Evaluation Details */}
               <div className="panel-card">
                 <div className="panel-card-header">
-                  <span className="panel-card-title">Technical Diagnostics (JSON)</span>
+                  <span className="panel-card-title">Advanced Evaluation Details</span>
                   <button
                     className="btn btn-secondary"
                     onClick={() =>
@@ -1193,7 +1222,7 @@ export const EvalScorecardView: React.FC = () => {
                 <div className="panel-card-body" style={{ padding: '10px' }}>
                   <details className="code-details">
                     <summary style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
-                      View Raw Diagnostic Output
+                      View Diagnostic Payload (JSON)
                     </summary>
                     <pre
                       className="code-block"

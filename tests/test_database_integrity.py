@@ -458,6 +458,7 @@ def test_database_count_reconciliation_and_provenance(tmp_path):
 
     app = create_app(audit_log_path=str(audit_file), db_path=str(db_file))
     client = TestClient(app)
+    client.post("/api/auth/demo-session", json={"profile_id": "merchant_admin"})
 
     # 1. Check initial baseline counts
     resp = client.get("/api/health")

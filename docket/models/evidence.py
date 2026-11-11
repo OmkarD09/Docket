@@ -87,6 +87,7 @@ class ShipmentRecord(BaseModel):
     source_identifier: str
     recipient_signature_present: Optional[bool] = None
     signed_by: Optional[str] = None
+    source_provenance: str = "SYNTHETIC_FIXTURE"
 
 
 class SourceType(str, Enum):
@@ -191,6 +192,7 @@ class OrderRecord(BaseModel):
     tracking_numbers: List[str] = Field(default_factory=list)
     refund_ids: List[str] = Field(default_factory=list)
     items: List[Dict[str, Any]] = Field(default_factory=list)
+    source_provenance: str = "SYNTHETIC_FIXTURE"
 
 
 class CustomerMessageRecord(BaseModel):

@@ -150,6 +150,27 @@ class AuditLogger:
             payload=event_payload,
         )
 
+        # Incremental Verification Check
+        expected_parent = self._events[-1].event_hash if self._events else "GENESIS"
+        if parent_hash != expected_parent:
+            raise AuditVerificationError(
+                f"Incremental verification failed: parent_hash '{parent_hash}' != expected '{expected_parent}'."
+            )
+
+        recomputed_hash = self._calculate_event_hash(
+            parent_hash=parent_hash,
+            event_id=event_id,
+            event_type=event_type.value,
+            timestamp_iso=now_iso,
+            dispute_id=dispute_id,
+            actor=actor,
+            payload=event_payload,
+        )
+        if event_hash != recomputed_hash:
+            raise AuditVerificationError(
+                f"Incremental verification failed: computed hash '{recomputed_hash}' != '{event_hash}'."
+            )
+
         event = AuditEvent(
             event_id=event_id,
             parent_hash=parent_hash,
@@ -203,7 +224,9 @@ class AuditLogger:
         return count
 
     def get_events(self, dispute_id: Optional[str] = None) -> List[AuditEvent]:
-        """Retrieve audit events, optionally filtered by dispute ID."""
+        """Retrieve audit events, optionally filtered by dispute ID directly from canonical repository."""
+        if self.repository:
+            return self.repository.get_audit_events(dispute_id=dispute_id)
         if dispute_id:
             return [e for e in self._events if e.dispute_id == dispute_id]
         return list(self._events)
@@ -321,9 +344,32 @@ class AuditLogger:
     def verify_chain_detailed(self) -> Dict[str, Any]:
         """Perform mathematical verification across the entire audit log, returning structured diagnostics.
 
-        Does not raise AuditVerificationError; instead captures detailed error context for telemetry and UI.
+        Prioritizes the canonical SQLite audit_events table when a repository is attached,
+        falling back to JSONL storage otherwise.
         """
         now_iso = datetime.now(timezone.utc).isoformat()
+
+        if self.repository:
+            try:
+                db_result = self.repository.verify_db_audit_chain()
+                db_result["tail_truncation_notice"] = (
+                    "Local SHA-256 hash chains guarantee interior integrity but cannot "
+                    "independently detect tail truncation without an external checkpoint."
+                )
+                return db_result
+            except Exception as e:
+                return {
+                    "is_valid": False,
+                    "total_events": len(self._events),
+                    "verified_count": 0,
+                    "failed_count": len(self._events),
+                    "last_verified_at": now_iso,
+                    "failed_event_id": None,
+                    "error_message": f"SQLite audit chain verification error: {e}",
+                    "event_verifications": [],
+                    "tail_truncation_notice": "Local SHA-256 hash chains guarantee interior integrity but cannot independently detect tail truncation without an external checkpoint.",
+                }
+
         if not self.storage_path.exists():
             return {
                 "is_valid": True,
@@ -334,6 +380,7 @@ class AuditLogger:
                 "failed_event_id": None,
                 "error_message": None,
                 "event_verifications": [],
+                "tail_truncation_notice": "Local SHA-256 hash chains guarantee interior integrity but cannot independently detect tail truncation without an external checkpoint.",
             }
 
         records: List[Dict[str, Any]] = []
@@ -450,4 +497,37 @@ class AuditLogger:
             raise AuditVerificationError(
                 f"Audit chain verification failed: {details['error_message']}"
             )
+        return True
+
+    def verify_sensitive_operation_gate(
+        self,
+        dispute_id: str,
+        approval_request: Optional[Any] = None,
+        approval_record: Optional[Any] = None,
+    ) -> bool:
+        """Gate sensitive operations (approval authorization & evidence dispatch) against audit ledger tampering.
+
+        Verifies:
+        1. Full audit chain integrity in canonical SQLite audit_events table.
+        2. Cryptographic validity and non-tampered state of approval ticket / record.
+
+        Raises:
+            AuditVerificationError: If audit chain integrity is broken or approval record is invalid.
+        """
+        details = self.verify_chain_detailed()
+        if not details.get("is_valid", False):
+            err = details.get("error_message") or "Audit chain integrity compromised"
+            failed_id = details.get("failed_event_id") or "unknown"
+            raise AuditVerificationError(
+                f"Sensitive operation blocked: audit chain verification failed at event '{failed_id}': {err}"
+            )
+
+        if approval_record:
+            has_token = bool(getattr(approval_record, "approval_token", None) or getattr(approval_record, "token", None))
+            has_id = bool(getattr(approval_record, "approval_id", None))
+            if not has_token or not has_id:
+                raise AuditVerificationError(
+                    "Sensitive operation blocked: approval record is missing valid cryptographic credentials."
+                )
+
         return True

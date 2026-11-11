@@ -7,7 +7,7 @@ webhook ingestion.
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 import hashlib
 import json
@@ -1037,4 +1037,55 @@ class DocketRepository:
                     self.save_audit_event(event, cur=cur)
                     inserted += 1
         return inserted
+
+    # ========================================================================
+    # Coordination Locks
+    # ========================================================================
+
+    def acquire_coordination_lock(
+        self,
+        lock_name: str,
+        locked_by: str,
+        ttl_seconds: int = 60,
+    ) -> bool:
+        """Atomically acquire a named coordination lock using SQLite.
+
+        Returns True if acquired, False if currently held by an active worker.
+        """
+        now = datetime.now(timezone.utc)
+        now_iso = now.isoformat()
+        expires_at = (now + timedelta(seconds=ttl_seconds)).isoformat()
+
+        with self.conn.transaction() as cur:
+            row = cur.execute(
+                "SELECT locked_by, expires_at FROM system_coordination_locks WHERE lock_name = ?",
+                (lock_name,),
+            ).fetchone()
+
+            if row:
+                current_holder = row[0]
+                current_expires = row[1]
+                # If held by another worker and not yet expired, cannot acquire
+                if current_holder != locked_by and current_expires > now_iso:
+                    return False
+
+            # Lock is either free, expired, or already held by this worker
+            cur.execute(
+                """
+                INSERT OR REPLACE INTO system_coordination_locks
+                (lock_name, locked_by, locked_at, expires_at)
+                VALUES (?, ?, ?, ?)
+                """,
+                (lock_name, locked_by, now_iso, expires_at),
+            )
+            return True
+
+    def release_coordination_lock(self, lock_name: str, locked_by: str) -> bool:
+        """Release a named coordination lock if held by the given worker."""
+        with self.conn.transaction() as cur:
+            cur.execute(
+                "DELETE FROM system_coordination_locks WHERE lock_name = ? AND locked_by = ?",
+                (lock_name, locked_by),
+            )
+            return cur.rowcount > 0
 

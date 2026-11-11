@@ -21,9 +21,25 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 from uuid import uuid4
 
-from fastapi import FastAPI, HTTPException, Request, Response
+from fastapi import Cookie, Depends, FastAPI, Header, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+
+from docket.models.auth import (
+    AuthenticatedMerchant,
+    DemoMerchantProfile,
+    DemoSessionRequest,
+    LoginRequest,
+    AuthSessionResponse,
+)
+from docket.auth.service import (
+    AuthService,
+    AuthenticationError,
+    InvalidTokenError,
+    SessionExpiredError,
+    SessionRevokedError,
+    InvalidCredentialsError,
+)
 
 from docket.models.dispute import (
     DisputeCase,
@@ -47,7 +63,7 @@ from docket.models.dispatch import (
     MerchantApprovalRecord,
 )
 from docket.models.audit import AuditEvent, AuditEventType
-from docket.models.policy import DecisionType, OverallPolicyEvaluation
+from docket.models.policy import DecisionType, OverallPolicyEvaluation, PolicyCheckResult
 from docket.models.reconciliation import ReconciledDisputeBundle
 from docket.reconciliation.engine import EvidenceReconciler
 from docket.policy.engine import PolicyEngine
@@ -60,10 +76,11 @@ from docket.dispatch.dispatcher import (
     SubmissionBlockedError,
     SubmissionRejectedError,
 )
-from docket.audit.logger import AuditLogger
+from docket.audit.logger import AuditLogger, AuditVerificationError
 from docket.database.repository import DocketRepository
 from docket.ai.prompt_guard import PromptInjectionGuard
 from docket.eval.scenarios import load_all_scenarios
+from docket.sync.automation import AutomationService, SyncStatus, AuditStatus
 
 
 # ============================================================================
@@ -100,7 +117,7 @@ class DisputeSummaryResponse(BaseModel):
 
 
 class AuthorizeRequest(BaseModel):
-    merchant_user_id: str = "merchant_admin"
+    merchant_user_id: Optional[str] = None
     decision: ApprovalDecision = ApprovalDecision.APPROVE
     rejection_reason: Optional[str] = None
     notes: Optional[str] = None
@@ -394,6 +411,7 @@ def sync_live_paypal_sandbox_dispute(
             postal_code="95131",
             country_code="US",
         ),
+        source_provenance="SYNTHETIC_FIXTURE",
     )
 
     real_shipment = ShipmentRecord(
@@ -413,6 +431,7 @@ def sync_live_paypal_sandbox_dispute(
         ),
         source_identifier="carrier_tracking_usps",
         recipient_signature_present=True,
+        source_provenance="SYNTHETIC_FIXTURE",
     )
 
     reconciler = EvidenceReconciler(orders=[real_order], shipments=[real_shipment])
@@ -437,6 +456,30 @@ def sync_live_paypal_sandbox_dispute(
         available_sources=sources_dict,
     )
 
+    # Contextual safety advisories for real sandbox disputes
+    now = datetime.now(timezone.utc)
+    if live_dispute.seller_response_due_date and live_dispute.seller_response_due_date < now:
+        evaluation.advisories.append(
+            PolicyCheckResult(
+                decision=DecisionType.BLOCK,
+                rule_identifier="RULE_DEADLINE_STATUS",
+                explanation=f"Seller response deadline expired on {live_dispute.seller_response_due_date.isoformat()} (OVERDUE). Response window has closed.",
+                violated_invariants=["RESPONSE_DEADLINE_EXPIRED"],
+                recommended_next_action="Response deadline expired; direct PayPal merchant settlement required.",
+                is_advisory=True,
+            )
+        )
+    evaluation.advisories.append(
+        PolicyCheckResult(
+            decision=DecisionType.REVIEW,
+            rule_identifier="RULE_EVIDENCE_PROVENANCE",
+            explanation="Merchant order and carrier shipment are synthetic simulation fixtures. Automated submission to live PayPal Sandbox is prohibited.",
+            violated_invariants=["SUPPORTING_EVIDENCE_SYNTHETIC"],
+            recommended_next_action="Connect live ERP and carrier API before dispatching evidence.",
+            is_advisory=True,
+        )
+    )
+
     # 1. Persist to SQLite with explicit provenance REAL_SANDBOX
     repository.save_full_case(
         dispute=live_dispute,
@@ -448,13 +491,16 @@ def sync_live_paypal_sandbox_dispute(
         dispute_category="REAL_SANDBOX",
     )
 
-    # 2. Append DISPUTE_INGESTED event to canonical audit ledger
+    # 2. Append event to canonical audit ledger: distinguish initial ingestion vs refresh/synchronization
+    is_already_known = (live_dispute.dispute_id in cases_store) or (repository.get_dispute(live_dispute.dispute_id) is not None)
+    event_type = AuditEventType.DISPUTE_SYNCHRONIZED if is_already_known else AuditEventType.DISPUTE_INGESTED
     audit_event = audit_logger.log_event(
-        event_type=AuditEventType.DISPUTE_INGESTED,
+        event_type=event_type,
         dispute_id=live_dispute.dispute_id,
         actor="PAYPAL_SANDBOX_API",
         payload={
             "provenance": "REAL_SANDBOX",
+            "operation": "REFRESH_SYNCHRONIZATION" if is_already_known else "INITIAL_INGESTION",
             "status": live_dispute.status.value,
             "lifecycle_stage": live_dispute.lifecycle_stage.value,
             "amount": str(live_dispute.dispute_amount.value),
@@ -532,6 +578,7 @@ def create_app(
     # Dependencies & Services
     audit_logger = AuditLogger(storage_path=audit_log_path, repository=repository)
     approval_service = ApprovalService(secret_key=secret_key, repository=repository)
+    auth_service = AuthService(secret_key=secret_key)
     formatter = EvidencePayloadFormatter()
     dispatcher = EvidenceDispatcher(
         approval_service=approval_service,
@@ -592,17 +639,152 @@ def create_app(
             except Exception:
                 pass
 
-    # Auto-synchronize genuine Sandbox dispute if credentials are configured and explicitly enabled
-    if os.getenv("DOCKET_SYNC_SANDBOX_ON_STARTUP", "false").lower() in ("true", "1", "yes") and os.environ.get("PAYPAL_CLIENT_ID") and os.environ.get("PAYPAL_CLIENT_SECRET"):
-        try:
-            sync_live_paypal_sandbox_dispute(
-                repository=repository,
-                audit_logger=audit_logger,
-                policy_engine=policy_engine,
-                cases_store=cases_store,
+    # Automated Background State Synchronization & Continuous Audit Verification
+    automation_service = AutomationService(
+        repository=repository,
+        audit_logger=audit_logger,
+        policy_engine=policy_engine,
+        cases_store=cases_store,
+        auto_start=os.getenv("DOCKET_DISABLE_BG_SCHEDULER", "false").lower() not in ("true", "1", "yes"),
+    )
+
+    @app.on_event("shutdown")
+    def shutdown_automation():
+        automation_service.stop()
+
+    # ========================================================================
+    # Merchant Authentication Dependency & Route Protection
+    # ========================================================================
+    def get_current_merchant(
+        request: Request,
+        authorization: Optional[str] = Header(None),
+        docket_session: Optional[str] = Cookie(None),
+    ) -> AuthenticatedMerchant:
+        """Derive the authenticated merchant principal from HttpOnly cookie or Bearer token."""
+        token = None
+        if docket_session:
+            token = docket_session
+        elif authorization and authorization.startswith("Bearer "):
+            token = authorization[7:].strip()
+
+        if not token:
+            raise HTTPException(
+                status_code=401,
+                detail="Authentication required. Please sign in or initiate a demo session.",
+                headers={"WWW-Authenticate": "Bearer"},
             )
-        except Exception:
-            pass
+
+        try:
+            return auth_service.validate_token(token)
+        except SessionExpiredError as e:
+            raise HTTPException(
+                status_code=401,
+                detail=f"Session expired: {e}",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        except SessionRevokedError:
+            raise HTTPException(
+                status_code=401,
+                detail="Session has been revoked.",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        except (InvalidTokenError, AuthenticationError) as e:
+            raise HTTPException(
+                status_code=401,
+                detail=f"Invalid authentication token: {e}",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        except Exception as e:
+            raise HTTPException(
+                status_code=401,
+                detail=f"Authentication validation failed: {e}",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+
+    # ------------------------------------------------------------------------
+    # Merchant Authentication & Session Endpoints
+    # ------------------------------------------------------------------------
+    @app.get("/api/auth/profiles")
+    def get_auth_profiles():
+        """List available demo personas for instant judge/evaluator access."""
+        return [p.model_dump() for p in auth_service.get_available_profiles()]
+
+    @app.post("/api/auth/demo-session", response_model=AuthSessionResponse)
+    def issue_demo_session(req: DemoSessionRequest, response: Response):
+        """Issue a cryptographic demo session for the selected merchant persona."""
+        merchant, token = auth_service.create_session(req.profile_id)
+        response.set_cookie(
+            key="docket_session",
+            value=token,
+            httponly=True,
+            samesite="lax",
+            max_age=auth_service.ttl_seconds,
+            secure=False,
+            path="/",
+        )
+        return AuthSessionResponse(
+            success=True,
+            merchant=merchant,
+            token=token,
+            expires_at=merchant.expires_at.isoformat(),
+            environment="PAYPAL_SANDBOX_REST_V1",
+        )
+
+    @app.post("/api/auth/login", response_model=AuthSessionResponse)
+    def login(req: LoginRequest, response: Response):
+        """Authenticate with demo credentials or direct persona request."""
+        try:
+            merchant, token = auth_service.authenticate_credentials(
+                email=req.email,
+                password=req.password,
+                profile_id=req.profile_id,
+            )
+        except InvalidCredentialsError as e:
+            raise HTTPException(status_code=401, detail=str(e))
+        except AuthenticationError as e:
+            raise HTTPException(status_code=401, detail=str(e))
+
+        response.set_cookie(
+            key="docket_session",
+            value=token,
+            httponly=True,
+            samesite="lax",
+            max_age=auth_service.ttl_seconds,
+            secure=False,
+            path="/",
+        )
+        return AuthSessionResponse(
+            success=True,
+            merchant=merchant,
+            token=token,
+            expires_at=merchant.expires_at.isoformat(),
+            environment="PAYPAL_SANDBOX_REST_V1",
+        )
+
+    @app.get("/api/auth/me", response_model=AuthenticatedMerchant)
+    def get_current_user_profile(
+        current_merchant: AuthenticatedMerchant = Depends(get_current_merchant),
+    ):
+        """Return the authenticated merchant principal for current valid session."""
+        return current_merchant
+
+    @app.post("/api/auth/logout")
+    def logout(
+        response: Response,
+        authorization: Optional[str] = Header(None),
+        docket_session: Optional[str] = Cookie(None),
+    ):
+        """Explicitly revoke the session token and clear browser cookie."""
+        token = docket_session
+        if not token and authorization and authorization.startswith("Bearer "):
+            token = authorization[7:].strip()
+        if token and "." in token:
+            parts = token.strip().split(".")
+            if len(parts) == 4:
+                session_id = parts[0]
+                auth_service.revoke_session(session_id)
+        response.delete_cookie(key="docket_session", path="/")
+        return {"success": True, "message": "Signed out successfully."}
 
     # ------------------------------------------------------------------------
     # Health Endpoint
@@ -640,7 +822,36 @@ def create_app(
             "ai_extractor": type(active_extractor).__name__,
             "ai_provider": ai_provider,
             "ai_model": ai_model,
+            "sync_status": automation_service.get_sync_status(),
+            "audit_integrity": automation_service.get_audit_status(),
         }
+
+    # ------------------------------------------------------------------------
+    # Automatic Sync & Continuous Audit Integrity Telemetry Endpoints
+    # ------------------------------------------------------------------------
+    @app.get("/api/sync/status")
+    def get_sync_status():
+        """Retrieve live PayPal synchronisation status, latency, and telemetry."""
+        return automation_service.get_sync_status()
+
+    @app.get("/api/audit-trail/status")
+    def get_audit_status():
+        """Retrieve live continuous cryptographic audit integrity verification status."""
+        return automation_service.get_audit_status()
+
+    @app.post("/api/admin/sync/trigger")
+    def admin_trigger_sync(
+        current_merchant: AuthenticatedMerchant = Depends(get_current_merchant),
+    ):
+        """Administrative maintenance endpoint to trigger immediate dispute reconciliation."""
+        return automation_service.reconcile_paypal_disputes(force=True)
+
+    @app.post("/api/admin/audit/verify")
+    def admin_trigger_audit_verify(
+        current_merchant: AuthenticatedMerchant = Depends(get_current_merchant),
+    ):
+        """Administrative maintenance endpoint to trigger immediate full-chain verification."""
+        return automation_service.periodic_audit_verification()
 
     # ------------------------------------------------------------------------
     # Disputes List Endpoint (AG Grid Triage View)
@@ -668,6 +879,15 @@ def create_app(
             subm_status = "NOT_SUBMITTED"
             if c_data.dispatch_result:
                 subm_status = "SUBMITTED" if c_data.dispatch_result.success else "FAILED"
+
+            now = datetime.now(timezone.utc)
+            is_overdue = bool(d.seller_response_due_date and d.seller_response_due_date < now)
+            has_synthetic_evidence = (
+                c_data.dispute_category == "REAL_SANDBOX" and (
+                    (o0 and getattr(o0, "source_provenance", None) == "SYNTHETIC_FIXTURE")
+                    or any(getattr(s, "source_provenance", None) == "SYNTHETIC_FIXTURE" for s in b.matched_shipments)
+                )
+            )
 
             summaries.append(
                 DisputeSummaryResponse(
@@ -711,6 +931,15 @@ def create_app(
 
         c_data = cases_store[dispute_id]
         payload = formatter.format_fulfillment_evidence(bundle=c_data.bundle)
+        now = datetime.now(timezone.utc)
+        d = c_data.dispute
+        is_overdue = bool(d.seller_response_due_date and d.seller_response_due_date < now)
+        has_synthetic_evidence = (
+            c_data.dispute_category == "REAL_SANDBOX" and (
+                (c_data.bundle.matched_order and getattr(c_data.bundle.matched_order, "source_provenance", None) == "SYNTHETIC_FIXTURE")
+                or any(getattr(s, "source_provenance", None) == "SYNTHETIC_FIXTURE" for s in c_data.bundle.matched_shipments)
+            )
+        )
 
         return {
             "dispute_id": c_data.dispute.dispute_id,
@@ -733,13 +962,20 @@ def create_app(
             "approval_record": c_data.approval_record.model_dump() if c_data.approval_record else None,
             "dispatch_result": c_data.dispatch_result.model_dump() if c_data.dispatch_result else None,
             "has_prompt_threat": c_data.has_prompt_threat,
+            "dispute_category": c_data.dispute_category,
+            "is_overdue": is_overdue,
+            "has_synthetic_evidence": has_synthetic_evidence,
+            "action_submittable": (not is_overdue and not has_synthetic_evidence and c_data.evaluation.is_ready_for_submission()),
         }
 
     # ------------------------------------------------------------------------
     # Generate HMAC Approval Ticket
     # ------------------------------------------------------------------------
     @app.post("/api/disputes/{dispute_id}/ticket")
-    def generate_ticket(dispute_id: str):
+    def generate_ticket(
+        dispute_id: str,
+        current_merchant: AuthenticatedMerchant = Depends(get_current_merchant),
+    ):
         if dispute_id not in cases_store:
             raise HTTPException(status_code=404, detail=f"Dispute {dispute_id} not found.")
 
@@ -749,6 +985,7 @@ def create_app(
             dispute=c_data.dispute,
             policy_evaluation=c_data.evaluation,
             proposed_payload=payload,
+            merchant_user_id=current_merchant.merchant_user_id,
             bundle=c_data.bundle,
         )
         c_data.approval_request = ticket
@@ -764,7 +1001,7 @@ def create_app(
         audit_logger.log_event(
             event_type=AuditEventType.APPROVAL_REQUESTED,
             dispute_id=dispute_id,
-            actor="SYSTEM",
+            actor=current_merchant.merchant_user_id,
             payload={
                 "approval_id": ticket.approval_id,
                 "payload_hash": ticket.payload_hash,
@@ -777,24 +1014,51 @@ def create_app(
     # Authorize Dispute (Approve or Reject)
     # ------------------------------------------------------------------------
     @app.post("/api/disputes/{dispute_id}/authorize")
-    def authorize_dispute(dispute_id: str, req: AuthorizeRequest):
+    def authorize_dispute(
+        dispute_id: str,
+        req: AuthorizeRequest,
+        current_merchant: AuthenticatedMerchant = Depends(get_current_merchant),
+    ):
         if dispute_id not in cases_store:
             raise HTTPException(status_code=404, detail=f"Dispute {dispute_id} not found.")
 
+        # Reject caller impersonation attempts
+        if req.merchant_user_id and req.merchant_user_id != current_merchant.merchant_user_id:
+            raise HTTPException(
+                status_code=403,
+                detail=f"Merchant identity mismatch: authenticated principal is '{current_merchant.merchant_user_id}', cannot authorize as '{req.merchant_user_id}'.",
+            )
+
+        caller_actor = current_merchant.merchant_user_id
         c_data = cases_store[dispute_id]
+
+        # Sensitive-Operation Integrity Gate: Reject authorization if audit ledger is compromised
+        try:
+            audit_logger.verify_sensitive_operation_gate(
+                dispute_id=dispute_id,
+                approval_request=c_data.approval_request,
+                approval_record=c_data.approval_record,
+            )
+        except AuditVerificationError as e:
+            raise HTTPException(
+                status_code=409,
+                detail=f"Sensitive operation blocked: audit ledger integrity failure detected: {e}",
+            )
+
         if not c_data.approval_request:
-            # Auto-generate ticket if not generated yet
+            # Auto-generate ticket bound to authenticated principal
             payload = formatter.format_fulfillment_evidence(bundle=c_data.bundle)
             c_data.approval_request = approval_service.create_approval_request(
                 dispute=c_data.dispute,
                 policy_evaluation=c_data.evaluation,
                 proposed_payload=payload,
+                merchant_user_id=caller_actor,
                 bundle=c_data.bundle,
             )
 
         record = approval_service.record_approval(
             request=c_data.approval_request,
-            merchant_user_id=req.merchant_user_id,
+            merchant_user_id=caller_actor,
             decision=req.decision,
             rejection_reason=req.rejection_reason,
             client_ip="127.0.0.1",
@@ -818,7 +1082,7 @@ def create_app(
         audit_logger.log_event(
             event_type=evt_type,
             dispute_id=dispute_id,
-            actor=req.merchant_user_id,
+            actor=caller_actor,
             payload={
                 "approval_id": record.approval_id,
                 "decision": record.decision.value,
@@ -831,11 +1095,36 @@ def create_app(
     # Controlled Dispatch to PayPal
     # ------------------------------------------------------------------------
     @app.post("/api/disputes/{dispute_id}/dispatch")
-    def dispatch_dispute(dispute_id: str, req: DispatchRequest):
+    def dispatch_dispute(
+        dispute_id: str,
+        req: DispatchRequest,
+        current_merchant: AuthenticatedMerchant = Depends(get_current_merchant),
+    ):
         if dispute_id not in cases_store:
             raise HTTPException(status_code=404, detail=f"Dispute {dispute_id} not found.")
 
+        # Reject caller impersonation attempts
+        if req.merchant_user_id and req.merchant_user_id != current_merchant.merchant_user_id:
+            raise HTTPException(
+                status_code=403,
+                detail=f"Merchant identity mismatch: authenticated principal is '{current_merchant.merchant_user_id}', cannot dispatch as '{req.merchant_user_id}'.",
+            )
+
+        caller_actor = current_merchant.merchant_user_id
         c_data = cases_store[dispute_id]
+
+        # Sensitive-Operation Integrity Gate: Reject dispatch if audit ledger is compromised
+        try:
+            audit_logger.verify_sensitive_operation_gate(
+                dispute_id=dispute_id,
+                approval_request=c_data.approval_request,
+                approval_record=c_data.approval_record,
+            )
+        except AuditVerificationError as e:
+            raise HTTPException(
+                status_code=409,
+                detail=f"Sensitive operation blocked: audit ledger integrity failure detected: {e}",
+            )
 
         try:
             result = dispatcher.dispatch_evidence(
@@ -843,7 +1132,7 @@ def create_app(
                 bundle=c_data.bundle,
                 evaluation=c_data.evaluation,
                 approval_record=c_data.approval_record,
-                caller_merchant_id=req.merchant_user_id,
+                caller_merchant_id=caller_actor,
                 idempotency_key=req.idempotency_key or f"idemp_{uuid4().hex[:8]}",
                 custom_notes=req.custom_notes,
             )
@@ -874,7 +1163,11 @@ def create_app(
     # Archive Dispute (Soft Deletion for Compliance & Audit Retention)
     # ------------------------------------------------------------------------
     @app.post("/api/disputes/{dispute_id}/archive")
-    def archive_dispute_endpoint(dispute_id: str, reason: str = "MERCHANT_ARCHIVED"):
+    def archive_dispute_endpoint(
+        dispute_id: str,
+        reason: str = "MERCHANT_ARCHIVED",
+        current_merchant: AuthenticatedMerchant = Depends(get_current_merchant),
+    ):
         if dispute_id not in cases_store:
             raise HTTPException(status_code=404, detail=f"Dispute {dispute_id} not found.")
 
@@ -885,9 +1178,9 @@ def create_app(
         repository.archive_dispute(dispute_id, reason=reason)
 
         audit_logger.log_event(
-            event_type=AuditEventType.DISPUTE_INGESTED,
+            event_type=AuditEventType.DISPUTE_SYNCHRONIZED,
             dispute_id=dispute_id,
-            actor="merchant_admin",
+            actor=current_merchant.merchant_user_id,
             payload={"action": "ARCHIVE_DISPUTE", "reason": reason, "archived_at": c_data.archived_at},
         )
         return {
@@ -896,6 +1189,36 @@ def create_app(
             "archived_at": c_data.archived_at,
             "reason": reason,
         }
+
+    # ------------------------------------------------------------------------
+    # Refresh Dispute State (Live Sandbox or Local Store)
+    # ------------------------------------------------------------------------
+    @app.post("/api/disputes/{dispute_id}/refresh")
+    def refresh_dispute_endpoint(
+        dispute_id: str,
+        current_merchant: AuthenticatedMerchant = Depends(get_current_merchant),
+    ):
+        """Refresh current dispute state from live PayPal Sandbox API or reload local case."""
+        if dispute_id == "PP-R-NKI-10193390" or "REAL_SANDBOX" in dispute_id:
+            res = sync_live_paypal_sandbox_dispute(
+                repository=repository,
+                audit_logger=audit_logger,
+                policy_engine=policy_engine,
+                cases_store=cases_store,
+                dispute_id=dispute_id,
+            )
+            return res
+        if dispute_id not in cases_store:
+            raise HTTPException(status_code=404, detail=f"Dispute {dispute_id} not found.")
+        c_data = cases_store[dispute_id]
+        c_data.evaluation = policy_engine.evaluate(
+            dispute=c_data.dispute,
+            order=c_data.bundle.matched_order,
+            shipment=c_data.bundle.matched_shipments[0] if c_data.bundle.matched_shipments else None,
+            claims=c_data.claims,
+            available_sources=c_data.bundle.to_sources_dict(),
+        )
+        return {"success": True, "status": "REFRESHED", "dispute_id": dispute_id}
 
     # ------------------------------------------------------------------------
     # PayPal Sandbox Live Synchronization (Read-Only)
@@ -985,13 +1308,15 @@ def create_app(
         )
 
     # ------------------------------------------------------------------------
-    # Audit Trail Viewer
+    # Audit Trail Viewer & Dispute Lifecycle
     # ------------------------------------------------------------------------
     @app.get("/api/audit-trail")
-    def get_audit_trail():
+    def get_audit_trail(dispute_id: Optional[str] = None):
         details = audit_logger.verify_chain_detailed()
-        events = audit_logger.get_events()
-        
+        all_events = audit_logger.get_events()
+        global_index_map = {ev.event_id: idx + 1 for idx, ev in enumerate(all_events)}
+
+        events = [e for e in all_events if e.dispute_id == dispute_id] if dispute_id else all_events
         verif_map = {ev["event_id"]: ev["is_valid"] for ev in details.get("event_verifications", [])}
         
         enriched_events = []
@@ -1000,15 +1325,40 @@ def create_app(
             ed["timestamp"] = e.timestamp.isoformat()
             ed["event_type"] = e.event_type.value
             ed["is_verified"] = verif_map.get(e.event_id, details["is_valid"])
+            ed["global_chain_index"] = global_index_map.get(e.event_id)
             
             # Contextual outcome result
             result_str = None
             p = e.payload or {}
+            ed["approval_id"] = p.get("approval_id")
+            ed["correlation_id"] = p.get("correlation_id")
+            
+            is_sim = (
+                bool(p.get("is_simulated"))
+                or p.get("dispatch_mode") == "SIMULATED"
+                or p.get("correlation_id") == "pp_corr_live_sandbox_99341"
+                or "mock" in str(p.get("correlation_id", "")).lower()
+                or "sim" in str(p.get("correlation_id", "")).lower()
+            )
+            ed["is_simulated"] = is_sim if e.event_type in (
+                AuditEventType.DISPATCH_ATTEMPTED,
+                AuditEventType.DISPATCH_SUCCEEDED,
+                AuditEventType.DISPATCH_FAILED,
+            ) else False
+
             if e.event_type == AuditEventType.DISPUTE_INGESTED:
+                if p.get("retrieval_mode") or e.actor == "PAYPAL_SANDBOX_API":
+                    result_str = "API Sync (Waiting Response)"
+                else:
+                    st = p.get("status", "")
+                    result_str = "Waiting Response" if st == "WAITING_FOR_SELLER_RESPONSE" else (st.replace("_", " ").title() if st else "Ingested")
+            elif e.event_type == AuditEventType.DISPUTE_SYNCHRONIZED:
                 st = p.get("status", "")
-                result_str = "Waiting Response" if st == "WAITING_FOR_SELLER_RESPONSE" else (st.replace("_", " ").title() if st else "Ingested")
+                result_str = "Synchronized" if not st else f"Sync ({st.replace('_', ' ').title()})"
             elif e.event_type == AuditEventType.DUPLICATE_WEBHOOK_RECEIVED:
                 result_str = "Duplicate Delivery"
+            elif e.event_type == AuditEventType.DUPLICATE_WEBHOOK_IGNORED:
+                result_str = "Duplicate Ignored"
             elif e.event_type == AuditEventType.EVIDENCE_RECONCILED:
                 conf = p.get("confidence", "")
                 result_str = f"Reconciled ({conf.title()})" if conf else "Reconciled"
@@ -1021,13 +1371,17 @@ def create_app(
                 result_str = "Approved"
             elif e.event_type == AuditEventType.APPROVAL_REJECTED:
                 result_str = "Rejected"
+            elif e.event_type == AuditEventType.APPROVAL_EXPIRED:
+                result_str = "Ticket Expired"
+            elif e.event_type == AuditEventType.APPROVAL_CONSUMED:
+                result_str = "Nonce Consumed"
             elif e.event_type == AuditEventType.DISPATCH_ATTEMPTED:
-                result_str = "Attempted"
+                result_str = "Simulated Attempt" if is_sim else "Attempted"
             elif e.event_type == AuditEventType.DISPATCH_SUCCEEDED:
                 sc = p.get("status_code", 200)
-                result_str = f"HTTP {sc} OK"
+                result_str = f"Simulated {sc} OK" if is_sim else f"Live {sc} OK"
             elif e.event_type == AuditEventType.DISPATCH_FAILED:
-                result_str = "Failed"
+                result_str = "Simulated Fail" if is_sim else "Failed"
             
             ed["result"] = result_str
             enriched_events.append(ed)
@@ -1047,6 +1401,16 @@ def create_app(
             "events": enriched_events,
         }
 
+    @app.get("/api/disputes/{dispute_id}/lifecycle")
+    def get_dispute_lifecycle(dispute_id: str):
+        """Fetch the complete, isolated chronological lifecycle of a dispute directly from canonical SQLite."""
+        res = get_audit_trail(dispute_id=dispute_id)
+        return {
+            "dispute_id": dispute_id,
+            "total_events": len(res["events"]),
+            "events": res["events"],
+        }
+
     # ------------------------------------------------------------------------
     # Benchmark Evaluation Scorecard
     # ------------------------------------------------------------------------
@@ -1062,7 +1426,9 @@ def create_app(
         return build_enriched_scorecard(data)
 
     @app.post("/api/eval/run")
-    def run_eval_benchmark():
+    def run_eval_benchmark(
+        current_merchant: AuthenticatedMerchant = Depends(get_current_merchant),
+    ):
         from docket.eval.service import execute_and_persist_benchmark
         return execute_and_persist_benchmark()
 

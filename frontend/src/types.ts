@@ -46,6 +46,7 @@ export interface OrderRecord {
   customer_email?: string;
   customer_name?: string;
   shipping_address?: Address;
+  source_provenance?: string;
 }
 
 export interface ShipmentRecord {
@@ -58,6 +59,7 @@ export interface ShipmentRecord {
   shipment_address?: Address;
   source_identifier: string;
   recipient_signature_present?: boolean;
+  source_provenance?: string;
 }
 
 export interface SourceCitation {
@@ -145,6 +147,10 @@ export interface DisputeDetail {
   approval_record?: MerchantApprovalRecord | null;
   dispatch_result?: DispatchResult | null;
   has_prompt_threat: boolean;
+  dispute_category?: string;
+  is_overdue?: boolean;
+  has_synthetic_evidence?: boolean;
+  action_submittable?: boolean;
 }
 
 export interface AuditEventItem {
@@ -158,6 +164,10 @@ export interface AuditEventItem {
   payload: any;
   is_verified?: boolean;
   result?: string;
+  global_chain_index?: number;
+  approval_id?: string;
+  correlation_id?: string;
+  is_simulated?: boolean;
 }
 
 export interface AuditTrailVerificationDetails {
@@ -185,6 +195,9 @@ export interface ScenarioInputEvidence {
   tracking_number?: string | null;
   customer_message?: string | null;
   refund_record?: string | null;
+  shipping_address?: string | null;
+  recipient_signature_present?: boolean | null;
+  source_provenance?: string | null;
   raw_json?: any;
 }
 
@@ -259,3 +272,57 @@ export interface EvalScorecardData {
   rule_performance?: RulePerformanceItem[];
   results: EvalScenarioResult[];
 }
+
+export interface AuthenticatedMerchant {
+  merchant_user_id: string;
+  email: string;
+  display_name: string;
+  role: string;
+  session_id: string;
+  issued_at: string;
+  expires_at: string;
+}
+
+export interface DemoMerchantProfile {
+  profile_id: string;
+  merchant_user_id: string;
+  email: string;
+  display_name: string;
+  role: string;
+  description: string;
+}
+
+export interface AuthSessionResponse {
+  success: boolean;
+  merchant: AuthenticatedMerchant;
+  token: string;
+  expires_at: string;
+  environment: string;
+}
+
+export type SyncState = 'CONNECTED' | 'SYNCING' | 'UP_TO_DATE' | 'DELAYED' | 'FAILED';
+
+export interface SyncStatusData {
+  status: SyncState;
+  last_successful_sync: string | null;
+  last_attempted_sync: string | null;
+  reconciled_records: number;
+  error_summary: string | null;
+  consecutive_failures: number;
+  environment: string;
+  interval_seconds: number;
+}
+
+export type AuditState = 'VERIFIED' | 'VERIFYING' | 'INTEGRITY_WARNING' | 'VERIFICATION_FAILED';
+
+export interface AuditStatusData {
+  status: AuditState;
+  last_verified_at: string | null;
+  total_events: number;
+  verified_events: number;
+  failed_events: number;
+  error_details: string | null;
+  tail_truncation_notice: string;
+  interval_seconds: number;
+}
+

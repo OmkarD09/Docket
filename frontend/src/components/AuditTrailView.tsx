@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   ShieldCheck,
   AlertOctagon,
-  RefreshCw,
   Search,
   Copy,
   Check,
@@ -12,6 +11,12 @@ import {
   ExternalLink,
   Lock,
   Filter,
+  Calendar,
+  Ticket,
+  Link2,
+  ChevronDown,
+  ChevronUp,
+  Layers,
 } from 'lucide-react';
 import type { AuditEventItem, AuditTrailResponse, AuditTrailVerificationDetails } from '../types';
 
@@ -51,8 +56,12 @@ function getEventTypeLabel(eventType: string): string {
   switch (eventType) {
     case 'DISPUTE_INGESTED':
       return 'Dispute Ingested';
+    case 'DISPUTE_SYNCHRONIZED':
+      return 'Dispute Synchronized';
     case 'DUPLICATE_WEBHOOK_RECEIVED':
       return 'Duplicate Webhook';
+    case 'DUPLICATE_WEBHOOK_IGNORED':
+      return 'Duplicate Ignored';
     case 'EVIDENCE_RECONCILED':
       return 'Evidence Reconciled';
     case 'POLICY_EVALUATED':
@@ -63,6 +72,10 @@ function getEventTypeLabel(eventType: string): string {
       return 'Approval Granted';
     case 'APPROVAL_REJECTED':
       return 'Approval Rejected';
+    case 'APPROVAL_EXPIRED':
+      return 'Approval Expired';
+    case 'APPROVAL_CONSUMED':
+      return 'Approval Consumed';
     case 'DISPATCH_ATTEMPTED':
       return 'Dispatch Attempted';
     case 'DISPATCH_SUCCEEDED':
@@ -83,6 +96,10 @@ function getActorLabel(actor: string): string {
       return 'PayPal Webhook';
     case 'SYSTEM':
       return 'Docket Engine';
+    case 'PAYPAL_SANDBOX_API':
+      return 'PayPal Sandbox API';
+    case 'APPROVAL_GATE':
+      return 'Approval Gate';
     case 'MERCHANT_OPERATOR':
       return 'Merchant Operator';
     case 'POLICY_ENGINE':
@@ -109,11 +126,16 @@ function getEventTypeBadgeClass(eventType: string): string {
       return 'badge-allow';
     case 'DISPATCH_FAILED':
     case 'APPROVAL_REJECTED':
+    case 'APPROVAL_EXPIRED':
       return 'badge-block';
     case 'APPROVAL_REQUESTED':
       return 'badge-review';
     case 'DUPLICATE_WEBHOOK_RECEIVED':
+    case 'DUPLICATE_WEBHOOK_IGNORED':
+    case 'APPROVAL_CONSUMED':
       return 'badge-neutral';
+    case 'DISPUTE_SYNCHRONIZED':
+      return 'badge-signal';
     default:
       return 'badge-signal';
   }
@@ -125,19 +147,63 @@ function getEventTypeBadgeClass(eventType: string): string {
 function getResultBadgeClass(result?: string): string {
   if (!result) return 'badge-neutral';
   const upper = result.toUpperCase();
-  if (upper.includes('ALLOW') || upper.includes('APPROVED') || upper.includes('200 OK')) {
-    return 'badge-allow';
-  }
-  if (upper.includes('REVIEW') || upper.includes('WAITING') || upper.includes('TICKET')) {
+  if (upper.includes('SIMULATED')) {
     return 'badge-review';
   }
-  if (upper.includes('BLOCK') || upper.includes('REJECTED') || upper.includes('FAILED')) {
+  if (upper.includes('ALLOW') || upper.includes('APPROVED') || upper.includes('LIVE 200') || upper.includes('200 OK')) {
+    return 'badge-allow';
+  }
+  if (upper.includes('REVIEW') || upper.includes('WAITING') || upper.includes('TICKET') || upper.includes('SYNC')) {
+    return 'badge-review';
+  }
+  if (upper.includes('BLOCK') || upper.includes('REJECTED') || upper.includes('FAILED') || upper.includes('EXPIRED')) {
     return 'badge-block';
   }
-  if (upper.includes('DUPLICATE')) {
+  if (upper.includes('DUPLICATE') || upper.includes('CONSUMED')) {
     return 'badge-neutral';
   }
   return 'badge-signal';
+}
+
+function getEventDateKey(isoString: string): string {
+  try {
+    const d = new Date(isoString);
+    if (isNaN(d.getTime())) return 'Unknown Date';
+    return new Intl.DateTimeFormat('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    }).format(d);
+  } catch {
+    return 'Unknown Date';
+  }
+}
+
+function getEventTimeStr(isoString: string): string {
+  try {
+    const d = new Date(isoString);
+    if (isNaN(d.getTime())) return isoString;
+    return new Intl.DateTimeFormat('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    })
+      .format(d)
+      .replace(/\b(am|pm)\b/g, (m) => m.toUpperCase());
+  } catch {
+    return isoString;
+  }
+}
+
+function getEventUtcTooltip(isoString: string): string {
+  try {
+    const d = new Date(isoString);
+    if (isNaN(d.getTime())) return isoString;
+    return `UTC Timestamp: ${d.toISOString()}`;
+  } catch {
+    return isoString;
+  }
 }
 
 export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDispute }) => {
@@ -148,7 +214,6 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
   const [chainIntact, setChainIntact] = useState<boolean>(true);
   const [lastVerifiedAt, setLastVerifiedAt] = useState<string>('');
   const [verificationDetails, setVerificationDetails] = useState<AuditTrailVerificationDetails | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
 
   // Selection & Copy state
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
@@ -161,7 +226,6 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
   const [verificationFilter, setVerificationFilter] = useState<string>('ALL');
 
   const fetchAuditTrail = useCallback(async () => {
-    setLoading(true);
     try {
       const resp = await fetch('/api/audit-trail');
       if (resp.ok) {
@@ -181,8 +245,6 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
       }
     } catch (err) {
       console.error('Failed to fetch audit trail:', err);
-    } finally {
-      setLoading(false);
     }
   }, [selectedEventId]);
 
@@ -271,11 +333,231 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
     }
   };
 
-  // Related events for the same dispute
-  const relatedDisputeEvents = useMemo(() => {
-    if (!selectedEvent || !selectedEvent.dispute_id) return [];
-    return events.filter((e) => e.dispute_id === selectedEvent.dispute_id);
-  }, [events, selectedEvent]);
+  // Dedicated lifecycle state fetched directly from canonical SQLite
+  const [lifecycleEvents, setLifecycleEvents] = useState<AuditEventItem[]>([]);
+  const [lifecycleLoading, setLifecycleLoading] = useState<boolean>(false);
+  const [groupRepeated, setGroupRepeated] = useState<boolean>(true);
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
+
+  const activeDisputeId = selectedEvent?.dispute_id;
+
+  useEffect(() => {
+    if (!activeDisputeId) {
+      setLifecycleEvents([]);
+      return;
+    }
+
+    let isCancelled = false;
+    setLifecycleLoading(true);
+
+    fetch(`/api/disputes/${activeDisputeId}/lifecycle`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!isCancelled && data && Array.isArray(data.events)) {
+          setLifecycleEvents(data.events);
+        } else if (!isCancelled) {
+          const fallback = events.filter((e) => e.dispute_id === activeDisputeId);
+          setLifecycleEvents(fallback);
+        }
+      })
+      .catch(() => {
+        if (!isCancelled) {
+          const fallback = events.filter((e) => e.dispute_id === activeDisputeId);
+          setLifecycleEvents(fallback);
+        }
+      })
+      .finally(() => {
+        if (!isCancelled) {
+          setLifecycleLoading(false);
+        }
+      });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [activeDisputeId, events]);
+
+  type LifecycleItem =
+    | { type: 'single'; event: AuditEventItem }
+    | {
+        type: 'group';
+        id: string;
+        eventType: string;
+        actor: string;
+        events: AuditEventItem[];
+        firstTimestamp: string;
+        lastTimestamp: string;
+      };
+
+  interface DateSection {
+    dateKey: string;
+    items: LifecycleItem[];
+  }
+
+  const dateSections = useMemo<DateSection[]>(() => {
+    if (!lifecycleEvents.length) return [];
+
+    const map = new Map<string, AuditEventItem[]>();
+    for (const evt of lifecycleEvents) {
+      const dk = getEventDateKey(evt.timestamp);
+      if (!map.has(dk)) {
+        map.set(dk, []);
+      }
+      map.get(dk)!.push(evt);
+    }
+
+    const sections: DateSection[] = [];
+
+    for (const [dateKey, dayEvents] of map.entries()) {
+      if (!groupRepeated) {
+        sections.push({
+          dateKey,
+          items: dayEvents.map((e) => ({ type: 'single', event: e })),
+        });
+        continue;
+      }
+
+      const items: LifecycleItem[] = [];
+      let i = 0;
+      while (i < dayEvents.length) {
+        const curr = dayEvents[i];
+        let j = i + 1;
+        while (
+          j < dayEvents.length &&
+          dayEvents[j].event_type === curr.event_type &&
+          dayEvents[j].actor === curr.actor &&
+          !curr.event_type.startsWith('APPROVAL_') &&
+          !curr.event_type.startsWith('DISPATCH_')
+        ) {
+          j++;
+        }
+
+        const runCount = j - i;
+        if (runCount >= 2) {
+          const groupEvents = dayEvents.slice(i, j);
+          const groupId = `grp_${curr.event_id}_${runCount}`;
+          items.push({
+            type: 'group',
+            id: groupId,
+            eventType: curr.event_type,
+            actor: curr.actor,
+            events: groupEvents,
+            firstTimestamp: curr.timestamp,
+            lastTimestamp: groupEvents[groupEvents.length - 1].timestamp,
+          });
+          i = j;
+        } else {
+          items.push({ type: 'single', event: curr });
+          i++;
+        }
+      }
+
+      sections.push({ dateKey, items });
+    }
+
+    return sections;
+  }, [lifecycleEvents, groupRepeated]);
+
+  const renderTimelineEventItem = (rEvt: AuditEventItem) => {
+    const isActive = rEvt.event_id === selectedEventId;
+    const isSim = rEvt.is_simulated || (rEvt.result && rEvt.result.includes('Simulated'));
+
+    return (
+      <div
+        key={rEvt.event_id}
+        className={`audit-timeline-item ${isActive ? 'active' : ''}`}
+        onClick={() => setSelectedEventId(rEvt.event_id)}
+        title={getEventUtcTooltip(rEvt.timestamp)}
+      >
+        <div className="audit-timeline-dot" />
+
+        {/* Top row: Badges + Timestamp */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', flexWrap: 'wrap' }}>
+            <span
+              className={`badge ${getEventTypeBadgeClass(rEvt.event_type)}`}
+              style={{ fontSize: '10px' }}
+            >
+              {getEventTypeLabel(rEvt.event_type)}
+            </span>
+
+            {/* Approval ticket ID connection */}
+            {rEvt.approval_id && (
+              <span
+                className="timeline-ticket-pill"
+                title={`Approval Ticket ID: ${rEvt.approval_id}`}
+              >
+                <Ticket size={9} />
+                <span>{rEvt.approval_id.slice(0, 11)}</span>
+              </span>
+            )}
+
+            {/* Dispatch Correlation ID */}
+            {rEvt.correlation_id && (
+              <span
+                className="timeline-corr-pill"
+                title={`PayPal Debug Correlation ID: ${rEvt.correlation_id}`}
+              >
+                <Link2 size={9} />
+                <span>{rEvt.correlation_id.slice(0, 16)}...</span>
+              </span>
+            )}
+
+            {/* Simulation marker */}
+            {isSim && (
+              <span
+                className="badge badge-neutral"
+                style={{
+                  fontSize: '9px',
+                  padding: '1px 5px',
+                  backgroundColor: '#fffbeb',
+                  color: '#92400e',
+                  border: '1px solid #fde68a',
+                  fontWeight: 600,
+                }}
+                title="Simulated test dispatch verification — No live PayPal mutation occurred"
+              >
+                Simulation
+              </span>
+            )}
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
+            <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>
+              {getEventTimeStr(rEvt.timestamp)}
+            </span>
+          </div>
+        </div>
+
+        {/* Bottom row: Actor + Result + Chain Index */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginTop: '3px',
+            fontSize: '11px',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ color: 'var(--text-secondary)' }}>{getActorLabel(rEvt.actor)}</span>
+            {rEvt.global_chain_index && (
+              <span className="timeline-chain-index" title="Position in global SHA-256 audit chain">
+                Chain #{rEvt.global_chain_index}
+              </span>
+            )}
+          </div>
+
+          <span
+            className={`badge ${getResultBadgeClass(rEvt.result)}`}
+            style={{ fontSize: '9.5px', padding: '1px 5px' }}
+          >
+            {rEvt.result || 'Logged'}
+          </span>
+        </div>
+      </div>
+    );
+  };
 
   // Clear all active filters
   const hasActiveFilters =
@@ -301,7 +583,7 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
               Cryptographic Audit Ledger
             </div>
             <div className="audit-subtitle">
-              Immutable append-only audit trail with deterministic SHA-256 parent-hash chaining and tamper detection.
+              Tamper-evident SHA-256 hash-chained audit trail with forward verification and event-level tamper detection.
             </div>
           </div>
 
@@ -351,17 +633,33 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
               </div>
             )}
 
-            {/* Refresh Action */}
-            <button
-              className="btn btn-secondary"
-              onClick={fetchAuditTrail}
-              disabled={loading}
-              style={{ height: '28px', fontSize: '11px', padding: '3px 9px', gap: '5px' }}
-              title="Re-verify entire SHA-256 cryptographic hash chain"
+            {/* Continuous Autonomous Verification Badge */}
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '4px 10px',
+                borderRadius: '5px',
+                fontSize: '11px',
+                fontWeight: 500,
+                backgroundColor: 'var(--bg-subtle)',
+                border: '1px solid var(--border-subtle)',
+                color: 'var(--text-secondary)',
+              }}
+              title="Continuous verification runs automatically on every transaction event and periodic background cycle."
             >
-              <RefreshCw size={11} className={loading ? 'spin' : ''} />
-              <span>Verify Chain</span>
-            </button>
+              <span
+                style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  backgroundColor: '#059669',
+                  boxShadow: '0 0 0 2px rgba(5, 150, 105, 0.2)',
+                }}
+              />
+              <span>Continuous Verification Active</span>
+            </div>
           </div>
         </div>
 
@@ -370,7 +668,7 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
           <div className="audit-metric-card">
             <span className="audit-metric-label">Total Ledger Events</span>
             <span className="audit-metric-val">{totalEvents}</span>
-            <span className="audit-metric-subtext">Immutable append-only records</span>
+            <span className="audit-metric-subtext">Tamper-evident hash-chained records</span>
           </div>
 
           <div className="audit-metric-card">
@@ -430,7 +728,9 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
           >
             <option value="ALL">All Event Types</option>
             <option value="DISPUTE_INGESTED">Dispute Ingested</option>
+            <option value="DISPUTE_SYNCHRONIZED">Dispute Synchronized</option>
             <option value="DUPLICATE_WEBHOOK_RECEIVED">Duplicate Webhook</option>
+            <option value="DUPLICATE_WEBHOOK_IGNORED">Duplicate Ignored</option>
             <option value="EVIDENCE_RECONCILED">Evidence Reconciled</option>
             <option value="POLICY_EVALUATED">Policy Evaluated</option>
             <option value="APPROVAL_REQUESTED">Approval Requested</option>
@@ -917,57 +1217,127 @@ export const AuditTrailView: React.FC<AuditTrailViewProps> = ({ onNavigateToDisp
 
               {/* Section: Related Dispute Timeline */}
               <div className="panel-card">
-                <div className="panel-card-header">
-                  <span className="panel-card-title">Related Dispute Lifecycle</span>
-                  <span className="badge badge-neutral" style={{ fontSize: '10.5px' }}>
-                    {relatedDisputeEvents.length} Event{relatedDisputeEvents.length > 1 ? 's' : ''}
-                  </span>
+                <div
+                  className="panel-card-header"
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span className="panel-card-title">Related Dispute Lifecycle</span>
+                    <span className="badge badge-neutral" style={{ fontSize: '10.5px' }}>
+                      {lifecycleEvents.length} Event{lifecycleEvents.length !== 1 ? 's' : ''}
+                    </span>
+                  </div>
+
+                  {lifecycleEvents.length > 2 && (
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => setGroupRepeated(!groupRepeated)}
+                      style={{ height: '22px', fontSize: '10px', padding: '1px 7px', gap: '4px' }}
+                      title={groupRepeated ? 'Show every event individually' : 'Group repeated consecutive operations'}
+                    >
+                      <Layers size={10} />
+                      <span>{groupRepeated ? 'Show All' : 'Group Similar'}</span>
+                    </button>
+                  )}
                 </div>
+
                 <div className="panel-card-body">
-                  <div style={{ fontSize: '11.5px', color: 'var(--text-muted)', marginBottom: '8px' }}>
-                    Audit lifecycle for <strong className="font-mono">{selectedEvent.dispute_id}</strong>:
+                  <div
+                    style={{
+                      fontSize: '11.5px',
+                      color: 'var(--text-muted)',
+                      marginBottom: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <span>
+                      Operational timeline for{' '}
+                      <strong className="font-mono" style={{ color: 'var(--signal-blue)' }}>
+                        {selectedEvent.dispute_id}
+                      </strong>
+                      :
+                    </span>
+                    {lifecycleLoading && (
+                      <span style={{ fontSize: '10.5px', color: 'var(--text-muted)' }}>Refreshing...</span>
+                    )}
                   </div>
 
-                  <div className="audit-timeline">
-                    {relatedDisputeEvents.map((rEvt) => {
-                      const isActive = rEvt.event_id === selectedEvent.event_id;
-                      return (
-                        <div
-                          key={rEvt.event_id}
-                          className={`audit-timeline-item ${isActive ? 'active' : ''}`}
-                          onClick={() => setSelectedEventId(rEvt.event_id)}
-                        >
-                          <div className="audit-timeline-dot" />
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <span className={`badge ${getEventTypeBadgeClass(rEvt.event_type)}`} style={{ fontSize: '10px' }}>
-                              {getEventTypeLabel(rEvt.event_type)}
-                            </span>
-                            <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>
-                              {formatAuditTimestamp(rEvt.timestamp).split(',')[1]?.trim() || ''}
+                  {dateSections.length === 0 ? (
+                    <div style={{ padding: '16px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '11.5px' }}>
+                      No lifecycle events recorded for this dispute.
+                    </div>
+                  ) : (
+                    <div className="audit-timeline">
+                      {dateSections.map((section) => (
+                        <div key={section.dateKey} style={{ marginBottom: '8px' }}>
+                          {/* Date Divider */}
+                          <div className="timeline-date-header">
+                            <Calendar size={11} color="var(--text-muted)" />
+                            <span>{section.dateKey}</span>
+                            <span className="timeline-date-count">
+                              {section.items.reduce(
+                                (acc, it) => acc + (it.type === 'group' ? it.events.length : 1),
+                                0
+                              )}{' '}
+                              events
                             </span>
                           </div>
 
-                          <div
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'space-between',
-                              marginTop: '3px',
-                              fontSize: '11px',
-                            }}
-                          >
-                            <span style={{ color: 'var(--text-secondary)' }}>{getActorLabel(rEvt.actor)}</span>
-                            <span
-                              className={`badge ${getResultBadgeClass(rEvt.result)}`}
-                              style={{ fontSize: '9.5px', padding: '1px 5px' }}
-                            >
-                              {rEvt.result || 'Logged'}
-                            </span>
-                          </div>
+                          {/* Items under this date */}
+                          {section.items.map((item) => {
+                            if (item.type === 'group') {
+                              const isExpanded = Boolean(expandedGroups[item.id]);
+                              const hasActiveInside = item.events.some((e) => e.event_id === selectedEventId);
+                              const shouldShowExpanded = isExpanded || hasActiveInside;
+
+                              return (
+                                <div key={item.id} style={{ marginBottom: '4px' }}>
+                                  <div
+                                    className={`timeline-group-header ${hasActiveInside ? 'active' : ''}`}
+                                    onClick={() =>
+                                      setExpandedGroups((prev) => ({
+                                        ...prev,
+                                        [item.id]: !shouldShowExpanded,
+                                      }))
+                                    }
+                                  >
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                      <span
+                                        className={`badge ${getEventTypeBadgeClass(item.eventType)}`}
+                                        style={{ fontSize: '10px' }}
+                                      >
+                                        {getEventTypeLabel(item.eventType)} ({item.events.length}×)
+                                      </span>
+                                      <span style={{ fontSize: '10.5px', color: 'var(--text-secondary)' }}>
+                                        {getActorLabel(item.actor)}
+                                      </span>
+                                    </div>
+
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                      <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>
+                                        {getEventTimeStr(item.firstTimestamp)} – {getEventTimeStr(item.lastTimestamp)}
+                                      </span>
+                                      {shouldShowExpanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                                    </div>
+                                  </div>
+
+                                  {shouldShowExpanded && (
+                                    <div className="timeline-group-nested">
+                                      {item.events.map((gEvt) => renderTimelineEventItem(gEvt))}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            }
+
+                            return renderTimelineEventItem(item.event);
+                          })}
                         </div>
-                      );
-                    })}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

@@ -298,6 +298,15 @@ class EvidenceDispatcher:
         # 4. Resolve Action URL
         action_url = self._resolve_provide_evidence_url(dispute)
 
+        # Determine whether dispatch is simulated/mocked vs live network call
+        is_mocked = (
+            "mock" in type(self.http_client).__name__.lower()
+            or getattr(self.http_client, "_is_mock", False)
+            or hasattr(self.http_client, "assert_called")
+            or "mock" in type(getattr(self.http_client, "post", None)).__name__.lower()
+        )
+        dispatch_mode = "SIMULATED" if is_mocked else "LIVE_SANDBOX"
+
         # 5. Log Dispatch Attempt
         if self.audit_logger:
             self.audit_logger.log_event(
@@ -308,6 +317,8 @@ class EvidenceDispatcher:
                     "approval_id": approval_record.approval_id,
                     "target_url": action_url,
                     "idempotency_key": idempotency_key,
+                    "dispatch_mode": dispatch_mode,
+                    "is_simulated": is_mocked,
                     "payload": payload,
                 },
             )
@@ -343,7 +354,12 @@ class EvidenceDispatcher:
                     event_type=AuditEventType.DISPATCH_FAILED,
                     dispute_id=dispute.dispute_id,
                     actor="SYSTEM",
-                    payload={"error": str(e)},
+                    payload={
+                        "error": str(e),
+                        "approval_id": approval_record.approval_id,
+                        "dispatch_mode": dispatch_mode,
+                        "is_simulated": is_mocked,
+                    },
                 )
             return DispatchResult(
                 success=False,
@@ -365,6 +381,9 @@ class EvidenceDispatcher:
                     payload={
                         "status_code": status_code,
                         "correlation_id": correlation_id,
+                        "approval_id": approval_record.approval_id,
+                        "dispatch_mode": dispatch_mode,
+                        "is_simulated": is_mocked,
                         "response": resp_body,
                     },
                 )

@@ -11,13 +11,21 @@ import { DisputeTable } from './components/DisputeTable';
 import { DisputeDetailPanel } from './components/DisputeDetailPanel';
 import { AuditTrailView } from './components/AuditTrailView';
 import { EvalScorecardView } from './components/EvalScorecardView';
-import type { DisputeSummary } from './types';
+import { SignInView } from './components/SignInView';
+import type { DisputeSummary, AuthenticatedMerchant, SyncStatusData, AuditStatusData } from './types';
 
 export const App: React.FC = () => {
+  // Merchant Authentication State
+  const [currentUser, setCurrentUser] = useState<AuthenticatedMerchant | null>(null);
+  const [authChecking, setAuthChecking] = useState<boolean>(true);
+
+  // Automated Synchronization & Continuous Audit Integrity Telemetry
+  const [syncStatus, setSyncStatus] = useState<SyncStatusData | null>(null);
+  const [auditStatus, setAuditStatus] = useState<AuditStatusData | null>(null);
+
   const [activeSection, setActiveSection] = useState<NavSection>('overview');
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
   const [disputes, setDisputes] = useState<DisputeSummary[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedDisputeId, setSelectedDisputeId] = useState<string | null>(null);
 
@@ -26,9 +34,8 @@ export const App: React.FC = () => {
   const [decisionFilter, setDecisionFilter] = useState<'ALL' | 'READY' | 'REVIEW' | 'BLOCKED' | 'THREATS'>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  const fetchDisputes = useCallback(async () => {
+  const fetchDisputes = useCallback(async (silent = false) => {
     try {
-      setLoading(true);
       setError(null);
       const res = await fetch('/api/disputes');
       if (!res.ok) {
@@ -49,15 +56,78 @@ export const App: React.FC = () => {
       }
     } catch (err: any) {
       console.error('Failed to fetch disputes:', err);
-      setError(err.message || 'Failed to fetch disputes');
-    } finally {
-      setLoading(false);
+      if (!silent) setError(err.message || 'Failed to fetch disputes');
     }
   }, []);
 
+  // Fetch continuous synchronisation and audit integrity telemetry
+  const fetchTelemetry = useCallback(async () => {
+    try {
+      const [syncRes, auditRes] = await Promise.all([
+        fetch('/api/sync/status'),
+        fetch('/api/audit-trail/status'),
+      ]);
+      if (syncRes.ok) {
+        const syncData: SyncStatusData = await syncRes.json();
+        setSyncStatus(syncData);
+      }
+      if (auditRes.ok) {
+        const auditData: AuditStatusData = await auditRes.json();
+        setAuditStatus(auditData);
+      }
+    } catch (err) {
+      // Conservative error handling: preserve last known state on transient network blip
+      console.warn('Telemetry polling error (preserving last known status):', err);
+    }
+  }, []);
+
+  // Merchant Session Verification
+  const checkAuth = useCallback(async () => {
+    try {
+      setAuthChecking(true);
+      const res = await fetch('/api/auth/me');
+      if (res.ok) {
+        const user: AuthenticatedMerchant = await res.json();
+        setCurrentUser(user);
+      } else {
+        setCurrentUser(null);
+      }
+    } catch (err) {
+      console.error('Session verification failed:', err);
+      setCurrentUser(null);
+    } finally {
+      setAuthChecking(false);
+    }
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch (err) {
+      console.error('Sign out error:', err);
+    } finally {
+      setCurrentUser(null);
+    }
+  };
+
   useEffect(() => {
-    fetchDisputes();
-  }, [fetchDisputes]);
+    checkAuth();
+  }, [checkAuth]);
+
+  useEffect(() => {
+    if (currentUser) {
+      fetchDisputes();
+      fetchTelemetry();
+
+      // Conservative background status polling (every 8 seconds)
+      const timer = setInterval(() => {
+        fetchTelemetry();
+        fetchDisputes(true);
+      }, 8000);
+
+      return () => clearInterval(timer);
+    }
+  }, [currentUser, fetchDisputes, fetchTelemetry]);
 
   // Global Keyboard Shortcuts (1: Overview, 2: Disputes, 3: Audit, 4: Benchmark)
   useEffect(() => {
@@ -139,6 +209,46 @@ export const App: React.FC = () => {
     });
   }, [disputes, scopeFilter, searchQuery, decisionFilter]);
 
+  if (authChecking) {
+    return (
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'var(--bg-canvas)',
+          gap: '12px',
+        }}
+      >
+        <div
+          style={{
+            width: '28px',
+            height: '28px',
+            border: '2.5px solid var(--border-subtle)',
+            borderTopColor: 'var(--signal-blue)',
+            borderRadius: '50%',
+            animation: 'spin 0.8s linear infinite',
+          }}
+        />
+        <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+          Verifying merchant authentication session...
+        </div>
+      </div>
+    );
+  }
+
+  if (!currentUser) {
+    return (
+      <SignInView
+        onSignInSuccess={(user) => {
+          setCurrentUser(user);
+        }}
+      />
+    );
+  }
+
   return (
     <div className="app-shell">
       {/* 1. Persistent Left Sidebar Navigation */}
@@ -155,8 +265,10 @@ export const App: React.FC = () => {
         <TopHeader
           activeSection={activeSection}
           selectedDisputeId={selectedDisputeId}
-          onRefresh={fetchDisputes}
-          loading={loading}
+          currentUser={currentUser}
+          onSignOut={handleSignOut}
+          syncStatus={syncStatus}
+          auditStatus={auditStatus}
         />
 
         {/* 3. Section Router */}
@@ -374,7 +486,7 @@ export const App: React.FC = () => {
                       <AlertTriangle size={32} style={{ color: 'var(--status-block-dot)' }} />
                       <p style={{ marginTop: '12px', fontWeight: 600 }}>Failed to load disputes</p>
                       <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{error}</p>
-                      <button className="btn btn-secondary" onClick={fetchDisputes} style={{ marginTop: '12px' }}>
+                      <button className="btn btn-secondary" onClick={() => fetchDisputes(false)} style={{ marginTop: '12px' }}>
                         Retry
                       </button>
                     </div>

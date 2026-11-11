@@ -1122,6 +1122,96 @@ pre.code-block {
   box-shadow: 0 0 0 2px var(--signal-blue-border);
 }
 
+.timeline-chain-index {
+  font-size: 9.5px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* Dispute Lifecycle Timeline Refinements */
+.timeline-date-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0 6px 0;
+  margin-top: 6px;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-date-header:first-child {
+  margin-top: 0;
+}
+
+.timeline-date-count {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background-color: #f1f5f9;
+  padding: 1px 6px;
+  border-radius: 10px;
+  margin-left: auto;
+}
+
+.timeline-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 8px;
+  background-color: #f8fafc;
+  border: 1px dashed var(--border-subtle);
+  border-radius: 5px;
+  margin: 3px 0;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.timeline-group-header:hover {
+  background-color: var(--bg-hover);
+  border-color: #93c5fd;
+}
+
+.timeline-group-nested {
+  margin-left: 6px;
+  padding-left: 6px;
+  border-left: 1px dashed var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.timeline-ticket-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 5px;
+  background-color: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  border-radius: 3px;
+  font-size: 9.5px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+
+.timeline-corr-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 5px;
+  background-color: #f8fafc;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  border-radius: 3px;
+  font-size: 9.5px;
+  font-family: var(--font-mono);
+}
+
 .hash-badge-container {
   display: flex;
   align-items: center;
@@ -1448,24 +1538,29 @@ pre.code-block {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(15, 23, 42, 0.25);
-  z-index: 90;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.35);
+  z-index: 1000;
   display: flex;
   justify-content: flex-end;
   animation: fadeIn 150ms ease;
+  overflow: hidden;
 }
 
 .scenario-drawer-panel {
-  width: 480px;
+  width: 520px;
   max-width: 90vw;
-  height: 100%;
+  height: 100vh;
+  max-height: 100vh;
   background-color: var(--bg-canvas);
   border-left: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
-  box-shadow: -6px 0 24px rgba(0,0,0,0.12);
-  z-index: 100;
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
   animation: slideInRight 200ms ease;
+  overflow: hidden;
 }
 
 @keyframes fadeIn {
@@ -1489,10 +1584,345 @@ pre.code-block {
 }
 
 .scenario-drawer-body {
-  padding: 16px 18px;
+  padding: 16px 18px 40px 18px;
   display: flex;
   flex-direction: column;
   gap: 14px;
   overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1 1 auto;
+  min-height: 0;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scenario-drawer-body > * {
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Merchant Authentication & Sign In View
+   ========================================================================== */
+
+.signin-container {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-canvas);
+  background-image: 
+    radial-gradient(var(--border-subtle) 1px, transparent 1px),
+    radial-gradient(var(--border-subtle) 1px, var(--bg-canvas) 1px);
+  background-size: 24px 24px;
+  background-position: 0 0, 12px 12px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.signin-card {
+  width: 100%;
+  max-width: 520px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  box-shadow: 0 12px 36px -4px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.04);
+  padding: 32px 36px;
+  box-sizing: border-box;
+  animation: fadeIn 250ms ease;
+}
+
+.signin-env-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.signin-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #059669;
+  box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.2);
+}
+
+.signin-header {
+  margin-bottom: 24px;
+}
+
+.signin-brand-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent-slate) 0%, #1E293B 100%);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15);
+}
+
+.signin-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0 0 6px 0;
+}
+
+.signin-descriptor {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--signal-blue);
+  margin: 0 0 6px 0;
+}
+
+.signin-subtext {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.signin-tabs {
+  display: flex;
+  background-color: var(--bg-subtle);
+  padding: 3px;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 20px;
+  gap: 2px;
+}
+
+.signin-tab {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.signin-tab.active {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+.signin-error-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background-color: var(--status-block-bg);
+  border: 1px solid var(--status-block-border);
+  color: var(--status-block-text);
+  margin-bottom: 18px;
+}
+
+.signin-demo-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.signin-persona-intro {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.signin-persona-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.signin-persona-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  background-color: var(--bg-surface);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.signin-persona-card:hover {
+  border-color: var(--border-strong);
+  background-color: var(--bg-hover);
+}
+
+.signin-persona-card.selected {
+  border-color: var(--signal-blue);
+  background-color: var(--signal-blue-subtle);
+}
+
+.signin-persona-radio {
+  margin-top: 3px;
+}
+
+.radio-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.radio-dot.active {
+  border-color: var(--signal-blue);
+  background-color: var(--signal-blue);
+  box-shadow: inset 0 0 0 2.5px #FFFFFF;
+}
+
+.signin-persona-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.signin-persona-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.signin-persona-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.signin-persona-badge {
+  font-size: 9.5px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  padding: 1px 6px;
+  border-radius: 4px;
+  background-color: var(--bg-subtle);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.signin-persona-desc {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+.signin-persona-email {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.signin-submit-btn {
+  width: 100%;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 7px;
+  margin-top: 6px;
+  background-color: var(--accent-slate);
+}
+
+.signin-submit-btn:hover:not(:disabled) {
+  background-color: var(--accent-slate-hover);
+}
+
+.signin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.form-input {
+  width: 100%;
+  height: 36px;
+  padding: 6px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background-color: var(--bg-surface);
+  box-sizing: border-box;
+  transition: border-color var(--transition-fast);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--signal-blue);
+  box-shadow: 0 0 0 3px rgba(3, 105, 161, 0.15);
+}
+
+.signin-hint-box {
+  padding: 10px 12px;
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.signin-footer-assurances {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.assurance-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  color: var(--text-muted);
+  font-weight: 500;
 }

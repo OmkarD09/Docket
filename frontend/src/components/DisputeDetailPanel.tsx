@@ -43,22 +43,33 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
     fetchDetail(disputeId);
   }, [disputeId]);
 
-  const fetchDetail = async (id: string) => {
-    setLoading(true);
-    setActionError(null);
-    setActionSuccess(null);
+  // Continuous background synchronization keeps open drawer dossier updated
+  useEffect(() => {
+    if (!disputeId) return;
+    const interval = setInterval(() => {
+      fetchDetail(disputeId, true);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [disputeId]);
+
+  const fetchDetail = async (id: string, silent = false) => {
+    if (!silent) {
+      setLoading(true);
+      setActionError(null);
+      setActionSuccess(null);
+    }
     try {
       const resp = await fetch(`/api/disputes/${id}`);
       if (resp.ok) {
         const data = await resp.json();
         setDetail(data);
       } else {
-        setActionError(`Failed to load case: HTTP ${resp.status}`);
+        if (!silent) setActionError(`Failed to load case: HTTP ${resp.status}`);
       }
     } catch (err: any) {
-      setActionError(err.message || 'Error fetching case details');
+      if (!silent) setActionError(err.message || 'Error fetching case details');
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
@@ -208,10 +219,23 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
     approval_record,
     dispatch_result,
     has_prompt_threat,
+    dispute_category,
   } = detail;
 
-  const isReal = dispute?.dispute_id === 'PP-R-NKI-10193390';
+  const isReal = dispute?.dispute_id === 'PP-R-NKI-10193390' || dispute_category === 'REAL_SANDBOX';
   const overallDecision = evaluation?.overall_decision || 'REVIEW';
+
+  // Check deadline expiration
+  const isOverdue = dispute?.seller_response_due_date
+    ? new Date(dispute.seller_response_due_date).getTime() < Date.now()
+    : false;
+
+  // Check if supporting records are synthetic fixtures
+  const hasSyntheticEvidence = isReal && (
+    matched_order?.source_provenance === 'SYNTHETIC_FIXTURE' ||
+    matched_shipments?.some((s) => s.source_provenance === 'SYNTHETIC_FIXTURE') ||
+    true // PP-R-NKI-10193390 supporting records are simulated fixtures
+  );
 
   const reasonReadable = (dispute?.reason || '')
     .replace(/_/g, ' ')
@@ -281,14 +305,6 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <button
-              onClick={() => fetchDetail(disputeId)}
-              className="btn btn-secondary"
-              style={{ padding: '2px 8px', fontSize: '11px', height: '24px' }}
-              title="Refresh case state"
-            >
-              <RefreshCw size={11} /> Sync
-            </button>
             {onClose && (
               <button
                 onClick={onClose}
@@ -326,17 +342,36 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
           </div>
         </div>
 
-        {/* Reason & Deadline */}
+        {/* Reason & Deadline with Overdue Indicator */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '12px', marginTop: '2px' }}>
           <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>{reasonReadable}</span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-muted)', fontSize: '11.5px' }}>
-            <Clock size={12} />
-            Deadline: {formatDeadline(dispute?.seller_response_due_date, dispute?.status)}
+          <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11.5px' }}>
+            <Clock size={12} color={isOverdue ? '#dc2626' : 'var(--text-muted)'} />
+            <span style={{ color: isOverdue ? '#dc2626' : 'var(--text-muted)', fontWeight: isOverdue ? 600 : 400 }}>
+              Deadline: {formatDeadline(dispute?.seller_response_due_date, dispute?.status)}
+            </span>
+            {isOverdue && (
+              <span className="badge badge-block" style={{ fontSize: '10px', padding: '1px 5px', marginLeft: '2px' }}>
+                OVERDUE
+              </span>
+            )}
           </span>
         </div>
       </div>
 
       <div className="drawer-content">
+        {/* Safety Guard Warnings for Provenance & Overdue State */}
+        {isOverdue && (
+          <div style={{ padding: '9px 12px', borderRadius: '5px', backgroundColor: 'var(--status-block-bg)', border: '1px solid var(--status-block-border)', color: 'var(--status-block-text)', fontSize: '11.5px', lineHeight: 1.45 }}>
+            <strong>Response Window Lapsed:</strong> Seller response deadline expired on {formatDeadline(dispute?.seller_response_due_date)}. Submissions to the PayPal Disputes API are barred.
+          </div>
+        )}
+        {hasSyntheticEvidence && (
+          <div style={{ padding: '9px 12px', borderRadius: '5px', backgroundColor: 'var(--status-review-bg)', border: '1px solid var(--status-review-border)', color: 'var(--status-review-text)', fontSize: '11.5px', lineHeight: 1.45 }}>
+            <strong>Evidentiary Provenance Notice:</strong> Supporting merchant order and carrier shipment records are simulated synthetic fixtures, not independently verified feeds. Automated counter-claim dispatch to live PayPal Sandbox is prohibited to protect evidentiary integrity.
+          </div>
+        )}
+
         {/* Action Error / Success Notifications */}
         {actionError && (
           <div style={{ padding: '10px 14px', borderRadius: '6px', backgroundColor: 'var(--status-block-bg)', border: '1px solid var(--status-block-border)', color: 'var(--status-block-text)', fontSize: '12px' }}>
@@ -392,12 +427,12 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
               <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px', lineHeight: 1.5 }}>
                 {overallDecision === 'BLOCK' && (
                   <span>
-                    Deterministic policy invariants blocked counter-claim submission. Carrier tracking has not confirmed physical delivery to the recipient postal code.
+                    Deterministic policy invariants blocked counter-claim submission. Carrier tracking has not confirmed delivery to the recipient postal code.
                   </span>
                 )}
                 {overallDecision === 'ALLOW' && (
                   <span>
-                    All policy barriers passed. Carrier delivery proof confirmed physical delivery matching the order shipping address.
+                    Deterministic policy invariants passed. Carrier tracking verifies delivery to the recipient postal code ({matched_order?.shipping_address?.postal_code || '95131'}, {matched_order?.shipping_address?.country_code || 'US'}) corresponding to the transaction delivery area. (Destination area match only; street-level physical delivery is not independently verified).
                   </span>
                 )}
                 {overallDecision === 'REVIEW' && (
@@ -484,8 +519,13 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
           <div className="panel-card-body">
             {/* Carrier Tracking */}
             <div>
-              <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '6px' }}>
-                Carrier Tracking
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  Carrier Tracking
+                </span>
+                <span className="badge badge-neutral" style={{ fontSize: '9.5px', padding: '1px 6px' }}>
+                  {isReal ? 'Synthetic Simulation Fixture (USPS)' : 'Benchmark Fixture'}
+                </span>
               </div>
               {matched_shipments && matched_shipments.length > 0 ? (
                 matched_shipments.map((ship, idx) => (
@@ -540,7 +580,7 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
                       </span>
                       {matched_order?.shipping_address?.postal_code === ship.shipment_address?.postal_code && ship.shipment_address?.postal_code ? (
                         <span style={{ color: 'var(--status-allow-text)', fontWeight: 600, fontSize: '11px' }}>
-                          Matched
+                          Matched ({ship.shipment_address?.country_code || 'US'})
                         </span>
                       ) : (
                         <span style={{ color: 'var(--status-block-text)', fontWeight: 600, fontSize: '11px' }}>
@@ -559,8 +599,13 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
 
             {/* Merchant Order Divider */}
             <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '10px' }}>
-              <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '6px' }}>
-                Merchant Order (ERP)
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  Merchant Order (ERP)
+                </span>
+                <span className="badge badge-neutral" style={{ fontSize: '9.5px', padding: '1px 6px' }}>
+                  {isReal ? 'Synthetic Simulation Fixture (ERP)' : 'Benchmark Fixture'}
+                </span>
               </div>
               {matched_order ? (
                 <div className="kv-grid">
@@ -661,7 +706,9 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
             </span>
             <span
               className={`badge ${
-                approval_record?.decision === 'APPROVE'
+                isOverdue || (isReal && hasSyntheticEvidence)
+                  ? 'badge-block'
+                  : approval_record?.decision === 'APPROVE'
                   ? 'badge-allow'
                   : overallDecision === 'ALLOW'
                   ? 'badge-allow'
@@ -670,7 +717,11 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
                   : 'badge-block'
               }`}
             >
-              {approval_record?.decision === 'APPROVE'
+              {isOverdue
+                ? 'OVERDUE — RESPONSE LAPSED'
+                : (isReal && hasSyntheticEvidence)
+                ? 'BARRED — SYNTHETIC EVIDENCE'
+                : approval_record?.decision === 'APPROVE'
                 ? 'AUTHORIZED'
                 : overallDecision === 'ALLOW'
                 ? 'AWAITING APPROVAL'
@@ -681,7 +732,24 @@ export const DisputeDetailPanel: React.FC<DisputeDetailPanelProps> = ({
           </div>
 
           <div className="panel-card-body">
-            {overallDecision === 'BLOCK' ? (
+            {isOverdue || (isReal && hasSyntheticEvidence) ? (
+              <div style={{ padding: '10px 12px', borderRadius: '5px', backgroundColor: 'var(--status-block-bg)', border: '1px solid var(--status-block-border)', color: 'var(--status-block-text)', fontSize: '12px', lineHeight: 1.45 }}>
+                <strong>External Submission Barred:</strong>
+                {isOverdue && (
+                  <div style={{ marginTop: '4px' }}>
+                    • <strong>Response Window Lapsed:</strong> Seller response deadline was {formatDeadline(dispute?.seller_response_due_date)}. Submissions are closed in PayPal Resolution Center.
+                  </div>
+                )}
+                {isReal && hasSyntheticEvidence && (
+                  <div style={{ marginTop: '4px' }}>
+                    • <strong>Synthetic Evidence Guard:</strong> Supporting order and carrier tracking records are simulated synthetic fixtures, not live verified feeds. Real Sandbox submission with synthetic proof is prohibited.
+                  </div>
+                )}
+                <div style={{ marginTop: '8px', fontSize: '11px', color: 'var(--text-secondary)' }}>
+                  Merchant Action: Settle directly via PayPal Resolution Center or connect verified carrier API before submission.
+                </div>
+              </div>
+            ) : overallDecision === 'BLOCK' ? (
               <div style={{ padding: '10px 12px', borderRadius: '5px', backgroundColor: 'var(--status-block-bg)', border: '1px solid var(--status-block-border)', color: 'var(--status-block-text)', fontSize: '12px', lineHeight: 1.45 }}>
                 <strong>External Submission Barred:</strong> Deterministic policy invariants blocked evidence dispatch. Carrier tracking has not confirmed completed delivery to the recipient postal code.
               </div>

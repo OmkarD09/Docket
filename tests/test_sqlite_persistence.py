@@ -503,6 +503,7 @@ def test_fastapi_server_restart_with_webhook_and_approval(tmp_path):
     # Server Instance 1
     app1 = create_app(audit_log_path=str(audit_file), db_path=str(db_file))
     client1 = TestClient(app1)
+    client1.post("/api/auth/demo-session", json={"profile_id": "lead_agent"})
 
     # 1. Ingest new dispute via webhook
     webhook_payload = {

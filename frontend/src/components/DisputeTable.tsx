@@ -134,6 +134,7 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({
       {
         headerName: 'Dispute Reason',
         field: 'reason',
+        tooltipField: 'reason',
         minWidth: 170,
         flex: 1.2,
         cellRenderer: (params: any) => {
@@ -163,7 +164,7 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({
       {
         headerName: 'Amount',
         field: 'amount',
-        width: 90,
+        width: 110,
         headerClass: 'ag-right-aligned-header',
         cellRenderer: (params: any) => {
           const d = params.data;
@@ -226,7 +227,7 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({
       {
         headerName: 'Docket Decision',
         field: 'overall_decision',
-        width: 105,
+        width: 135,
         cellRenderer: (params: any) => {
           const dec = params.value;
           if (dec === 'ALLOW') {

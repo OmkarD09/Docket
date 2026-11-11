@@ -132,6 +132,15 @@ CREATE TABLE IF NOT EXISTS schema_migrations (
     name TEXT NOT NULL,
     applied_at TEXT NOT NULL
 );
+
+-- 9. System coordination locks for distributed workers & schedulers
+CREATE TABLE IF NOT EXISTS system_coordination_locks (
+    lock_name TEXT PRIMARY KEY,
+    locked_by TEXT NOT NULL,
+    locked_at TEXT NOT NULL,
+    expires_at TEXT NOT NULL,
+    metadata TEXT NOT NULL DEFAULT '{}'
+);
 """
 
 INDEXES_DDL = """
@@ -208,6 +217,24 @@ def _apply_migrations(conn: sqlite3.Connection) -> None:
             cur.execute(
                 "INSERT OR IGNORE INTO schema_migrations (version, name, applied_at) VALUES (?, ?, ?)",
                 (2, "002_soft_archival_and_approvals", now_iso),
+            )
+
+        # Migration 3: System Coordination Locks
+        if 3 not in applied_versions:
+            cur.execute(
+                """
+                CREATE TABLE IF NOT EXISTS system_coordination_locks (
+                    lock_name TEXT PRIMARY KEY,
+                    locked_by TEXT NOT NULL,
+                    locked_at TEXT NOT NULL,
+                    expires_at TEXT NOT NULL,
+                    metadata TEXT NOT NULL DEFAULT '{}'
+                )
+                """
+            )
+            cur.execute(
+                "INSERT OR IGNORE INTO schema_migrations (version, name, applied_at) VALUES (?, ?, ?)",
+                (3, "003_system_coordination_locks", now_iso),
             )
 
         conn.commit()
