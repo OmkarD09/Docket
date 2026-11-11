@@ -426,9 +426,9 @@
     "semantic_hash": ""
   },
   "artifacts/docket_evaluation_matrix.json": {
-    "mtime": 1794209054.4577792,
-    "seen": 1794209114.8796883,
-    "ast_hash": "c48f0f01e2d58d8bd62333d6ff542fb8",
+    "mtime": 1794209303.941798,
+    "seen": 1794396551.987325,
+    "ast_hash": "a2adf35fa21b497bc2aaeca19bb05e59",
     "semantic_hash": ""
   },
   "docket/__init__.py": {
@@ -504,8 +504,8 @@
     "semantic_hash": ""
   },
   "docket/api/app.py": {
-    "mtime": 1794208203.7311773,
-    "seen": 1794208947.880288,
+    "mtime": 1794209164.7819993,
+    "seen": 1794396551.987325,
     "ast_hash": "4f54cff22b32e6b67ed227505d3977b1",
     "semantic_hash": ""
   },
@@ -3834,8 +3834,8 @@
     "semantic_hash": ""
   },
   "docket/database/schema.py": {
-    "mtime": 1794208746.8373954,
-    "seen": 1794208947.880288,
+    "mtime": 1794209164.870251,
+    "seen": 1794396551.987325,
     "ast_hash": "1d4baf0de043203949d8fd6c3524e4c6",
     "semantic_hash": ""
   },
@@ -3852,8 +3852,8 @@
     "semantic_hash": ""
   },
   "tests/test_database_integrity.py": {
-    "mtime": 1794208781.6831322,
-    "seen": 1794208947.8803391,
+    "mtime": 1794209164.9678004,
+    "seen": 1794396551.987325,
     "ast_hash": "1ff9900d199e6adfa91a3521a807efc5",
     "semantic_hash": ""
   },
@@ -3870,8 +3870,8 @@
     "semantic_hash": ""
   },
   "tests/test_final_persistence_and_sandbox.py": {
-    "mtime": 1794208682.8539944,
-    "seen": 1794208947.8803391,
+    "mtime": 1794209165.0192,
+    "seen": 1794396551.987325,
     "ast_hash": "7aae95466def7e5025543f3477858b30",
     "semantic_hash": ""
   },
@@ -3882,9 +3882,9 @@
     "semantic_hash": ""
   },
   "docs/DOCKET_FINAL_INTEGRATION_READINESS.md": {
-    "mtime": 1794208998.0584903,
-    "seen": 1794209114.8816943,
-    "ast_hash": "ca2468fd56d9523d370843a94d9db7a3",
+    "mtime": 1794209148.5120292,
+    "seen": 1794396551.9883208,
+    "ast_hash": "a97d7308f3ba7123b9b9527565c15f52",
     "semantic_hash": ""
   },
   "frontend/package-lock.json": {
