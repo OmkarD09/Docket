@@ -3324,9 +3324,9 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1794423603.5997927,
-    "seen": 1794423624.078489,
-    "ast_hash": "21a22eb465cd476e84849e433694e25a",
+    "mtime": 1794425277.7511828,
+    "seen": 1794425348.351582,
+    "ast_hash": "3046f3dba61be829501d970de7752824",
     "semantic_hash": ""
   },
   "docs/ARCHITECTURE.md": {
@@ -3945,6 +3945,48 @@
     "mtime": 1794422889.4574282,
     "seen": 1794422925.3704717,
     "ast_hash": "6afed3b4d8f27379242968cd6d7566a7",
+    "semantic_hash": ""
+  },
+  "scripts/capture_screenshots.cjs": {
+    "mtime": 1794424483.079729,
+    "seen": 1794424646.136866,
+    "ast_hash": "56fba67ce5904ac355b5d848ac539e6a",
+    "semantic_hash": ""
+  },
+  "docs/assets/readme/audit-trail.png": {
+    "mtime": 1794424255.6553373,
+    "seen": 1794424646.136866,
+    "ast_hash": "e1d02654fd336c6ee08af058df9a0408",
+    "semantic_hash": ""
+  },
+  "docs/assets/readme/benchmark-scorecard.png": {
+    "mtime": 1794424257.787169,
+    "seen": 1794424646.136866,
+    "ast_hash": "d6f84ac23371fccaf3a52c0269b12a84",
+    "semantic_hash": ""
+  },
+  "docs/assets/readme/disputes.png": {
+    "mtime": 1794424251.3107772,
+    "seen": 1794424646.136866,
+    "ast_hash": "4ac3020eb19813422bbeb1a5af05fd9b",
+    "semantic_hash": ""
+  },
+  "docs/assets/readme/evidence-drawer.png": {
+    "mtime": 1794424253.4889054,
+    "seen": 1794424646.136866,
+    "ast_hash": "a6b7774b5135a4189bac68d2a6ec74ca",
+    "semantic_hash": ""
+  },
+  "docs/assets/readme/overview.png": {
+    "mtime": 1794424249.064916,
+    "seen": 1794424646.136866,
+    "ast_hash": "eeb97c28f6c35fe2d47f668e5664ebd8",
+    "semantic_hash": ""
+  },
+  "docs/assets/readme/sign-in.png": {
+    "mtime": 1794424245.8102622,
+    "seen": 1794424646.136866,
+    "ast_hash": "b3cf630924c4306184652b69e4b66144",
     "semantic_hash": ""
   },
   "frontend/package-lock.json": {

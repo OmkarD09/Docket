@@ -81,60 +81,43 @@ Sensitive operations cannot occur automatically. Approvals require an authentica
 
 ## 4. How Docket Works
 
+Docket enforces a strict separation between **untrusted AI extraction** and **deterministic policy gating**, ensuring no evidence is dispatched to PayPal without cryptographic verification and authenticated merchant approval.
+
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Ingestion["1. Multi-Source Ingestion"]
-        PP["PayPal Disputes API\n(REST v1 Sandbox)"]
-        ERP["Merchant Order Records\n(Internal Database)"]
-        Carrier["Carrier Tracking Logs\n(USPS / FedEx Checkpoints)"]
+        direction TB
+        PP["PayPal Sandbox\n(Dispute API v1)"]
+        ERP["Order Records\n(Internal DB)"]
+        TRK["Tracking Logs\n(Carrier APIs)"]
+        PP & ERP & TRK --> REC["Evidence Reconciler\n(Match & Redact)"]
     end
 
-    subgraph Reconciliation["2. Evidence Reconciliation"]
-        Reconciler["Evidence Reconciler\n- Multi-key Matching\n- PII Redaction"]
+    subgraph Defense["2. AI & Refusal Barrier"]
+        direction TB
+        AI["AI Fact Extractor\n(Gemini / Local Fallback)"]
+        POL["Deterministic Refusal Barrier\n(12 Invariant Rules)"]
+        AI --> POL
     end
 
-    subgraph Extraction["3. Structured Claim Extraction"]
-        Gemini["AI Extraction Engine\n(Google Gemini / Local Deterministic)\n- Claim Structuring\n- Source Anchoring"]
+    subgraph Gate["3. Merchant Gate & Dispatch"]
+        direction TB
+        DESK["AG Grid Desk\n(Merchant Triage)"]
+        AUTH["Merchant Sign-off\n(Signed Nonce)"]
+        DISP["Cryptographic Gate & Dispatch\n(POST provide_evidence)"]
+        DESK --> AUTH --> DISP
     end
 
-    subgraph Validation["4. Policy & Invariant Verification"]
-        PolicyEngine["Deterministic Policy Engine\n- 12 Code-Level Invariant Rules\n- Delivery Paradox Detection\n- Prompt Injection Quarantine"]
-        Decision{"Policy Decision"}
-    end
+    LEDGER[("SQLite Audit Ledger\n(SHA-256 Chained)")]
 
-    subgraph HumanGate["5. Merchant Authorization Gate"]
-        CommandDesk["AG Grid Command Desk\n(React 19 + TypeScript)"]
-        Merchant["Authenticated Merchant Sign-Off\n(Single-Use Ticket & Token)"]
-    end
+    REC --> AI
+    POL -- "Decision" --> DESK
+    DISP --> PP
 
-    subgraph Execution["6. Controlled Dispatch & Audit"]
-        SensitiveGate["Cryptographic Integrity Gate\n(SHA-256 Chain Verification)"]
-        Dispatcher["PayPal Evidence Dispatcher\n(POST provide_evidence)"]
-        AuditLedger[("SQLite Audit Ledger\n- SHA-256 Hash Chain\n- Tamper-Evident Events")]
-    end
-
-    PP --> Reconciler
-    ERP --> Reconciler
-    Carrier --> Reconciler
-
-    Reconciler --> Gemini
-    Gemini --> PolicyEngine
-
-    PolicyEngine --> Decision
-    Decision -- "ALLOW / REVIEW / BLOCK" --> CommandDesk
-
-    CommandDesk --> Merchant
-    Merchant --> SensitiveGate
-
-    SensitiveGate -- "Chain Intact (Verified)" --> Dispatcher
-    Dispatcher --> PP
-
-    %% Audit Ledger event bindings
-    Reconciler -.->|Ingestion Events| AuditLedger
-    PolicyEngine -.->|Evaluation Events| AuditLedger
-    Merchant -.->|Approval Events| AuditLedger
-    SensitiveGate -.->|Integrity Checks| AuditLedger
-    Dispatcher -.->|Dispatch Events| AuditLedger
+    REC -.-> LEDGER
+    POL -.-> LEDGER
+    AUTH -.-> LEDGER
+    DISP -.-> LEDGER
 ```
 
 ---
