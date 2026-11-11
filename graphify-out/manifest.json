@@ -660,8 +660,8 @@
     "semantic_hash": ""
   },
   "frontend/src/components/DisputeDetailPanel.tsx": {
-    "mtime": 1794422854.2308767,
-    "seen": 1794422925.3699145,
+    "mtime": 1794423053.010019,
+    "seen": 1794423139.2201874,
     "ast_hash": "bbf69b8cf6c3f6fb9f3ff693b484352c",
     "semantic_hash": ""
   },
@@ -3324,9 +3324,9 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1792339008.3819456,
-    "seen": 1793987231.8550432,
-    "ast_hash": "4591537a4b50f3995e4265514b36a140",
+    "mtime": 1794423551.2882836,
+    "seen": 1794423572.550674,
+    "ast_hash": "21a22eb465cd476e84849e433694e25a",
     "semantic_hash": ""
   },
   "docs/ARCHITECTURE.md": {
