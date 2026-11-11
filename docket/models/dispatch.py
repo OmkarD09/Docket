@@ -52,6 +52,8 @@ class ApprovalRequest(BaseModel):
     overall_decision: str
     factual_readiness: str
     action_readiness: str
+    evaluation_id: Optional[str] = None
+    evidence_version: Optional[str] = None
     proposed_payload: Dict[str, Any]
     payload_hash: str
     summary_for_human: str
@@ -67,11 +69,19 @@ class MerchantApprovalRecord(BaseModel):
     dispute_id: str
     merchant_user_id: str
     decision: ApprovalDecision
+    action: str = "provide_evidence"
+    payload_hash: Optional[str] = None
+    evaluation_id: Optional[str] = None
+    evidence_version: Optional[str] = None
+    nonce: Optional[str] = None
     rejection_reason: Optional[str] = None
     approved_at: datetime
     approval_token: str
     client_ip: Optional[str] = None
     user_agent: Optional[str] = None
+    is_consumed: bool = False
+    consumed_at: Optional[datetime] = None
+    consumed_by_dispatch_id: Optional[str] = None
 
     def is_approved(self) -> bool:
         return self.decision == ApprovalDecision.APPROVE

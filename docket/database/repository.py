@@ -80,11 +80,15 @@ class DocketRepository:
         dispute: DisputeCase,
         scenario_id: Optional[str] = None,
         has_prompt_threat: bool = False,
+        dispute_category: str = "SYNTHETIC_BENCHMARK",
+        is_archived: bool = False,
+        archived_at: Optional[str] = None,
+        archival_reason: Optional[str] = None,
         approval_request: Optional[ApprovalRequest] = None,
         dispatch_result: Optional[DispatchResult] = None,
         cur: Optional[sqlite3.Cursor] = None,
     ) -> None:
-        """Insert or update a dispute record with decimal-safe money formatting."""
+        """Insert or update a dispute record with decimal-safe money formatting and archival state."""
         now_iso = datetime.now(timezone.utc).isoformat()
         created_at = (
             dispute.dispute_create_time.isoformat()
@@ -126,8 +130,9 @@ class DocketRepository:
         INSERT INTO disputes (
             dispute_id, reason, status, lifecycle_stage, amount, currency,
             buyer_tx_id, response_due_date, created_at, raw_messages, updated_at,
-            scenario_id, has_prompt_threat, approval_request, dispatch_result
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            scenario_id, has_prompt_threat, dispute_category, is_archived,
+            archived_at, archival_reason, approval_request, dispatch_result
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(dispute_id) DO UPDATE SET
             reason = excluded.reason,
             status = excluded.status,
@@ -140,6 +145,10 @@ class DocketRepository:
             updated_at = excluded.updated_at,
             scenario_id = COALESCE(excluded.scenario_id, disputes.scenario_id),
             has_prompt_threat = excluded.has_prompt_threat,
+            dispute_category = excluded.dispute_category,
+            is_archived = excluded.is_archived,
+            archived_at = excluded.archived_at,
+            archival_reason = excluded.archival_reason,
             approval_request = COALESCE(excluded.approval_request, disputes.approval_request),
             dispatch_result = COALESCE(excluded.dispatch_result, disputes.dispatch_result);
         """
@@ -157,6 +166,10 @@ class DocketRepository:
             now_iso,
             scenario_id,
             1 if has_prompt_threat else 0,
+            dispute_category,
+            1 if is_archived else 0,
+            archived_at,
+            archival_reason,
             appr_req_json,
             dispatch_json,
         )
@@ -167,6 +180,29 @@ class DocketRepository:
             with self.conn.transaction() as c:
                 c.execute(sql, params)
 
+    def archive_dispute(self, dispute_id: str, reason: str = "MERCHANT_ARCHIVED") -> bool:
+        """Soft-archive a dispute so merchant approvals and audit trails remain permanently queryable."""
+        now_iso = datetime.now(timezone.utc).isoformat()
+        with self.conn.transaction() as cur:
+            res = cur.execute(
+                """
+                UPDATE disputes SET
+                    is_archived = 1,
+                    archived_at = ?,
+                    archival_reason = ?,
+                    status = 'ARCHIVED',
+                    updated_at = ?
+                WHERE dispute_id = ?
+                """,
+                (now_iso, reason, now_iso, dispute_id),
+            )
+            return res.rowcount > 0
+
+    def is_dispute_archived(self, dispute_id: str) -> bool:
+        """Check if a dispute is archived."""
+        row = self.conn.fetchone("SELECT is_archived FROM disputes WHERE dispute_id = ?", (dispute_id,))
+        return bool(row["is_archived"]) if row else False
+
     def get_dispute(self, dispute_id: str) -> Optional[DisputeCase]:
         """Retrieve a DisputeCase domain object by ID."""
         row = self.conn.fetchone("SELECT * FROM disputes WHERE dispute_id = ?", (dispute_id,))
@@ -174,15 +210,45 @@ class DocketRepository:
             return None
         return self._row_to_dispute(row)
 
-    def list_disputes(self) -> List[DisputeCase]:
-        """List all stored disputes."""
-        rows = self.conn.fetchall("SELECT * FROM disputes ORDER BY created_at DESC")
+    def list_disputes(self, include_archived: bool = True, category: Optional[str] = None) -> List[DisputeCase]:
+        """List stored disputes with optional filtering by archival state or category."""
+        sql = "SELECT * FROM disputes WHERE 1=1"
+        params: List[Any] = []
+        if not include_archived:
+            sql += " AND is_archived = 0"
+        if category:
+            sql += " AND dispute_category = ?"
+            params.append(category)
+        sql += " ORDER BY created_at DESC"
+        rows = self.conn.fetchall(sql, params)
         return [self._row_to_dispute(r) for r in rows]
 
-    def count_disputes(self) -> int:
+    def count_disputes(self, include_archived: bool = True) -> int:
         """Count total disputes in storage."""
-        row = self.conn.fetchone("SELECT COUNT(*) AS cnt FROM disputes")
+        sql = "SELECT COUNT(*) AS cnt FROM disputes"
+        if not include_archived:
+            sql += " WHERE is_archived = 0"
+        row = self.conn.fetchone(sql)
         return row["cnt"] if row else 0
+
+    def get_dispute_counts(self) -> Dict[str, Any]:
+        """Return reconciled, non-misleading counts across disputes, categories, and archival states."""
+        row_tot = self.conn.fetchone("SELECT COUNT(*) as cnt FROM disputes")
+        row_active = self.conn.fetchone("SELECT COUNT(*) as cnt FROM disputes WHERE is_archived = 0")
+        row_arch = self.conn.fetchone("SELECT COUNT(*) as cnt FROM disputes WHERE is_archived = 1")
+        row_real = self.conn.fetchone("SELECT COUNT(*) as cnt FROM disputes WHERE dispute_category = 'REAL_SANDBOX'")
+        row_synth = self.conn.fetchone("SELECT COUNT(*) as cnt FROM disputes WHERE dispute_category = 'SYNTHETIC_BENCHMARK'")
+        row_live = self.conn.fetchone("SELECT COUNT(*) as cnt FROM disputes WHERE dispute_category = 'LIVE_WEBHOOK'")
+        return {
+            "total_disputes": row_tot["cnt"] if row_tot else 0,
+            "active_disputes": row_active["cnt"] if row_active else 0,
+            "archived_disputes": row_arch["cnt"] if row_arch else 0,
+            "breakdown": {
+                "real_sandbox": row_real["cnt"] if row_real else 0,
+                "synthetic_benchmark": row_synth["cnt"] if row_synth else 0,
+                "live_webhook": row_live["cnt"] if row_live else 0,
+            },
+        }
 
     def update_dispute_status(
         self,
@@ -481,14 +547,24 @@ class DocketRepository:
         record: MerchantApprovalRecord,
         cur: Optional[sqlite3.Cursor] = None,
     ) -> None:
-        """Persist a merchant approval record."""
+        """Persist a merchant approval record with single-use nonce tracking and bound parameters."""
         sql = """
         INSERT INTO merchant_approvals (
             approval_id, dispute_id, merchant_user_id, decision,
+            action, payload_hash, evaluation_id, evidence_version,
+            nonce, is_consumed, consumed_at, consumed_by_dispatch_id,
             rejection_reason, approved_at, approval_token, client_ip, user_agent
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(approval_id) DO UPDATE SET
             decision = excluded.decision,
+            action = excluded.action,
+            payload_hash = excluded.payload_hash,
+            evaluation_id = excluded.evaluation_id,
+            evidence_version = excluded.evidence_version,
+            nonce = excluded.nonce,
+            is_consumed = excluded.is_consumed,
+            consumed_at = excluded.consumed_at,
+            consumed_by_dispatch_id = excluded.consumed_by_dispatch_id,
             rejection_reason = excluded.rejection_reason,
             approved_at = excluded.approved_at,
             approval_token = excluded.approval_token;
@@ -498,6 +574,14 @@ class DocketRepository:
             record.dispute_id,
             record.merchant_user_id,
             record.decision.value,
+            record.action,
+            record.payload_hash or "",
+            record.evaluation_id,
+            record.evidence_version,
+            record.nonce,
+            1 if record.is_consumed else 0,
+            record.consumed_at.isoformat() if record.consumed_at else None,
+            record.consumed_by_dispatch_id,
             record.rejection_reason,
             record.approved_at.isoformat(),
             record.approval_token,
@@ -520,17 +604,82 @@ class DocketRepository:
         if not row:
             return None
 
+        consumed_dt = (
+            datetime.fromisoformat(row["consumed_at"])
+            if ("consumed_at" in row.keys() and row["consumed_at"])
+            else None
+        )
         return MerchantApprovalRecord(
             approval_id=row["approval_id"],
             dispute_id=row["dispute_id"],
             merchant_user_id=row["merchant_user_id"],
             decision=ApprovalDecision(row["decision"]),
+            action=row["action"] if "action" in row.keys() else "provide_evidence",
+            payload_hash=row["payload_hash"] if "payload_hash" in row.keys() else None,
+            evaluation_id=row["evaluation_id"] if "evaluation_id" in row.keys() else None,
+            evidence_version=row["evidence_version"] if "evidence_version" in row.keys() else None,
+            nonce=row["nonce"] if "nonce" in row.keys() else None,
             rejection_reason=row["rejection_reason"],
             approved_at=datetime.fromisoformat(row["approved_at"]),
             approval_token=row["approval_token"],
             client_ip=row["client_ip"],
             user_agent=row["user_agent"],
+            is_consumed=bool(row["is_consumed"]) if "is_consumed" in row.keys() else False,
+            consumed_at=consumed_dt,
+            consumed_by_dispatch_id=row["consumed_by_dispatch_id"] if "consumed_by_dispatch_id" in row.keys() else None,
         )
+
+    def is_nonce_consumed(self, nonce: str) -> bool:
+        """Check if an approval nonce has already been consumed."""
+        row = self.conn.fetchone(
+            "SELECT is_consumed FROM merchant_approvals WHERE nonce = ?",
+            (nonce,),
+        )
+        if not row:
+            return False
+        return bool(row["is_consumed"])
+
+    def consume_approval_record(self, nonce: str, dispatch_id: Optional[str] = None) -> bool:
+        """Atomically check and consume an approval token nonce in SQLite.
+        
+        Uses a single transactional UPDATE statement with is_consumed = 0 predicate
+        to guarantee race-free compare-and-swap semantics under concurrent execution.
+        Returns True if successfully consumed.
+        Returns False if already consumed or nonce not found.
+        """
+        now_iso = datetime.now(timezone.utc).isoformat()
+        with self.conn.transaction() as cur:
+            cur.execute(
+                """
+                UPDATE merchant_approvals SET
+                    is_consumed = 1,
+                    consumed_at = ?,
+                    consumed_by_dispatch_id = ?
+                WHERE nonce = ? AND is_consumed = 0
+                """,
+                (now_iso, dispatch_id, nonce),
+            )
+            return cur.rowcount > 0
+
+    def list_consumed_nonces(self) -> set[str]:
+        """Fetch all consumed nonces from the database."""
+        rows = self.conn.fetchall(
+            "SELECT nonce FROM merchant_approvals WHERE is_consumed = 1 AND nonce IS NOT NULL"
+        )
+        return {r["nonce"] for r in rows}
+
+    def reconcile_audit_jsonl_export(self, jsonl_path: Union[str, Path]) -> int:
+        """Idempotently export or rebuild the full JSONL audit trail from canonical SQLite audit_events."""
+        p = Path(jsonl_path)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        events = self.get_audit_events()
+        with open(p, "w", encoding="utf-8") as f:
+            for ev in events:
+                ed = ev.model_dump()
+                ed["timestamp"] = ev.timestamp.isoformat()
+                ed["event_type"] = ev.event_type.value
+                f.write(json.dumps(ed, separators=(",", ":")) + "\n")
+        return len(events)
 
     # ========================================================================
     # Webhook Receipts & Idempotency Constraints
@@ -745,6 +894,8 @@ class DocketRepository:
         claims: List[ExtractedClaim],
         scenario_id: Optional[str] = None,
         has_prompt_threat: bool = False,
+        dispute_category: str = "SYNTHETIC_BENCHMARK",
+        is_archived: bool = False,
         approval_request: Optional[ApprovalRequest] = None,
         approval_record: Optional[MerchantApprovalRecord] = None,
         dispatch_result: Optional[DispatchResult] = None,
@@ -756,6 +907,8 @@ class DocketRepository:
                 dispute=dispute,
                 scenario_id=scenario_id,
                 has_prompt_threat=has_prompt_threat,
+                dispute_category=dispute_category,
+                is_archived=is_archived,
                 approval_request=approval_request,
                 dispatch_result=dispatch_result,
                 cur=cur,
@@ -866,6 +1019,8 @@ class DocketRepository:
                 "claims": claims,
                 "scenario_id": row["scenario_id"],
                 "has_prompt_threat": bool(row["has_prompt_threat"]),
+                "dispute_category": row["dispute_category"] if "dispute_category" in row.keys() else "SYNTHETIC_BENCHMARK",
+                "is_archived": bool(row["is_archived"]) if "is_archived" in row.keys() else False,
                 "approval_request": approval_request,
                 "approval_record": approval_record,
                 "dispatch_result": dispatch_result,

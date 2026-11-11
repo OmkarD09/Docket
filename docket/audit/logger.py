@@ -69,13 +69,26 @@ class AuditLogger:
         self.storage_path = Path(storage_path) if storage_path else self.DEFAULT_LOG_PATH
         self.storage_path.parent.mkdir(parents=True, exist_ok=True)
         self.repository = repository
+        self._export_dirty = False
         self._events: List[AuditEvent] = []
-        self._load_existing_events()
-        if self.repository and self._events:
-            try:
-                self.repository.sync_audit_events_from_jsonl(self._events)
-            except Exception:
-                pass
+
+        if self.repository:
+            # 1. Sync any existing historical events from JSONL into canonical SQLite if table is empty
+            self._load_existing_events()
+            if self._events:
+                try:
+                    self.repository.sync_audit_events_from_jsonl(self._events)
+                except Exception:
+                    pass
+            # 2. Re-hydrate canonical sequence from SQLite
+            db_events = self.repository.get_audit_events()
+            if db_events:
+                self._events = db_events
+            # 3. Ensure derived JSONL export matches canonical SQLite
+            if len(self._events) > 0 and (not self.storage_path.exists() or self.storage_path.stat().st_size == 0):
+                self.reconcile_jsonl_export()
+        else:
+            self._load_existing_events()
 
     def _load_existing_events(self) -> None:
         """Load and parse any existing audit events from the storage file."""
@@ -148,24 +161,46 @@ class AuditLogger:
             payload=event_payload,
         )
 
+        # Step 1: Commit to canonical SQLite audit ledger first (if repository attached)
+        if self.repository:
+            try:
+                self.repository.save_audit_event(event)
+            except Exception as e:
+                raise AuditError(f"Failed to commit audit event {event_id} to canonical SQLite ledger: {e}")
+
+        # Step 2: Append to in-memory sequence
         self._events.append(event)
 
-        # Append to disk immediately
+        # Step 3: Derived export to JSONL file (resilient to transient filesystem I/O errors)
         event_dict = event.model_dump()
         event_dict["timestamp"] = now_iso
         event_dict["event_type"] = event.event_type.value
 
-        with open(self.storage_path, "a", encoding="utf-8") as f:
-            f.write(json.dumps(event_dict, separators=(",", ":")) + "\n")
-
-        # Mirror to relational SQLite audit ledger if repository configured
-        if self.repository:
-            try:
-                self.repository.save_audit_event(event)
-            except Exception:
-                pass
+        try:
+            with open(self.storage_path, "a", encoding="utf-8") as f:
+                f.write(json.dumps(event_dict, separators=(",", ":")) + "\n")
+        except Exception:
+            # File I/O interrupted; canonical record remains safe in SQLite
+            self._export_dirty = True
 
         return event
+
+    def reconcile_jsonl_export(self, target_path: Optional[Union[str, Path]] = None) -> int:
+        """Idempotently export or recover the full JSONL audit trail from canonical SQLite storage."""
+        dst = Path(target_path) if target_path else self.storage_path
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        if self.repository:
+            count = self.repository.reconcile_audit_jsonl_export(dst)
+        else:
+            with open(dst, "w", encoding="utf-8") as f:
+                for ev in self._events:
+                    ed = ev.model_dump()
+                    ed["timestamp"] = ev.timestamp.isoformat()
+                    ed["event_type"] = ev.event_type.value
+                    f.write(json.dumps(ed, separators=(",", ":")) + "\n")
+            count = len(self._events)
+        self._export_dirty = False
+        return count
 
     def get_events(self, dispute_id: Optional[str] = None) -> List[AuditEvent]:
         """Retrieve audit events, optionally filtered by dispute ID."""

@@ -38,5 +38,14 @@ scratch/
 *.log
 *.tmp
 
+# SQLite Databases and WAL files
+*.db
+*.db-wal
+*.db-shm
+artifacts/*.db
+artifacts/*.db-wal
+artifacts/*.db-shm
 
 .graphify-out
+graphify-out/cache/
+graphify-out/.rebuild.lock

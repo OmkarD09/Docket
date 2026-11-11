@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 import json
 from typing import Any, Dict, List, Optional, Set
 from urllib.parse import urlparse
+from uuid import uuid4
 import requests
 
 from docket.models.dispute import DisputeCase, HATEOASLink
@@ -25,7 +26,14 @@ from docket.models.dispatch import (
 )
 from docket.models.policy import DecisionType, OverallPolicyEvaluation
 from docket.models.reconciliation import ReconciledDisputeBundle
-from docket.dispatch.approval import ApprovalService
+from docket.dispatch.approval import (
+    ActionMismatchError,
+    ApprovalService,
+    DisputeMismatchError,
+    EvaluationMismatchError,
+    EvidenceVersionMismatchError,
+    PayloadTamperedError,
+)
 from docket.models.audit import AuditEventType
 
 
@@ -240,16 +248,49 @@ class EvidenceDispatcher:
                 f"Authenticated caller '{caller_merchant_id}' does not match authorized merchant '{approval_record.merchant_user_id}'."
             )
 
+        # Pre-dispatch verification: exact dispute, action, payload hash, evidence version, and evaluation ID
+        if approval_record.dispute_id != dispute.dispute_id:
+            raise DisputeMismatchError(
+                f"Dispute mismatch: approval record was issued for {approval_record.dispute_id}, but dispatch attempted on {dispute.dispute_id}."
+            )
+
+        if approval_record.action != "provide_evidence":
+            raise ActionMismatchError(
+                f"Action mismatch: approval record authorized '{approval_record.action}', but dispatch attempted 'provide_evidence'."
+            )
+
         # Format target payload
         payload = self.formatter.format_fulfillment_evidence(bundle=bundle, notes=custom_notes)
+        computed_payload_hash = self.approval_service._hash_payload(payload)
+
+        if approval_record.payload_hash and approval_record.payload_hash != computed_payload_hash:
+            raise PayloadTamperedError(
+                f"Payload integrity mismatch: approval record hash '{approval_record.payload_hash}' != computed '{computed_payload_hash}'."
+            )
+
+        # Verify evaluation ID
+        current_eval_id = getattr(evaluation, "evaluation_id", None) or f"eval_{dispute.dispute_id}"
+        if approval_record.evaluation_id and approval_record.evaluation_id != current_eval_id:
+            raise EvaluationMismatchError(
+                f"Evaluation ID mismatch: approval authorized '{approval_record.evaluation_id}', but current evaluation is '{current_eval_id}'."
+            )
+
+        # Verify evidence version
+        current_ev_version = bundle.reconciled_at.isoformat() if (bundle and hasattr(bundle, "reconciled_at") and bundle.reconciled_at) else None
+        if approval_record.evidence_version and current_ev_version and approval_record.evidence_version != current_ev_version:
+            raise EvidenceVersionMismatchError(
+                f"Evidence version mismatch: approval authorized version '{approval_record.evidence_version}', but bundle version is '{current_ev_version}'."
+            )
 
         # Verify cryptographic token, bound parameters, and payload integrity (consumes single-use nonce)
+        dispatch_id = f"disp_{uuid4().hex[:12]}"
         self.approval_service.verify_token(
             token=approval_record.approval_token,
             dispute_id=dispute.dispute_id,
             payload=payload,
             merchant_user_id=approval_record.merchant_user_id,
             action="provide_evidence",
+            dispatch_id=dispatch_id,
         )
 
         self._in_progress_disputes.add(dispute.dispute_id)

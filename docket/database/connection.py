@@ -39,6 +39,11 @@ class DatabaseConnection:
         self._configure_pragmas()
         initialize_schema(self._conn)
 
+    @property
+    def connection(self) -> sqlite3.Connection:
+        """Return the underlying sqlite3.Connection object."""
+        return self._conn
+
     def _configure_pragmas(self) -> None:
         """Apply essential SQLite operational pragmas."""
         cur = self._conn.cursor()
@@ -111,6 +116,22 @@ class DatabaseConnection:
                 return cur.fetchall()
             finally:
                 cur.close()
+
+    def backup(self, target_path: Union[str, Path]) -> Path:
+        """Create a consistent online point-in-time backup safe under active WAL concurrency.
+        
+        Uses SQLite's native online backup API to ensure active WAL transactions are flushed
+        and copied without locking out readers or risking half-written file corruption.
+        """
+        dst = Path(target_path)
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        with self._lock:
+            dst_conn = sqlite3.connect(str(dst))
+            try:
+                self._conn.backup(dst_conn, pages=100)
+            finally:
+                dst_conn.close()
+        return dst
 
     def close(self) -> None:
         """Close database connection."""

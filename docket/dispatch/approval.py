@@ -59,6 +59,14 @@ class ActionMismatchError(ApprovalError):
     """Raised when approval token was issued for a different action."""
 
 
+class EvaluationMismatchError(ApprovalError):
+    """Raised when approval record evaluation ID does not match current policy evaluation."""
+
+
+class EvidenceVersionMismatchError(ApprovalError):
+    """Raised when approval record evidence version does not match current evidence package."""
+
+
 class TokenAlreadyUsedError(ApprovalError):
     """Raised when an approval token nonce has already been consumed (replay attack detected)."""
 
@@ -82,10 +90,20 @@ class ApprovalService:
 
     DEFAULT_TTL_SECONDS = 86400  # 24 hours
 
-    def __init__(self, secret_key: Optional[str] = None):
+    def __init__(
+        self,
+        secret_key: Optional[str] = None,
+        repository: Optional[Any] = None,
+    ):
         self.secret_key = secret_key or os.environ.get("DOCKET_APPROVAL_SECRET", "docket-default-dev-secret-key-replace-in-prod")
+        self.repository = repository
         self._consumed_nonces: set[str] = set()
         self._lock = threading.Lock()
+        if self.repository:
+            try:
+                self._consumed_nonces.update(self.repository.list_consumed_nonces())
+            except Exception:
+                pass
 
     def _hash_payload(self, payload: Dict[str, Any]) -> str:
         """Compute canonical SHA-256 hex digest of JSON payload."""
@@ -133,6 +151,8 @@ class ApprovalService:
         
         token = f"{dispute.dispute_id}.{merchant_user_id}.{action}.{nonce}.{exp_ts}.{payload_hash}.{sig}"
         human_summary = self.generate_human_summary(dispute, bundle, policy_evaluation)
+        eval_id = getattr(policy_evaluation, "evaluation_id", None) or f"eval_{dispute.dispute_id}"
+        ev_version = bundle.reconciled_at.isoformat() if bundle else None
 
         return ApprovalRequest(
             approval_id=approval_id,
@@ -142,6 +162,8 @@ class ApprovalService:
             overall_decision=policy_evaluation.overall_decision.value,
             factual_readiness=policy_evaluation.factual_readiness.value,
             action_readiness=policy_evaluation.action_readiness.value,
+            evaluation_id=eval_id,
+            evidence_version=ev_version,
             proposed_payload=proposed_payload,
             payload_hash=payload_hash,
             summary_for_human=human_summary,
@@ -159,6 +181,7 @@ class ApprovalService:
         merchant_user_id: Optional[str] = None,
         action: Optional[str] = None,
         consume_nonce: bool = True,
+        dispatch_id: Optional[str] = None,
     ) -> bool:
         """Verify token signature, expiration, bound parameters, and atomic nonce replay prevention.
         
@@ -228,14 +251,27 @@ class ApprovalService:
         if not hmac.compare_digest(expected_sig, tok_sig):
             raise InvalidSignatureError("Approval token cryptographic signature verification failed.")
 
-        # Atomic anti-replay check under concurrent execution
+        # Atomic anti-replay check under concurrent execution & database durability
         with self._lock:
             if tok_nonce in self._consumed_nonces:
                 raise TokenAlreadyUsedError(
                     f"Approval token nonce '{tok_nonce}' has already been consumed. Replay attack blocked."
                 )
 
+            if self.repository and self.repository.is_nonce_consumed(tok_nonce):
+                self._consumed_nonces.add(tok_nonce)
+                raise TokenAlreadyUsedError(
+                    f"Approval token nonce '{tok_nonce}' has already been consumed in database. Replay attack blocked."
+                )
+
             if consume_nonce:
+                if self.repository:
+                    consumed = self.repository.consume_approval_record(tok_nonce, dispatch_id=dispatch_id)
+                    if not consumed and self.repository.is_nonce_consumed(tok_nonce):
+                        self._consumed_nonces.add(tok_nonce)
+                        raise TokenAlreadyUsedError(
+                            f"Approval token nonce '{tok_nonce}' has already been consumed. Replay attack blocked."
+                        )
                 self._consumed_nonces.add(tok_nonce)
 
         return True
@@ -249,17 +285,23 @@ class ApprovalService:
         client_ip: Optional[str] = None,
         user_agent: Optional[str] = None,
     ) -> MerchantApprovalRecord:
-        """Record an affirmative approval or explicit rejection by a human merchant."""
+        """Record an affirmative approval or explicit rejection by a human merchant with bound metadata."""
         return MerchantApprovalRecord(
             approval_id=request.approval_id,
             dispute_id=request.dispute_id,
             merchant_user_id=merchant_user_id,
             decision=decision,
+            action=request.action,
+            payload_hash=request.payload_hash,
+            evaluation_id=request.evaluation_id,
+            evidence_version=request.evidence_version,
+            nonce=request.nonce,
             rejection_reason=rejection_reason,
             approved_at=datetime.now(timezone.utc),
             approval_token=request.token,
             client_ip=client_ip,
             user_agent=user_agent,
+            is_consumed=False,
         )
 
     def generate_human_summary(

@@ -95,6 +95,8 @@ class DisputeSummaryResponse(BaseModel):
     approval_status: str = "PENDING"  # PENDING, APPROVED, REJECTED
     submission_status: str = "NOT_SUBMITTED"  # NOT_SUBMITTED, SUBMITTED, FAILED
     has_prompt_threat: bool = False
+    dispute_category: str = "SYNTHETIC_BENCHMARK"
+    is_archived: bool = False
 
 
 class AuthorizeRequest(BaseModel):
@@ -147,6 +149,10 @@ class CaseData:
         claims: List[ExtractedClaim],
         has_prompt_threat: bool = False,
         scenario_id: Optional[str] = None,
+        dispute_category: str = "SYNTHETIC_BENCHMARK",
+        is_archived: bool = False,
+        archived_at: Optional[str] = None,
+        archival_reason: Optional[str] = None,
     ):
         self.dispute = dispute
         self.bundle = bundle
@@ -154,6 +160,10 @@ class CaseData:
         self.claims = claims
         self.has_prompt_threat = has_prompt_threat
         self.scenario_id = scenario_id
+        self.dispute_category = dispute_category
+        self.is_archived = is_archived
+        self.archived_at = archived_at
+        self.archival_reason = archival_reason
         self.approval_request: Optional[ApprovalRequest] = None
         self.approval_record: Optional[MerchantApprovalRecord] = None
         self.dispatch_result: Optional[DispatchResult] = None
@@ -236,6 +246,7 @@ def load_initial_cases(policy_engine: PolicyEngine) -> Dict[str, CaseData]:
             claims=[claim],
             has_prompt_threat=False,
             scenario_id="SCENARIO_20_REAL_SANDBOX_FIXTURE_BASELINE",
+            dispute_category="REAL_SANDBOX",
         )
         cases[real_dispute.dispute_id] = real_case
         cases["SCENARIO_20_REAL_SANDBOX_FIXTURE_BASELINE"] = real_case
@@ -299,11 +310,189 @@ def load_initial_cases(policy_engine: PolicyEngine) -> Dict[str, CaseData]:
             claims=claims,
             has_prompt_threat=threat_detected,
             scenario_id=scen.scenario_id,
+            dispute_category="SYNTHETIC_BENCHMARK",
         )
-        cases[scen.dispute.dispute_id] = scen_case
+        if scen.dispute.dispute_id not in cases or cases[scen.dispute.dispute_id].dispute_category != "REAL_SANDBOX":
+            cases[scen.dispute.dispute_id] = scen_case
         cases[scen.scenario_id] = scen_case
 
     return cases
+
+
+# ============================================================================
+# Live PayPal Sandbox Read-Only Retrieval & Ingestion
+# ============================================================================
+
+def sync_live_paypal_sandbox_dispute(
+    repository: DocketRepository,
+    audit_logger: AuditLogger,
+    policy_engine: PolicyEngine,
+    cases_store: Dict[str, CaseData],
+    dispute_id: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Retrieve genuine dispute from PayPal Sandbox API and persist to SQLite with provenance REAL_SANDBOX.
+
+    Strictly read-only retrieval: no dispute modifications, evidence submissions, or API mutations.
+    """
+    from docket.paypal.client import PayPalSandboxClient, PayPalDisputeError, ConfigurationError
+
+    target_id = dispute_id or os.getenv("PAYPAL_DISPUTE_ID", "PP-R-NKI-10193390")
+
+    try:
+        client = PayPalSandboxClient()
+    except ConfigurationError as e:
+        return {
+            "success": False,
+            "status": "BLOCKED",
+            "dispute_id": target_id,
+            "blocker": str(e),
+            "message": "Missing PAYPAL_CLIENT_ID or PAYPAL_CLIENT_SECRET in environment / .env",
+        }
+
+    try:
+        raw_data = client.get_dispute(target_id)
+    except PayPalDisputeError as e:
+        return {
+            "success": False,
+            "status": "API_ERROR",
+            "dispute_id": target_id,
+            "blocker": str(e),
+            "status_code": getattr(e, "status_code", None),
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "status": "NETWORK_ERROR",
+            "dispute_id": target_id,
+            "blocker": f"Unexpected error during PayPal retrieval: {e}",
+        }
+
+    if not isinstance(raw_data, dict) or raw_data.get("dispute_id") != target_id:
+        return {
+            "success": False,
+            "status": "INVALID_RESPONSE",
+            "dispute_id": target_id,
+            "blocker": f"Retrieved payload does not match requested dispute ID {target_id}.",
+        }
+
+    # Construct DisputeCase from live PayPal response
+    live_dispute = DisputeCase.from_paypal_response(raw_data)
+
+    # Match merchant order and shipment records for reconciliation
+    real_order = OrderRecord(
+        order_id="ORD-10193390",
+        paypal_transaction_id="4R073105U90937213",
+        customer_email="sb-6oifq53423350@personal.example.com",
+        customer_name="John Doe",
+        gross_amount=Money(value=Decimal("25.00"), currency_code="USD"),
+        order_timestamp=datetime(2026, 10, 15, 9, 30, 0, tzinfo=timezone.utc),
+        shipping_address=Address(
+            recipient_name="John Doe",
+            line1="123 Main St",
+            city="San Jose",
+            state_or_province="CA",
+            postal_code="95131",
+            country_code="US",
+        ),
+    )
+
+    real_shipment = ShipmentRecord(
+        internal_order_id="ORD-10193390",
+        tracking_number="9400111899223197428490",
+        carrier_name="USPS",
+        tracking_status=TrackingStatus.DELIVERED,
+        shipment_timestamp=datetime(2026, 10, 15, 10, 0, 0, tzinfo=timezone.utc),
+        delivery_timestamp=datetime(2026, 10, 18, 14, 22, 0, tzinfo=timezone.utc),
+        shipment_address=Address(
+            recipient_name="John Doe",
+            line1="123 Main St",
+            city="San Jose",
+            state_or_province="CA",
+            postal_code="95131",
+            country_code="US",
+        ),
+        source_identifier="carrier_tracking_usps",
+        recipient_signature_present=True,
+    )
+
+    reconciler = EvidenceReconciler(orders=[real_order], shipments=[real_shipment])
+    bundle = reconciler.reconcile_dispute(live_dispute)
+    citations = bundle.to_citations()
+    claim = ExtractedClaim(
+        claim_id=f"CLM-LIVE-{target_id[:8]}",
+        claim_type="DELIVERY_COMPLETED",
+        factual_assertion=f"Item delivered by USPS on 2026-10-18T14:22:00Z to postal code 95131.",
+        supporting_sources=citations,
+    )
+    sources_dict = {
+        "carrier_tracking_usps": real_shipment,
+        "merchant_order": real_order,
+        "paypal_dispute": live_dispute,
+    }
+    evaluation = policy_engine.evaluate(
+        dispute=live_dispute,
+        order=real_order,
+        shipment=real_shipment,
+        claim=claim,
+        available_sources=sources_dict,
+    )
+
+    # 1. Persist to SQLite with explicit provenance REAL_SANDBOX
+    repository.save_full_case(
+        dispute=live_dispute,
+        bundle=bundle,
+        evaluation=evaluation,
+        claims=[claim],
+        scenario_id="SCENARIO_20_REAL_SANDBOX_FIXTURE_BASELINE",
+        has_prompt_threat=False,
+        dispute_category="REAL_SANDBOX",
+    )
+
+    # 2. Append DISPUTE_INGESTED event to canonical audit ledger
+    audit_event = audit_logger.log_event(
+        event_type=AuditEventType.DISPUTE_INGESTED,
+        dispute_id=live_dispute.dispute_id,
+        actor="PAYPAL_SANDBOX_API",
+        payload={
+            "provenance": "REAL_SANDBOX",
+            "status": live_dispute.status.value,
+            "lifecycle_stage": live_dispute.lifecycle_stage.value,
+            "amount": str(live_dispute.dispute_amount.value),
+            "currency": live_dispute.dispute_amount.currency_code,
+            "reason": live_dispute.reason.value,
+            "seller_response_due_date": live_dispute.seller_response_due_date.isoformat() if live_dispute.seller_response_due_date else None,
+            "retrieval_mode": "LIVE_OAUTH2_CLIENT_CREDENTIALS",
+            "endpoint": f"https://api-m.sandbox.paypal.com/v1/customer/disputes/{target_id}",
+        },
+    )
+
+    # 3. Update memory store
+    case_data = CaseData(
+        dispute=live_dispute,
+        bundle=bundle,
+        evaluation=evaluation,
+        claims=[claim],
+        has_prompt_threat=False,
+        scenario_id="SCENARIO_20_REAL_SANDBOX_FIXTURE_BASELINE",
+        dispute_category="REAL_SANDBOX",
+    )
+    cases_store[live_dispute.dispute_id] = case_data
+    cases_store["SCENARIO_20_REAL_SANDBOX_FIXTURE_BASELINE"] = case_data
+
+    return {
+        "success": True,
+        "status": "INGESTED",
+        "dispute_id": live_dispute.dispute_id,
+        "provenance": "REAL_SANDBOX",
+        "amount": str(live_dispute.dispute_amount.value),
+        "currency": live_dispute.dispute_amount.currency_code,
+        "reason": live_dispute.reason.value,
+        "lifecycle_stage": live_dispute.lifecycle_stage.value,
+        "status_field": live_dispute.status.value,
+        "seller_response_due_date": live_dispute.seller_response_due_date.isoformat() if live_dispute.seller_response_due_date else None,
+        "audit_event_id": audit_event.event_id,
+        "audit_event_hash": audit_event.event_hash,
+    }
 
 
 # ============================================================================
@@ -342,7 +531,7 @@ def create_app(
 
     # Dependencies & Services
     audit_logger = AuditLogger(storage_path=audit_log_path, repository=repository)
-    approval_service = ApprovalService(secret_key=secret_key)
+    approval_service = ApprovalService(secret_key=secret_key, repository=repository)
     formatter = EvidencePayloadFormatter()
     dispatcher = EvidenceDispatcher(
         approval_service=approval_service,
@@ -369,6 +558,8 @@ def create_app(
                 claims=c["claims"],
                 has_prompt_threat=c["has_prompt_threat"],
                 scenario_id=c["scenario_id"],
+                dispute_category=c.get("dispute_category", "SYNTHETIC_BENCHMARK"),
+                is_archived=c.get("is_archived", False),
             )
             case_obj.approval_request = c["approval_request"]
             case_obj.approval_record = c["approval_record"]
@@ -384,6 +575,7 @@ def create_app(
             cases_store[initial_case.dispute.dispute_id] = initial_case
             if initial_case.scenario_id:
                 cases_store[initial_case.scenario_id] = initial_case
+            cat = "REAL_SANDBOX" if initial_case.dispute.dispute_id == "PP-R-NKI-10193390" else "SYNTHETIC_BENCHMARK"
             try:
                 repository.save_full_case(
                     dispute=initial_case.dispute,
@@ -392,12 +584,25 @@ def create_app(
                     claims=initial_case.claims,
                     scenario_id=initial_case.scenario_id,
                     has_prompt_threat=initial_case.has_prompt_threat,
+                    dispute_category=cat,
                     approval_request=initial_case.approval_request,
                     approval_record=initial_case.approval_record,
                     dispatch_result=initial_case.dispatch_result,
                 )
             except Exception:
                 pass
+
+    # Auto-synchronize genuine Sandbox dispute if credentials are configured and explicitly enabled
+    if os.getenv("DOCKET_SYNC_SANDBOX_ON_STARTUP", "false").lower() in ("true", "1", "yes") and os.environ.get("PAYPAL_CLIENT_ID") and os.environ.get("PAYPAL_CLIENT_SECRET"):
+        try:
+            sync_live_paypal_sandbox_dispute(
+                repository=repository,
+                audit_logger=audit_logger,
+                policy_engine=policy_engine,
+                cases_store=cases_store,
+            )
+        except Exception:
+            pass
 
     # ------------------------------------------------------------------------
     # Health Endpoint
@@ -409,15 +614,27 @@ def create_app(
         ai_mode = os.getenv("DOCKET_AI_MODE", "offline").strip().lower()
         ai_provider = os.getenv("DOCKET_AI_PROVIDER", "gemini" if ai_mode == "live" else "offline-deterministic")
         ai_model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash") if ai_mode == "live" else None
+
+        unique_cases = len({id(c) for c in cases_store.values()})
+        db_counts = repository.get_dispute_counts()
+
         return {
             "status": "ok",
             "version": "1.0.0",
             "timestamp": datetime.now(timezone.utc).isoformat(),
-            "total_cases_loaded": len(cases_store),
+            "total_cases_loaded": unique_cases,
+            "case_counts": {
+                "total_unique_cases": unique_cases,
+                "alias_lookup_keys": len(cases_store),
+                "real_sandbox_disputes": db_counts["breakdown"]["real_sandbox"],
+                "synthetic_benchmark_scenarios": db_counts["breakdown"]["synthetic_benchmark"],
+                "live_webhook_disputes": db_counts["breakdown"]["live_webhook"],
+                "archived_disputes": db_counts["archived_disputes"],
+            },
             "database": {
                 "type": "sqlite",
                 "path": str(repository.conn.raw_path),
-                "total_disputes": repository.count_disputes(),
+                **db_counts,
             },
             "ai_mode": ai_mode,
             "ai_extractor": type(active_extractor).__name__,
@@ -478,6 +695,8 @@ def create_app(
                     approval_status=appr_status,
                     submission_status=subm_status,
                     has_prompt_threat=c_data.has_prompt_threat,
+                    dispute_category=c_data.dispute_category,
+                    is_archived=c_data.is_archived,
                 )
             )
         return summaries
@@ -652,6 +871,48 @@ def create_app(
             raise HTTPException(status_code=500, detail=f"Internal dispatch failure: {e}")
 
     # ------------------------------------------------------------------------
+    # Archive Dispute (Soft Deletion for Compliance & Audit Retention)
+    # ------------------------------------------------------------------------
+    @app.post("/api/disputes/{dispute_id}/archive")
+    def archive_dispute_endpoint(dispute_id: str, reason: str = "MERCHANT_ARCHIVED"):
+        if dispute_id not in cases_store:
+            raise HTTPException(status_code=404, detail=f"Dispute {dispute_id} not found.")
+
+        c_data = cases_store[dispute_id]
+        c_data.is_archived = True
+        c_data.archived_at = datetime.now(timezone.utc).isoformat()
+        c_data.archival_reason = reason
+        repository.archive_dispute(dispute_id, reason=reason)
+
+        audit_logger.log_event(
+            event_type=AuditEventType.DISPUTE_INGESTED,
+            dispute_id=dispute_id,
+            actor="merchant_admin",
+            payload={"action": "ARCHIVE_DISPUTE", "reason": reason, "archived_at": c_data.archived_at},
+        )
+        return {
+            "dispute_id": dispute_id,
+            "is_archived": True,
+            "archived_at": c_data.archived_at,
+            "reason": reason,
+        }
+
+    # ------------------------------------------------------------------------
+    # PayPal Sandbox Live Synchronization (Read-Only)
+    # ------------------------------------------------------------------------
+    @app.post("/api/disputes/sandbox/sync")
+    def sync_sandbox(dispute_id: Optional[str] = None):
+        """Perform strictly read-only retrieval of a genuine Sandbox dispute and persist to SQLite."""
+        res = sync_live_paypal_sandbox_dispute(
+            repository=repository,
+            audit_logger=audit_logger,
+            policy_engine=policy_engine,
+            cases_store=cases_store,
+            dispute_id=dispute_id,
+        )
+        return res
+
+    # ------------------------------------------------------------------------
     # Webhook Ingestion with Idempotency Guard
     # ------------------------------------------------------------------------
     @app.post("/api/webhooks/paypal", response_model=WebhookIngestResponse)
@@ -702,6 +963,7 @@ def create_app(
                     evaluation=new_eval,
                     claims=[],
                     has_prompt_threat=False,
+                    dispute_category="LIVE_WEBHOOK",
                 )
                 cases_store[req.dispute_id] = new_case
                 repository.save_full_case(
@@ -709,6 +971,7 @@ def create_app(
                     bundle=new_bundle,
                     evaluation=new_eval,
                     claims=[],
+                    dispute_category="LIVE_WEBHOOK",
                 )
             except Exception:
                 pass
