@@ -1,0 +1,26 @@
+# Virtual environments & package managers
+.venv/
+venv/
+node_modules/
+frontend/node_modules/
+
+# Large media files and video recordings
+video/
+docs/assets/readme/
+
+# Testing artifacts and caches
+.pytest_cache/
+tests/
+.coverage
+htmlcov/
+__pycache__/
+*.pyc
+
+# Local agent metadata and graphify caches
+graphify-out/
+.agents/
+.gemini/
+
+# Temporary files and backups
+artifacts/*.bak
+*.log
