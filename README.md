@@ -12,12 +12,13 @@
 [![AG Grid](https://img.shields.io/badge/AG%20Grid-v36%20Community-0f172a?style=flat-square&logo=aggrid&logoColor=e0234e)](https://www.ag-grid.com/)
 [![SQLite](https://img.shields.io/badge/SQLite-WAL%20Mode-0f172a?style=flat-square&logo=sqlite&logoColor=003b57)](https://www.sqlite.org/)
 [![PayPal Sandbox](https://img.shields.io/badge/PayPal%20Sandbox-Verified%20(REST%20v1)-0f172a?style=flat-square&logo=paypal&logoColor=00457c)](https://developer.paypal.com/)
+[![Deployment](https://img.shields.io/badge/Deployment-Live%20on%20Vercel-0f172a?style=flat-square&logo=vercel&logoColor=ffffff)](https://docket-zeta-ten.vercel.app)
 [![Tests](https://img.shields.io/badge/Tests-340%20Passed%20(100%25)-0f172a?style=flat-square&logo=pytest&logoColor=22c55e)](tests/)
 [![License](https://img.shields.io/badge/License-MIT-0f172a?style=flat-square)](LICENSE)
 
 ---
 
-### [Overview](#1-what-is-docket) • [Capabilities](#3-key-capabilities) • [Architecture](#4-how-docket-works) • [Screenshots](#5-product-walkthrough) • [PayPal Sandbox](#7-paypal-sandbox-integration) • [Quickstart](#8-quickstart) • [Judge's Guide](#9-guided-hackathon-demo) • [Verification](#11-security--verification)
+### [🚀 Live Production Demo](https://docket-zeta-ten.vercel.app) • [Overview](#1-what-is-docket) • [Capabilities](#3-key-capabilities) • [Architecture](#4-how-docket-works) • [Screenshots](#5-product-walkthrough) • [PayPal Sandbox](#7-paypal-sandbox-integration) • [Quickstart](#8-quickstart) • [Judge's Guide](#9-guided-hackathon-demo) • [Verification](#11-security--verification)
 
 ---
 
@@ -182,6 +183,10 @@ Docket features authentic integration with PayPal developer APIs:
 ---
 
 ## 8. Quickstart
+
+> [!TIP]
+> **Try the Live Deployment:**
+> You can immediately test the full product, browse real PayPal Sandbox disputes, and inspect cryptographic audit trails without installing anything locally at **[https://docket-zeta-ten.vercel.app](https://docket-zeta-ten.vercel.app)**.
 
 Get Docket running locally in under two minutes:
 
