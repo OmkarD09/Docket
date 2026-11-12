@@ -786,9 +786,9 @@
     "semantic_hash": ""
   },
   "skills-lock.json": {
-    "mtime": 1792314499.094293,
-    "seen": 1793987231.8527722,
-    "ast_hash": "13cfce188ea47cc0bb0faa612c7684de",
+    "mtime": 1794428579.1752422,
+    "seen": 1794429189.276322,
+    "ast_hash": "bd91a758512692af8cd2eabdb9cc6398",
     "semantic_hash": ""
   },
   "tests/__init__.py": {
@@ -3324,8 +3324,8 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1794425277.7511828,
-    "seen": 1794425348.351582,
+    "mtime": 1794425396.6434152,
+    "seen": 1794425458.7034745,
     "ast_hash": "3046f3dba61be829501d970de7752824",
     "semantic_hash": ""
   },
@@ -3828,8 +3828,8 @@
     "semantic_hash": ""
   },
   "docket/database/repository.py": {
-    "mtime": 1794422639.3719263,
-    "seen": 1794422925.3699145,
+    "mtime": 1794427112.109029,
+    "seen": 1794427921.36876,
     "ast_hash": "fddfbb0c47555b0da3c4a4968b66d266",
     "semantic_hash": ""
   },
@@ -3987,6 +3987,5280 @@
     "mtime": 1794424245.8102622,
     "seen": 1794424646.136866,
     "ast_hash": "b3cf630924c4306184652b69e4b66144",
+    "semantic_hash": ""
+  },
+  ".agents/skills/technical-video-script/evals/evals.json": {
+    "mtime": 1794426572.3143978,
+    "seen": 1794427921.36876,
+    "ast_hash": "2f44065335fa8942bba20cd26fffc591",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/manifest.json": {
+    "mtime": 1794053240.6509402,
+    "seen": 1794427921.36876,
+    "ast_hash": "17e787d588ba8d2b29a83f5910be70f5",
+    "semantic_hash": ""
+  },
+  "video/audio/timeline.json": {
+    "mtime": 1794426982.5119653,
+    "seen": 1794427921.36876,
+    "ast_hash": "8f02585f433dc7a488182ea600676978",
+    "semantic_hash": ""
+  },
+  "video/build_video.py": {
+    "mtime": 1794430471.6825047,
+    "seen": 1794430634.0293193,
+    "ast_hash": "e2e28db4c6ecc16308e4695a801473a5",
+    "semantic_hash": ""
+  },
+  "video/capture_1080p_assets.cjs": {
+    "mtime": 1794427487.789231,
+    "seen": 1794427921.36876,
+    "ast_hash": "a8944b2f03fbdcba8d2065f835449a2c",
+    "semantic_hash": ""
+  },
+  "video/generate_audio.py": {
+    "mtime": 1794428871.481772,
+    "seen": 1794429189.276322,
+    "ast_hash": "eeb3fc200c3d44b72891637d33075281",
+    "semantic_hash": ""
+  },
+  "video/generate_subtitles.py": {
+    "mtime": 1794427886.232777,
+    "seen": 1794427921.36876,
+    "ast_hash": "bb942a03e2ad3045c683095f45e6ef10",
+    "semantic_hash": ""
+  },
+  "video/measure_durations.py": {
+    "mtime": 1794426977.7941408,
+    "seen": 1794427921.36876,
+    "ast_hash": "a824887fc2ff51b951cbc3490f0ee7f1",
+    "semantic_hash": ""
+  },
+  ".agents/skills/technical-video-script/SKILL.md": {
+    "mtime": 1794426572.3133988,
+    "seen": 1794427921.3707848,
+    "ast_hash": "585e35c5187a87d25392ea99adf93bd0",
+    "semantic_hash": ""
+  },
+  ".agents/skills/technical-video-script/references/published-findings.md": {
+    "mtime": 1794426572.3153932,
+    "seen": 1794427921.3707848,
+    "ast_hash": "2bbf58460998e28b4c7e344577037c2f",
+    "semantic_hash": ""
+  },
+  ".agents/skills/technical-video-script/references/recording-brief.md": {
+    "mtime": 1794426572.31641,
+    "seen": 1794427921.3707848,
+    "ast_hash": "b37f2638ea46c6f504b54e7a880914d5",
+    "semantic_hash": ""
+  },
+  ".agents/skills/technical-video-script/references/script-template.md": {
+    "mtime": 1794426572.31641,
+    "seen": 1794427921.3707848,
+    "ast_hash": "6a5680daaf90ed0cf97644994fb51166",
+    "semantic_hash": ""
+  },
+  ".agents/skills/technical-video-script/references/worked-examples.md": {
+    "mtime": 1794426572.3173943,
+    "seen": 1794427921.3707848,
+    "ast_hash": "b89085495d6e7bae8a07fdc67eb56c63",
+    "semantic_hash": ""
+  },
+  "video/assets/motion/scene_01_hook.html": {
+    "mtime": 1794428630.208239,
+    "seen": 1794429189.276322,
+    "ast_hash": "668f997718d36e219135a83507302bdf",
+    "semantic_hash": ""
+  },
+  "video/assets/motion/scene_02_problem.html": {
+    "mtime": 1794428655.5850463,
+    "seen": 1794429189.276322,
+    "ast_hash": "51e90a291b818d074cdf960b783d6fd4",
+    "semantic_hash": ""
+  },
+  "video/assets/motion/scene_03_architecture.html": {
+    "mtime": 1794428678.315672,
+    "seen": 1794429189.276322,
+    "ast_hash": "6251a868ce928634dd1a5205f80d925c",
+    "semantic_hash": ""
+  },
+  "video/assets/motion/scene_09_closing.html": {
+    "mtime": 1794428691.4384222,
+    "seen": 1794429189.276322,
+    "ast_hash": "011bad86107e9992aeab0ef964cf6576",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/CREDITS.md": {
+    "mtime": 1794053240.6086109,
+    "seen": 1794427921.371771,
+    "ast_hash": "58e8dc66d16a0bb83f66e59e7bbff942",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/concat_list.txt": {
+    "mtime": 1794430520.448547,
+    "seen": 1794430634.032092,
+    "ast_hash": "80bd11e0c6ab41ef3f7ba8be6e0d6b86",
+    "semantic_hash": ""
+  },
+  "video/script/SCRIPT.md": {
+    "mtime": 1794426913.8857625,
+    "seen": 1794427921.371771,
+    "ast_hash": "c0847878ab5e72ca335834fc138a4b49",
+    "semantic_hash": ""
+  },
+  "video/THUMBNAIL.png": {
+    "mtime": 1794429160.4510021,
+    "seen": 1794429189.276322,
+    "ast_hash": "27a6b4cf84111559b30b3679d0e3cdd2",
+    "semantic_hash": ""
+  },
+  "video/assets/motion/scene_01_hook.png": {
+    "mtime": 1794428717.997537,
+    "seen": 1794429189.276322,
+    "ast_hash": "fdf2cc0a443b718a4844874c27d3dcaa",
+    "semantic_hash": ""
+  },
+  "video/assets/motion/scene_02_problem.png": {
+    "mtime": 1794428719.7468214,
+    "seen": 1794429189.276322,
+    "ast_hash": "b488375ad214e173c033cd1e22261fc8",
+    "semantic_hash": ""
+  },
+  "video/assets/motion/scene_03_architecture.png": {
+    "mtime": 1794428721.2703378,
+    "seen": 1794429189.276322,
+    "ast_hash": "12583972af9c3e6c2cdbffd49bb79b9c",
+    "semantic_hash": ""
+  },
+  "video/assets/motion/scene_09_closing.png": {
+    "mtime": 1794428723.0511713,
+    "seen": 1794429189.276322,
+    "ast_hash": "9d44f3854c417df86b7d47fc59189d74",
+    "semantic_hash": ""
+  },
+  "video/assets/ui/01_signin.png": {
+    "mtime": 1794427496.593198,
+    "seen": 1794427921.371771,
+    "ast_hash": "b694d43c54848a07550e56bc3cb177de",
+    "semantic_hash": ""
+  },
+  "video/assets/ui/02_overview.png": {
+    "mtime": 1794427499.9119656,
+    "seen": 1794427921.371771,
+    "ast_hash": "6382ffa3617087898286e70d932c84a8",
+    "semantic_hash": ""
+  },
+  "video/assets/ui/03_disputes_table.png": {
+    "mtime": 1794430344.5795057,
+    "seen": 1794430634.0327034,
+    "ast_hash": "c66d91cdaa20748c30c1434a7fa5b84e",
+    "semantic_hash": ""
+  },
+  "video/assets/ui/04_evidence_drawer.png": {
+    "mtime": 1794427503.3601935,
+    "seen": 1794427921.371771,
+    "ast_hash": "f435df19ec0be7e7589940293ab174a2",
+    "semantic_hash": ""
+  },
+  "video/assets/ui/05_dispatch_success.png": {
+    "mtime": 1794427560.7744782,
+    "seen": 1794427921.371771,
+    "ast_hash": "6ebb24809e79ac554d59e401feccf320",
+    "semantic_hash": ""
+  },
+  "video/assets/ui/05_evidence_invariants.png": {
+    "mtime": 1794427504.555153,
+    "seen": 1794427921.371771,
+    "ast_hash": "f435df19ec0be7e7589940293ab174a2",
+    "semantic_hash": ""
+  },
+  "video/assets/ui/06_audit_trail.png": {
+    "mtime": 1794427506.377766,
+    "seen": 1794427921.371771,
+    "ast_hash": "026a9e2702b617ac826ce648161a01d0",
+    "semantic_hash": ""
+  },
+  "video/assets/ui/07_benchmark_scorecard.png": {
+    "mtime": 1794427508.068459,
+    "seen": 1794427921.371771,
+    "ast_hash": "2d69c3f69947dd5a38b3ffa0d0ac8e33",
+    "semantic_hash": ""
+  },
+  "video/DOCKET_DEMO_VIDEO.mp4": {
+    "mtime": 1794430591.1432476,
+    "seen": 1794430634.0362477,
+    "ast_hash": "f0ed0d9bbd1aa6034f05576a3977038f",
+    "semantic_hash": ""
+  },
+  "video/audio/beat_01_hook.mp3": {
+    "mtime": 1794428879.6736789,
+    "seen": 1794429189.276322,
+    "ast_hash": "56cae1d940e95e7b11c566f1c389ef70",
+    "semantic_hash": ""
+  },
+  "video/audio/beat_02_problem.mp3": {
+    "mtime": 1794428883.1551743,
+    "seen": 1794429189.276322,
+    "ast_hash": "57fbed516af2be8adb1293ac3b56df48",
+    "semantic_hash": ""
+  },
+  "video/audio/beat_03_architecture.mp3": {
+    "mtime": 1794428886.0110643,
+    "seen": 1794429189.276322,
+    "ast_hash": "54c8c95f2531524cabb41065509f214c",
+    "semantic_hash": ""
+  },
+  "video/audio/beat_04_overview_demo.mp3": {
+    "mtime": 1794426948.9490273,
+    "seen": 1794427921.371771,
+    "ast_hash": "e41de22b75ae5840a33346ae18d8623b",
+    "semantic_hash": ""
+  },
+  "video/audio/beat_05_dispute_workspace.mp3": {
+    "mtime": 1794426952.145877,
+    "seen": 1794427921.371771,
+    "ast_hash": "3f3477834018d3dafbd3df3653f68d2a",
+    "semantic_hash": ""
+  },
+  "video/audio/beat_06_evidence_drawer.mp3": {
+    "mtime": 1794426954.3079772,
+    "seen": 1794427921.371771,
+    "ast_hash": "255fab76ab1879ce7b1d9446db564713",
+    "semantic_hash": ""
+  },
+  "video/audio/beat_07_dispatch_gate.mp3": {
+    "mtime": 1794426962.2293308,
+    "seen": 1794427921.371771,
+    "ast_hash": "bd32a83b7f10e08aec8812e7f6dbc88b",
+    "semantic_hash": ""
+  },
+  "video/audio/beat_08_audit_benchmark.mp3": {
+    "mtime": 1794426965.2008545,
+    "seen": 1794427921.371771,
+    "ast_hash": "0ca68ed56b8b0a032c398022ceb75f87",
+    "semantic_hash": ""
+  },
+  "video/audio/beat_09_closing.mp3": {
+    "mtime": 1794426967.0655737,
+    "seen": 1794427921.371771,
+    "ast_hash": "e92ce887c4e0d398034eb4cd15200ee7",
+    "semantic_hash": ""
+  },
+  "video/audio/music_bed.wav": {
+    "mtime": 1794060292.246059,
+    "seen": 1794427921.371771,
+    "ast_hash": "a4352e14d2382ffe69e18782782cf101",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/chime.mp3": {
+    "mtime": 1794053240.6126292,
+    "seen": 1794427921.371771,
+    "ast_hash": "e466b99ab7e28be6035a7755c45986c0",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/click-soft.mp3": {
+    "mtime": 1794053240.6146212,
+    "seen": 1794427921.371771,
+    "ast_hash": "7f90c47fcc5f15e0c0e94b3bfb6467f7",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/click.mp3": {
+    "mtime": 1794053240.6176214,
+    "seen": 1794427921.371771,
+    "ast_hash": "7f90c47fcc5f15e0c0e94b3bfb6467f7",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/error.mp3": {
+    "mtime": 1794053240.6206286,
+    "seen": 1794427921.371771,
+    "ast_hash": "e77530478844f5163034f37ec0df559f",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/glitch-1.mp3": {
+    "mtime": 1794053240.6266315,
+    "seen": 1794427921.371771,
+    "ast_hash": "efc6377036b966277abe5969d718415f",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/glitch-2.mp3": {
+    "mtime": 1794053240.6317077,
+    "seen": 1794427921.371771,
+    "ast_hash": "c1fd5c1d66134ebf06265d80c8b2ccd2",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/glitch-3.mp3": {
+    "mtime": 1794053240.6357021,
+    "seen": 1794427921.371771,
+    "ast_hash": "d8bb50944a0bb1e09b781a1876708f64",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/impact-bass-1.mp3": {
+    "mtime": 1794053240.6397083,
+    "seen": 1794427921.371771,
+    "ast_hash": "2ede2174d78ffd20cb4a2e526e5f1535",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/impact-bass-2.mp3": {
+    "mtime": 1794053240.6455894,
+    "seen": 1794427921.371771,
+    "ast_hash": "db82ef8ce4c5f350ca9cd7dc50be1d08",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/key-press.mp3": {
+    "mtime": 1794053240.6479025,
+    "seen": 1794427921.371771,
+    "ast_hash": "55e2b9bd93f20d3378dd5a78bb6782ec",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/notification.mp3": {
+    "mtime": 1794053240.655619,
+    "seen": 1794427921.371771,
+    "ast_hash": "02dfd453e36c5478c1449413f0e97876",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/ping.mp3": {
+    "mtime": 1794053240.6590295,
+    "seen": 1794427921.371771,
+    "ast_hash": "7f9c4eebbd788db39983eb557cedd658",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/pop.mp3": {
+    "mtime": 1794053240.662644,
+    "seen": 1794427921.371771,
+    "ast_hash": "f7573505e51e4db50ba516a03844ef55",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/riser.mp3": {
+    "mtime": 1794053240.672179,
+    "seen": 1794427921.371771,
+    "ast_hash": "70640c1caa0dc736ab2ea72fad017eda",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/sparkle.mp3": {
+    "mtime": 1794053240.6761758,
+    "seen": 1794427921.371771,
+    "ast_hash": "2581ca6b0e0c006bb0b670f9a861503c",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/typing.mp3": {
+    "mtime": 1794053240.6792285,
+    "seen": 1794427921.371771,
+    "ast_hash": "47534526463f9241ad1a9215465f345e",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/whoosh-cinematic.mp3": {
+    "mtime": 1794053240.6861804,
+    "seen": 1794427921.371771,
+    "ast_hash": "b88d7ac2c94867f9674961084298afbe",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/whoosh-short.mp3": {
+    "mtime": 1794053240.690177,
+    "seen": 1794427921.371771,
+    "ast_hash": "e7e7597bde6612d2ac1a24d5b5590b18",
+    "semantic_hash": ""
+  },
+  "video/audio/sfx/whoosh.mp3": {
+    "mtime": 1794053240.6931784,
+    "seen": 1794427921.371771,
+    "ast_hash": "e7e7597bde6612d2ac1a24d5b5590b18",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/raw_assembled.mp4": {
+    "mtime": 1794430520.6649761,
+    "seen": 1794430634.0362477,
+    "ast_hash": "a6561f9382fdcbd4fa2258a0b6b38d88",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_01.mp4": {
+    "mtime": 1794427789.4410355,
+    "seen": 1794427921.371771,
+    "ast_hash": "efc8ade899480f8c1bea9180557652ba",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_02.mp4": {
+    "mtime": 1794427792.63972,
+    "seen": 1794427921.371771,
+    "ast_hash": "2216f37ee6328a2333cbd301398821d9",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_03.mp4": {
+    "mtime": 1794427799.9651806,
+    "seen": 1794427921.371771,
+    "ast_hash": "2d91dd215ce6e840995d97f14b4ec1e1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_04.mp4": {
+    "mtime": 1794427806.446113,
+    "seen": 1794427921.371771,
+    "ast_hash": "8b3ae557ca5aa731ec011015aca769c9",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_05.mp4": {
+    "mtime": 1794427812.907154,
+    "seen": 1794427921.371771,
+    "ast_hash": "0d7e10f3bd961a9dd4de03873a21b0db",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_06.mp4": {
+    "mtime": 1794427820.4052472,
+    "seen": 1794427921.371771,
+    "ast_hash": "db4c4b6d6e8419ecaa78403fb78345a6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07.mp4": {
+    "mtime": 1794427829.0711696,
+    "seen": 1794427921.371771,
+    "ast_hash": "a06434285c499c0cdc6589221e20a707",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_08.mp4": {
+    "mtime": 1794427834.576473,
+    "seen": 1794427921.371771,
+    "ast_hash": "2c80c94220eb2f3fa98edbe8b37fd498",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_09.mp4": {
+    "mtime": 1794427837.3474555,
+    "seen": 1794427921.371771,
+    "ast_hash": "47042f10ae38a764fb226ac908b2539f",
+    "semantic_hash": ""
+  },
+  ".agents/skills/apple-design/SKILL.md": {
+    "mtime": 1794428566.8227415,
+    "seen": 1794429189.276322,
+    "ast_hash": "b6e45240038f62aeeec9a39fdd6fcbbe",
+    "semantic_hash": ""
+  },
+  ".agents/skills/design-motion-principles/SKILL.md": {
+    "mtime": 1794428577.681626,
+    "seen": 1794429189.276322,
+    "ast_hash": "b7ad443871da0815916d79676ac3d379",
+    "semantic_hash": ""
+  },
+  ".agents/skills/design-motion-principles/references/accessibility.md": {
+    "mtime": 1794428577.6826258,
+    "seen": 1794429189.276322,
+    "ast_hash": "2be45529d68f0f0be93ef990f879b048",
+    "semantic_hash": ""
+  },
+  ".agents/skills/design-motion-principles/references/anti-checklist.md": {
+    "mtime": 1794428577.6826258,
+    "seen": 1794429189.276322,
+    "ast_hash": "c4da133888cf98c8e1026b0412adb107",
+    "semantic_hash": ""
+  },
+  ".agents/skills/design-motion-principles/references/audit-checklist.md": {
+    "mtime": 1794428577.6836255,
+    "seen": 1794429189.276322,
+    "ast_hash": "e0a405878680d37f23abad6c47aa5b8a",
+    "semantic_hash": ""
+  },
+  ".agents/skills/design-motion-principles/references/creation-gotchas.md": {
+    "mtime": 1794428577.6836255,
+    "seen": 1794429189.276322,
+    "ast_hash": "698ef145458421ce970b8bd7629d499c",
+    "semantic_hash": ""
+  },
+  ".agents/skills/design-motion-principles/references/demo-shell.html": {
+    "mtime": 1794428577.6836255,
+    "seen": 1794429189.276322,
+    "ast_hash": "587e6ce85be1a5e26e39e33acb3f38ba",
+    "semantic_hash": ""
+  },
+  ".agents/skills/design-motion-principles/references/emil-kowalski.md": {
+    "mtime": 1794428577.6846259,
+    "seen": 1794429189.276322,
+    "ast_hash": "2741480fca47410b5a5e705556fde398",
+    "semantic_hash": ""
+  },
+  ".agents/skills/design-motion-principles/references/jakub-krehel.md": {
+    "mtime": 1794428577.6846259,
+    "seen": 1794429189.276322,
+    "ast_hash": "a12d1d68c0ac84af177080f49e736a5b",
+    "semantic_hash": ""
+  },
+  ".agents/skills/design-motion-principles/references/jhey-tompkins.md": {
+    "mtime": 1794428577.6846259,
+    "seen": 1794429189.276322,
+    "ast_hash": "e2532039e068c7fa99a9a0f848a9d039",
+    "semantic_hash": ""
+  },
+  ".agents/skills/design-motion-principles/references/motion-cookbook.md": {
+    "mtime": 1794428577.6856258,
+    "seen": 1794429189.276322,
+    "ast_hash": "a3ff21ed0fb44370ad5e59d83d9ff6f2",
+    "semantic_hash": ""
+  },
+  ".agents/skills/design-motion-principles/references/output-format.md": {
+    "mtime": 1794428577.6856258,
+    "seen": 1794429189.276322,
+    "ast_hash": "2203a929eff30284390afa731c20f21c",
+    "semantic_hash": ""
+  },
+  ".agents/skills/design-motion-principles/references/performance.md": {
+    "mtime": 1794428577.6856258,
+    "seen": 1794429189.276322,
+    "ast_hash": "038e80415dde4fe1f55cb935d471237c",
+    "semantic_hash": ""
+  },
+  ".agents/skills/design-motion-principles/references/report-template.html": {
+    "mtime": 1794428577.6866257,
+    "seen": 1794429189.276322,
+    "ast_hash": "b3385d272aee33a819862c3886715108",
+    "semantic_hash": ""
+  },
+  ".agents/skills/design-motion-principles/workflows/audit.md": {
+    "mtime": 1794428577.6876256,
+    "seen": 1794429189.276322,
+    "ast_hash": "2eb036d0d6e97e03c817ef093b9f14b9",
+    "semantic_hash": ""
+  },
+  ".agents/skills/design-motion-principles/workflows/create.md": {
+    "mtime": 1794428577.6876256,
+    "seen": 1794429189.276322,
+    "ast_hash": "ed2bb886cb74f4bf1b889ba518a45a5d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_10_audit_closing_concat.txt": {
+    "mtime": 1794430519.5575664,
+    "seen": 1794430634.032092,
+    "ast_hash": "acb6f6ef7fa8cb69c71a652a5dd30534",
+    "semantic_hash": ""
+  },
+  "video/script/AUDIO_NARRATION_SCRIPT.md": {
+    "mtime": 1794428763.8727205,
+    "seen": 1794429189.276322,
+    "ast_hash": "fd29f9dcb8edc56c84c0a73f013c086b",
+    "semantic_hash": ""
+  },
+  "video/thumbnail.html": {
+    "mtime": 1794429150.7564652,
+    "seen": 1794429189.276322,
+    "ast_hash": "44b55319c770b611876c9f9f30f95188",
+    "semantic_hash": ""
+  },
+  "video/audio/beat_04_signin_demo.mp3": {
+    "mtime": 1794428891.3988101,
+    "seen": 1794429189.276322,
+    "ast_hash": "a9c90f5aa6159030f4c8d5cb70e2eb5b",
+    "semantic_hash": ""
+  },
+  "video/audio/beat_05_overview_dashboard.mp3": {
+    "mtime": 1794428894.6708443,
+    "seen": 1794429189.276322,
+    "ast_hash": "ab3c1e4c3e7bf64e66c69a723d2425b0",
+    "semantic_hash": ""
+  },
+  "video/audio/beat_06_disputes_aggrid.mp3": {
+    "mtime": 1794428898.8718169,
+    "seen": 1794429189.276322,
+    "ast_hash": "800718e3dfade3f9167819645466e415",
+    "semantic_hash": ""
+  },
+  "video/audio/beat_07_evidence_drawer.mp3": {
+    "mtime": 1794428901.7421088,
+    "seen": 1794429189.276322,
+    "ast_hash": "16d2ca9508e32bde419c4777543f2daf",
+    "semantic_hash": ""
+  },
+  "video/audio/beat_08_policy_invariants.mp3": {
+    "mtime": 1794428905.1367378,
+    "seen": 1794429189.276322,
+    "ast_hash": "c457ee3f79d69e35d4f1669b8cfb9107",
+    "semantic_hash": ""
+  },
+  "video/audio/beat_09_approval_dispatch.mp3": {
+    "mtime": 1794428908.1233585,
+    "seen": 1794429189.276322,
+    "ast_hash": "7e4983c6f43c2a164b332d95278f1f25",
+    "semantic_hash": ""
+  },
+  "video/audio/beat_10_audit_closing.mp3": {
+    "mtime": 1794428911.2108643,
+    "seen": 1794429189.276322,
+    "ast_hash": "813aa6ec84e33322ed6c54b8324a3446",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_01_hook.mp4": {
+    "mtime": 1794430478.947843,
+    "seen": 1794430634.0362477,
+    "ast_hash": "a9fbb3af06f0fe8c66ba37731407927c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_02_problem.mp4": {
+    "mtime": 1794430480.6961634,
+    "seen": 1794430634.0362477,
+    "ast_hash": "76e399ac1c64a53042fbb5eacd7f8589",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_03_architecture.mp4": {
+    "mtime": 1794430485.998523,
+    "seen": 1794430634.0362477,
+    "ast_hash": "d95058b3c3d2eb3959b5a4d46e95570e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_04_signin.mp4": {
+    "mtime": 1794430492.3997593,
+    "seen": 1794430634.0362477,
+    "ast_hash": "999bac4fe11d49a3688f2ba43827913e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_05_overview.mp4": {
+    "mtime": 1794430498.7813692,
+    "seen": 1794430634.0362477,
+    "ast_hash": "ee51aa16cc5dd275cc926eac59f36164",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_06_disputes_aggrid.mp4": {
+    "mtime": 1794430505.9765565,
+    "seen": 1794430634.0362477,
+    "ast_hash": "b3316a7c8bbaa457d67487b6a13ceaad",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_evidence_drawer.mp4": {
+    "mtime": 1794430508.842782,
+    "seen": 1794430634.0362477,
+    "ast_hash": "a6ff9aba582dbe379401ad1714986d07",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_08_policy_invariants.mp4": {
+    "mtime": 1794430510.5004618,
+    "seen": 1794430634.0362477,
+    "ast_hash": "43a3f19773c9d27acb0342fbcce18d97",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_09_approval_dispatch.mp4": {
+    "mtime": 1794430514.3696294,
+    "seen": 1794430634.0362477,
+    "ast_hash": "72310844547d43f4d89ec9db423465b2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_10_audit_closing.mp4": {
+    "mtime": 1794430520.4414077,
+    "seen": 1794430634.0362477,
+    "ast_hash": "c3d1c4a45518ed68b7b749fbb2501e11",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_10_audit_closing_sub_0.mp4": {
+    "mtime": 1794430515.965297,
+    "seen": 1794430634.0362477,
+    "ast_hash": "8cde84f383ea9bb17e06521aa56d04fd",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_10_audit_closing_sub_1.mp4": {
+    "mtime": 1794430517.5417883,
+    "seen": 1794430634.0362477,
+    "ast_hash": "6b59a1f7c4f75e783bdbe1c9d125db2c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_10_audit_closing_sub_2.mp4": {
+    "mtime": 1794430519.4704273,
+    "seen": 1794430634.0362477,
+    "ast_hash": "e6510d5039763b4047b877ad6ae6e535",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_10_audit_closing_video_only.mp4": {
+    "mtime": 1794430519.6611757,
+    "seen": 1794430634.0362477,
+    "ast_hash": "b3a1d1c94f959261525424bbfc6645e5",
+    "semantic_hash": ""
+  },
+  "video/build_smooth_dispute_clips.cjs": {
+    "mtime": 1794430331.3741312,
+    "seen": 1794430634.0293193,
+    "ast_hash": "256af7391ad7fdfdfae46b25f4b8f92b",
+    "semantic_hash": ""
+  },
+  "video/generate_scroll_clips.cjs": {
+    "mtime": 1794429776.5454702,
+    "seen": 1794430634.0298285,
+    "ast_hash": "124bc09f8de7a6eb5972948a0e9c9241",
+    "semantic_hash": ""
+  },
+  "video/record_disputes_scenes.cjs": {
+    "mtime": 1794430169.0945604,
+    "seen": 1794430634.0298285,
+    "ast_hash": "8bc79ca560adf5135ee72a5d559dcaab",
+    "semantic_hash": ""
+  },
+  "video/record_drawer_scroll.cjs": {
+    "mtime": 1794429740.5119462,
+    "seen": 1794430634.0298285,
+    "ast_hash": "3d048a2a08cad6d393f62150a2a7eac0",
+    "semantic_hash": ""
+  },
+  "video/record_smooth_scene.cjs": {
+    "mtime": 1794430007.353925,
+    "seen": 1794430634.0298285,
+    "ast_hash": "600993a363c09b9e02512eb57f5f6040",
+    "semantic_hash": ""
+  },
+  "video/test_drawer_buttons.cjs": {
+    "mtime": 1794429899.0150752,
+    "seen": 1794430634.0298285,
+    "ast_hash": "5d4b0ada7a959732311684fe74fcceb8",
+    "semantic_hash": ""
+  },
+  "video/test_full_dispatch_flow.cjs": {
+    "mtime": 1794429957.5271275,
+    "seen": 1794430634.0298285,
+    "ast_hash": "07093700ce313bf5494dc906f7e78987",
+    "semantic_hash": ""
+  },
+  "video/test_full_drawer_capture.cjs": {
+    "mtime": 1794430063.1687253,
+    "seen": 1794430634.0298285,
+    "ast_hash": "0b2938d625c9ac6f3a47d915f8a3533d",
+    "semantic_hash": ""
+  },
+  "video/test_record_drawer.cjs": {
+    "mtime": 1794429860.1335213,
+    "seen": 1794430634.0298285,
+    "ast_hash": "81e953db51be97b87cf0262b55d15544",
+    "semantic_hash": ""
+  },
+  "video/test_screencast.cjs": {
+    "mtime": 1794429809.0342057,
+    "seen": 1794430634.029895,
+    "ast_hash": "c810c8a565420b88e30fb3ba9ef64f87",
+    "semantic_hash": ""
+  },
+  "video/test_stream_to_ffmpeg.cjs": {
+    "mtime": 1794430095.7601435,
+    "seen": 1794430634.029895,
+    "ast_hash": "99dce4a7abe5d7d9a220b8e1579bdae5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc09_concat.txt": {
+    "mtime": 1794430392.1388288,
+    "seen": 1794430634.032092,
+    "ast_hash": "3648d18e6ca35d9c98a561654e292eb4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_06_disputes_aggrid_concat.txt": {
+    "mtime": 1794430504.8914535,
+    "seen": 1794430634.032092,
+    "ast_hash": "05648a48aa740dc3b100bf2991bfa1b6",
+    "semantic_hash": ""
+  },
+  "video/assets/ui/drawer_full_tall.png": {
+    "mtime": 1794430076.60006,
+    "seen": 1794430634.0327034,
+    "ast_hash": "31d317b211c6f47d799f1e1b9037a2d3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00001.png": {
+    "mtime": 1794429823.0504994,
+    "seen": 1794430634.0327034,
+    "ast_hash": "99ebc5f6af4b5780fe6f2d84380344c2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00002.png": {
+    "mtime": 1794429823.0645063,
+    "seen": 1794430634.0327034,
+    "ast_hash": "aa97bab8ec1c22f912595797126c3d8e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00003.png": {
+    "mtime": 1794429823.0814958,
+    "seen": 1794430634.0327034,
+    "ast_hash": "335bd9bda74fd0a7237aea22d8b91b6c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00004.png": {
+    "mtime": 1794429823.0964289,
+    "seen": 1794430634.0327034,
+    "ast_hash": "a938faed1811ddb1da82ff120d34e508",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00005.png": {
+    "mtime": 1794429823.126259,
+    "seen": 1794430634.0327034,
+    "ast_hash": "e8dd28f496dedf2cf3104b50fc228a58",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00006.png": {
+    "mtime": 1794429823.1432061,
+    "seen": 1794430634.0327034,
+    "ast_hash": "70ef092b5908df8715ae3310946013de",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00007.png": {
+    "mtime": 1794429823.154696,
+    "seen": 1794430634.0327034,
+    "ast_hash": "967c99931db41bfc89669b5e69caa3cf",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00008.png": {
+    "mtime": 1794429823.1718023,
+    "seen": 1794430634.0327034,
+    "ast_hash": "9daf0816c2301805735baf25da622842",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00009.png": {
+    "mtime": 1794429823.1875136,
+    "seen": 1794430634.0327034,
+    "ast_hash": "26d08f09c67d84de7c34bf91fb4aaea4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00010.png": {
+    "mtime": 1794429823.2073333,
+    "seen": 1794430634.0327034,
+    "ast_hash": "29264dab9ed9327b6c38b861cf623af4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00011.png": {
+    "mtime": 1794429823.2204218,
+    "seen": 1794430634.0327034,
+    "ast_hash": "59ba14e6ad1528a6440ca53453551f8c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00012.png": {
+    "mtime": 1794429823.2363844,
+    "seen": 1794430634.0327034,
+    "ast_hash": "a046df2c62cd779c6367ecf592869302",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00013.png": {
+    "mtime": 1794429823.2524307,
+    "seen": 1794430634.0327034,
+    "ast_hash": "4a53b69a5a451202d4c9103ac1173d1b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00014.png": {
+    "mtime": 1794429823.2685544,
+    "seen": 1794430634.0327034,
+    "ast_hash": "4253b4e19eb1cb2cf8594528047484e5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00015.png": {
+    "mtime": 1794429823.2838967,
+    "seen": 1794430634.0327034,
+    "ast_hash": "0add5d01f8385dbbda8c55e0f649520b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00016.png": {
+    "mtime": 1794429823.2980282,
+    "seen": 1794430634.0327034,
+    "ast_hash": "51b5d8b14aa17ce05e8d6282f235fb87",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00017.png": {
+    "mtime": 1794429823.3145442,
+    "seen": 1794430634.0327034,
+    "ast_hash": "ec8a130ad212fa44c8633c86bc36c500",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00018.png": {
+    "mtime": 1794429823.3294528,
+    "seen": 1794430634.0327034,
+    "ast_hash": "bd1c62f07aaaadc732e8d2b9769f0177",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00019.png": {
+    "mtime": 1794429823.345495,
+    "seen": 1794430634.0327034,
+    "ast_hash": "40e502e172166d5b3bb9a2ed84cf94f0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00020.png": {
+    "mtime": 1794429823.3605902,
+    "seen": 1794430634.0327034,
+    "ast_hash": "56e9fb15c4c938ae08e16e0ce85289f5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00021.png": {
+    "mtime": 1794429823.3882265,
+    "seen": 1794430634.0327034,
+    "ast_hash": "da35ed65aa93c2f32a9b4948597b7851",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00022.png": {
+    "mtime": 1794429823.4043398,
+    "seen": 1794430634.0327034,
+    "ast_hash": "a4def338c6072ed6d20529b6d02d04b9",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00023.png": {
+    "mtime": 1794429823.41986,
+    "seen": 1794430634.0327034,
+    "ast_hash": "474a45f6d764b039c657a7aa1ca059bd",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00024.png": {
+    "mtime": 1794429823.4378333,
+    "seen": 1794430634.0327034,
+    "ast_hash": "9672b08e7f7d779b5aa4875d1969cc8b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00025.png": {
+    "mtime": 1794429823.4557526,
+    "seen": 1794430634.0327034,
+    "ast_hash": "2153e86ca80c6005465d71d3350f17cc",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00026.png": {
+    "mtime": 1794429823.4718454,
+    "seen": 1794430634.0327034,
+    "ast_hash": "1f997b0abd014fceceb2de4a57d6cf0e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00027.png": {
+    "mtime": 1794429823.4927845,
+    "seen": 1794430634.0327034,
+    "ast_hash": "6c39b1bd3021fab1e284ee984c8a6977",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00028.png": {
+    "mtime": 1794429823.5101047,
+    "seen": 1794430634.0327034,
+    "ast_hash": "ec55956e7e92a21a0d182f813da85422",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00029.png": {
+    "mtime": 1794429823.5251014,
+    "seen": 1794430634.0327034,
+    "ast_hash": "375491897163e8ef68e9d1bdd5a3385f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00030.png": {
+    "mtime": 1794429823.5391023,
+    "seen": 1794430634.0327034,
+    "ast_hash": "e29c3759abfe95abe231326969041664",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00031.png": {
+    "mtime": 1794429823.5571232,
+    "seen": 1794430634.0327034,
+    "ast_hash": "45453cfd7ceb9be84ae2ef2cfb4be8f0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00032.png": {
+    "mtime": 1794429823.5726688,
+    "seen": 1794430634.0327034,
+    "ast_hash": "16001f8a30a54c49ccda3a8567793ef6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00033.png": {
+    "mtime": 1794429823.5895255,
+    "seen": 1794430634.0327034,
+    "ast_hash": "faa4559bafc7c055295033bcaff35aa0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00034.png": {
+    "mtime": 1794429823.60166,
+    "seen": 1794430634.0327034,
+    "ast_hash": "bba5e5c73962a25a23b1835a6a6b4043",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00035.png": {
+    "mtime": 1794429823.6161556,
+    "seen": 1794430634.0327034,
+    "ast_hash": "3f84f6b6b8ddfbbca9e316dea3cf2731",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00036.png": {
+    "mtime": 1794429823.6302485,
+    "seen": 1794430634.0327034,
+    "ast_hash": "2f7bb1a25675ffa99432382b3984f34a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00037.png": {
+    "mtime": 1794429823.647895,
+    "seen": 1794430634.0327034,
+    "ast_hash": "40724fb72dafed5f6ff8717d0ead2988",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00038.png": {
+    "mtime": 1794429823.6639247,
+    "seen": 1794430634.0327034,
+    "ast_hash": "e55c1bcb5382020d1871f0573b5ce2f0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00039.png": {
+    "mtime": 1794429823.6879442,
+    "seen": 1794430634.0327034,
+    "ast_hash": "5d1b4dbfb79239c3ddef894a7d0bf68e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00040.png": {
+    "mtime": 1794429823.7039604,
+    "seen": 1794430634.0327034,
+    "ast_hash": "28aa5fcad96a160b22068734820ee1be",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00041.png": {
+    "mtime": 1794429823.7210214,
+    "seen": 1794430634.0327034,
+    "ast_hash": "a0223ec39d1b2aeec149165567c0812f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00042.png": {
+    "mtime": 1794429823.7380831,
+    "seen": 1794430634.0327034,
+    "ast_hash": "7ac5e96ab921ef316bc1c7aa0ea10eed",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00043.png": {
+    "mtime": 1794429823.7570126,
+    "seen": 1794430634.0327034,
+    "ast_hash": "c55d945731c443beba6e431f61301937",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00044.png": {
+    "mtime": 1794429823.7729754,
+    "seen": 1794430634.0327034,
+    "ast_hash": "ec4e420c509322450304ff6319cbffd6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00045.png": {
+    "mtime": 1794429823.7930272,
+    "seen": 1794430634.0327034,
+    "ast_hash": "163f470fdd862967d1b89b0209e2e781",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00046.png": {
+    "mtime": 1794429823.8086443,
+    "seen": 1794430634.0327034,
+    "ast_hash": "e6b9c8048f70fd76639bb43cb0655dc5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00047.png": {
+    "mtime": 1794429823.8246355,
+    "seen": 1794430634.0332704,
+    "ast_hash": "548b1b984fde0c4d8bca6c9a9a58bd50",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00048.png": {
+    "mtime": 1794429823.8367767,
+    "seen": 1794430634.0332704,
+    "ast_hash": "36902b99e4d2a6167614dbad631995cb",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00049.png": {
+    "mtime": 1794429823.8531015,
+    "seen": 1794430634.0332704,
+    "ast_hash": "829d0f33872e4e6444147f6e7bb9cd27",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00050.png": {
+    "mtime": 1794429823.8701923,
+    "seen": 1794430634.0332704,
+    "ast_hash": "88c535457f0145268762f852ac9a0108",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00051.png": {
+    "mtime": 1794429823.8867824,
+    "seen": 1794430634.0332704,
+    "ast_hash": "1aab6b79dab50a4b263f9e9592c3f4ba",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00052.png": {
+    "mtime": 1794429823.9008782,
+    "seen": 1794430634.0332704,
+    "ast_hash": "8515a67d1c39ed80b285175b56cb8195",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00053.png": {
+    "mtime": 1794429823.9174128,
+    "seen": 1794430634.0332704,
+    "ast_hash": "425435895ece530ebeac07ebe284b1ff",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00054.png": {
+    "mtime": 1794429823.9324472,
+    "seen": 1794430634.0332704,
+    "ast_hash": "18b96b2bbbd3435f248813e739c11eee",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00055.png": {
+    "mtime": 1794429823.9484963,
+    "seen": 1794430634.0332704,
+    "ast_hash": "89acdbda74de861142ff763a24de1453",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00056.png": {
+    "mtime": 1794429823.9639375,
+    "seen": 1794430634.0332704,
+    "ast_hash": "cb2b576dfb20fabd8284307826b3e2a6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00057.png": {
+    "mtime": 1794429823.9804108,
+    "seen": 1794430634.0332704,
+    "ast_hash": "bb4902712de5feae231859f52f77c78a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00058.png": {
+    "mtime": 1794429824.0148535,
+    "seen": 1794430634.0332704,
+    "ast_hash": "010e4531e17ef25e12f969acfab46831",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00059.png": {
+    "mtime": 1794429824.0270905,
+    "seen": 1794430634.0332704,
+    "ast_hash": "dccaeca6b5a323d5077479fe8befb896",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00060.png": {
+    "mtime": 1794429824.0462246,
+    "seen": 1794430634.0332704,
+    "ast_hash": "4c40c325360b939a0b3e7a58635449e8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00061.png": {
+    "mtime": 1794429824.060431,
+    "seen": 1794430634.0332704,
+    "ast_hash": "f2def9ccc67f2a52b3aa84fd00626ef5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00062.png": {
+    "mtime": 1794429824.0816314,
+    "seen": 1794430634.0332704,
+    "ast_hash": "eef37862a9f2f296c0aedac410abcfd8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00063.png": {
+    "mtime": 1794429824.0936265,
+    "seen": 1794430634.0332704,
+    "ast_hash": "7f5870bf85a11afab842ac7b1b8ec345",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00064.png": {
+    "mtime": 1794429824.1252155,
+    "seen": 1794430634.0332704,
+    "ast_hash": "50e568085c3fcd2c6d60e5b5aa819732",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00065.png": {
+    "mtime": 1794429824.1298907,
+    "seen": 1794430634.0332704,
+    "ast_hash": "b3b25a109bc1152b26ff1dc3d1fec53e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00066.png": {
+    "mtime": 1794429824.1437275,
+    "seen": 1794430634.0332704,
+    "ast_hash": "e2b72fef6b29cfa1186e035e0e572518",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00067.png": {
+    "mtime": 1794429824.1689222,
+    "seen": 1794430634.0332704,
+    "ast_hash": "1f15faa4649649e7a4824bdf65b62d46",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00068.png": {
+    "mtime": 1794429824.1842387,
+    "seen": 1794430634.0332704,
+    "ast_hash": "7be9255734e6da55dedac47d3045a9e2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00069.png": {
+    "mtime": 1794429824.216205,
+    "seen": 1794430634.0332704,
+    "ast_hash": "90ce8faebae00d74c0d1d0aea89f491d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00070.png": {
+    "mtime": 1794429824.2375374,
+    "seen": 1794430634.0332704,
+    "ast_hash": "32df8d3a246c391165c2b24dcc22b483",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00071.png": {
+    "mtime": 1794429824.254511,
+    "seen": 1794430634.0332704,
+    "ast_hash": "bf1fc841278ee3a37e906ceb3a35894d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00072.png": {
+    "mtime": 1794429824.2842467,
+    "seen": 1794430634.0332704,
+    "ast_hash": "f41b34cc9cf95c1e71e12de75751ce9d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00073.png": {
+    "mtime": 1794429824.3069196,
+    "seen": 1794430634.0332704,
+    "ast_hash": "86661c2c3a9b623faca41a05e6e93303",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00074.png": {
+    "mtime": 1794429824.3248549,
+    "seen": 1794430634.0332704,
+    "ast_hash": "9cdfc5e37b0fb12ad949029d446a87ba",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00075.png": {
+    "mtime": 1794429824.3496535,
+    "seen": 1794430634.0332704,
+    "ast_hash": "f53bcb6024cc9aac1e91480c2de68802",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00076.png": {
+    "mtime": 1794429824.3621182,
+    "seen": 1794430634.0332704,
+    "ast_hash": "7f07a2f3eca7d2d4235b91a331dbec8b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00077.png": {
+    "mtime": 1794429824.3731177,
+    "seen": 1794430634.0332704,
+    "ast_hash": "22965e41063ce6f035784a1e711ef253",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00078.png": {
+    "mtime": 1794429824.403697,
+    "seen": 1794430634.0332704,
+    "ast_hash": "f1f3f2232c9fde046917fb750541638e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00079.png": {
+    "mtime": 1794429824.4132352,
+    "seen": 1794430634.0332704,
+    "ast_hash": "b770a9bfdf5a7dae0b6d4dbfcf22fad5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00080.png": {
+    "mtime": 1794429824.4371312,
+    "seen": 1794430634.0332704,
+    "ast_hash": "87ad110f6bf8e42f1c483cfc5583498e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00081.png": {
+    "mtime": 1794429824.4549086,
+    "seen": 1794430634.0332704,
+    "ast_hash": "a07bbfcf29ce33b9ecc57f0984ba90f2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00082.png": {
+    "mtime": 1794429824.4689224,
+    "seen": 1794430634.0332704,
+    "ast_hash": "b4e18d59c07da3a9e93986cfb6e3b9af",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00083.png": {
+    "mtime": 1794429824.4850693,
+    "seen": 1794430634.0332704,
+    "ast_hash": "2302d100fa4aca1ca6011477026c27c0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00084.png": {
+    "mtime": 1794429824.5050824,
+    "seen": 1794430634.0332704,
+    "ast_hash": "fcf00c6c625abb59fd7a4b047432c758",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00085.png": {
+    "mtime": 1794429824.5176084,
+    "seen": 1794430634.0332704,
+    "ast_hash": "3aa8fe54f0c1d3eac9476fb5631c66a6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00086.png": {
+    "mtime": 1794429824.5356102,
+    "seen": 1794430634.0332704,
+    "ast_hash": "bc4e223fd04906af4a914a2d31be065c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00087.png": {
+    "mtime": 1794429824.5476136,
+    "seen": 1794430634.0332704,
+    "ast_hash": "4018ee6af6f9bdc7777d41878879b77d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00088.png": {
+    "mtime": 1794429824.57548,
+    "seen": 1794430634.0332704,
+    "ast_hash": "a9bc7b36bde2fd7ca89209e0a48b6bc3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00089.png": {
+    "mtime": 1794429824.5804956,
+    "seen": 1794430634.0332704,
+    "ast_hash": "b925f5a1f43b5265a3efc21b2e9243ba",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00090.png": {
+    "mtime": 1794429824.6002672,
+    "seen": 1794430634.0332704,
+    "ast_hash": "ac91cfeddec384d954c7913cdab46b55",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00091.png": {
+    "mtime": 1794429824.6194685,
+    "seen": 1794430634.0332704,
+    "ast_hash": "3ec26c6bc21cb56f8f25a14d7cde4465",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00092.png": {
+    "mtime": 1794429824.631994,
+    "seen": 1794430634.0332704,
+    "ast_hash": "14f4b6f001323c1bf7263515b280fbf2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00093.png": {
+    "mtime": 1794429824.657573,
+    "seen": 1794430634.0332704,
+    "ast_hash": "177859426774fc48be015c6eb42fcebe",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00094.png": {
+    "mtime": 1794429824.6765497,
+    "seen": 1794430634.0332704,
+    "ast_hash": "861093f97ffe9a0ab5295aafe73e7803",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00095.png": {
+    "mtime": 1794429824.6932142,
+    "seen": 1794430634.0332704,
+    "ast_hash": "0be47b428e7632e408584901e13029dd",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00096.png": {
+    "mtime": 1794429824.7106042,
+    "seen": 1794430634.0332704,
+    "ast_hash": "fb3179d8575e1ab40f774997b4c23511",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00097.png": {
+    "mtime": 1794429824.7326686,
+    "seen": 1794430634.0332704,
+    "ast_hash": "8b4e58d27641e8243d9a971aab50e51f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00098.png": {
+    "mtime": 1794429824.7455933,
+    "seen": 1794430634.0332704,
+    "ast_hash": "957f4990314e4f6623b7be500062639c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00099.png": {
+    "mtime": 1794429824.7596166,
+    "seen": 1794430634.0332704,
+    "ast_hash": "fb09c35e577f208a2828034682622693",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00100.png": {
+    "mtime": 1794429824.7730484,
+    "seen": 1794430634.0332704,
+    "ast_hash": "259d9f4f60d699261fd3a509c650a1f4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00101.png": {
+    "mtime": 1794429824.789657,
+    "seen": 1794430634.0332704,
+    "ast_hash": "ee7f2f2f34e390c33cba8535d2bd03e9",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00102.png": {
+    "mtime": 1794429824.805666,
+    "seen": 1794430634.0332704,
+    "ast_hash": "f655c5abfb654c9b7b10e8dcc4e653a3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00103.png": {
+    "mtime": 1794429824.837705,
+    "seen": 1794430634.0332704,
+    "ast_hash": "27f2b3f111af1d6e2c7c96ba7fa94cc0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00104.png": {
+    "mtime": 1794429824.840707,
+    "seen": 1794430634.0332704,
+    "ast_hash": "e93b6167ee99e59da22d85215d3fad31",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00105.png": {
+    "mtime": 1794429824.8594794,
+    "seen": 1794430634.0332704,
+    "ast_hash": "97f2a724def9fa85d83fd6f758e2222a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00106.png": {
+    "mtime": 1794429824.8836296,
+    "seen": 1794430634.0332704,
+    "ast_hash": "354f32195a3133323a0d8bd77ef8c4cc",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00107.png": {
+    "mtime": 1794429824.911984,
+    "seen": 1794430634.0332704,
+    "ast_hash": "fe33191773f455799070ba427b115395",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00108.png": {
+    "mtime": 1794429824.933217,
+    "seen": 1794430634.0332704,
+    "ast_hash": "928a3028f92a723db4f8d3d16de80588",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00109.png": {
+    "mtime": 1794429824.9507115,
+    "seen": 1794430634.0332704,
+    "ast_hash": "d8b082ee012c42655a08685402b0d1d1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00110.png": {
+    "mtime": 1794429824.9602892,
+    "seen": 1794430634.0332704,
+    "ast_hash": "60546529487502d0fee5cef0d9113247",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00111.png": {
+    "mtime": 1794429824.979696,
+    "seen": 1794430634.0332704,
+    "ast_hash": "2fd8629929c46d98022df9aff2ea2430",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00112.png": {
+    "mtime": 1794429825.0007405,
+    "seen": 1794430634.0332704,
+    "ast_hash": "bce638a15808e5926c91336650ed588b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00113.png": {
+    "mtime": 1794429825.0256128,
+    "seen": 1794430634.0332704,
+    "ast_hash": "0097bbae96c4783e1b50beeebdba00e4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00114.png": {
+    "mtime": 1794429825.0335593,
+    "seen": 1794430634.0332704,
+    "ast_hash": "665f28d082d6870f22d29f5319aa1a93",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00115.png": {
+    "mtime": 1794429825.0479376,
+    "seen": 1794430634.0332704,
+    "ast_hash": "19afaec5ed68900ee248d4d8d4f8be6b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00116.png": {
+    "mtime": 1794429825.0734885,
+    "seen": 1794430634.0332704,
+    "ast_hash": "270e3c30f88ff22be03c1a7fcb67f49e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00117.png": {
+    "mtime": 1794429825.0851645,
+    "seen": 1794430634.0332704,
+    "ast_hash": "8c64e1a7114cc6827a3770d479b84297",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00118.png": {
+    "mtime": 1794429825.101995,
+    "seen": 1794430634.0332704,
+    "ast_hash": "d6592839a12e45683f8a2ddcc0c18531",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00119.png": {
+    "mtime": 1794429825.118527,
+    "seen": 1794430634.0332704,
+    "ast_hash": "6847088b2158c459b56e99d19dc644a0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00120.png": {
+    "mtime": 1794429825.1460433,
+    "seen": 1794430634.0332704,
+    "ast_hash": "f4c4aa1ba39732eb9e3b4d5b7ccab08e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00121.png": {
+    "mtime": 1794429825.1622248,
+    "seen": 1794430634.0332704,
+    "ast_hash": "d685dfc091e4698b8625735c8f7e9925",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00122.png": {
+    "mtime": 1794429825.1826732,
+    "seen": 1794430634.0332704,
+    "ast_hash": "f51d46a5e23224ae1f50b9d1f0b972e0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00123.png": {
+    "mtime": 1794429825.1960535,
+    "seen": 1794430634.0332704,
+    "ast_hash": "1c69f8ac4d560b64d2bbe640e30b15c9",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00124.png": {
+    "mtime": 1794429825.2166202,
+    "seen": 1794430634.0332704,
+    "ast_hash": "f612880aa86ac9b0a84e8cb04df3abb9",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00125.png": {
+    "mtime": 1794429825.2341309,
+    "seen": 1794430634.0332704,
+    "ast_hash": "e9aacb2deeeedb02bc3d08d75cf0906e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00126.png": {
+    "mtime": 1794429825.2497494,
+    "seen": 1794430634.0332704,
+    "ast_hash": "6341076f421ce6aac8886fc4eda258fc",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00127.png": {
+    "mtime": 1794429825.265752,
+    "seen": 1794430634.0332704,
+    "ast_hash": "e1670d79887acd077706a4d2d2277b3e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00128.png": {
+    "mtime": 1794429825.2817507,
+    "seen": 1794430634.0332704,
+    "ast_hash": "64948ebcd4456ebe963dad107739156c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00129.png": {
+    "mtime": 1794429825.2967727,
+    "seen": 1794430634.0332704,
+    "ast_hash": "c38eae8f913a8e00877ebf0d0bc181e6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00130.png": {
+    "mtime": 1794429825.312552,
+    "seen": 1794430634.0332704,
+    "ast_hash": "e3038ab53eee9e79773a29c9502d1d1a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00131.png": {
+    "mtime": 1794429825.3262205,
+    "seen": 1794430634.0332704,
+    "ast_hash": "478827ca9c8484b584496eaef97b0934",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00132.png": {
+    "mtime": 1794429825.3412168,
+    "seen": 1794430634.0332704,
+    "ast_hash": "b23d97d6a10c9b945bbb8d799c1558d7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00133.png": {
+    "mtime": 1794429825.359233,
+    "seen": 1794430634.0332704,
+    "ast_hash": "8b438043dcca8aaaba5e38d192a0a674",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00134.png": {
+    "mtime": 1794429825.3775527,
+    "seen": 1794430634.0332704,
+    "ast_hash": "72e4f4ab2e86245b69bbc4550eba7b80",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00135.png": {
+    "mtime": 1794429825.3930907,
+    "seen": 1794430634.0332704,
+    "ast_hash": "b93e1a6ac7342bc9b1d4b9b258c7356f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00136.png": {
+    "mtime": 1794429825.4070885,
+    "seen": 1794430634.0332704,
+    "ast_hash": "8d00cf7c5b4cf7760f04488fc2b4cdd7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00137.png": {
+    "mtime": 1794429825.4270544,
+    "seen": 1794430634.0332704,
+    "ast_hash": "d086692426792395f2927afbf4805686",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00138.png": {
+    "mtime": 1794429825.4440506,
+    "seen": 1794430634.0332704,
+    "ast_hash": "01f5b4e39c22b9a72f16213bb3452e23",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00139.png": {
+    "mtime": 1794429825.4610755,
+    "seen": 1794430634.0332704,
+    "ast_hash": "d556d57e8df56434b9b2e4d03269d2fb",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00140.png": {
+    "mtime": 1794429825.4770725,
+    "seen": 1794430634.0332704,
+    "ast_hash": "25ee97ce1d2235c296eedb34cf2a9750",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00141.png": {
+    "mtime": 1794429825.4989328,
+    "seen": 1794430634.0332704,
+    "ast_hash": "4fcf998d347e7d9d187d11a1304056fc",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00142.png": {
+    "mtime": 1794429825.5119925,
+    "seen": 1794430634.0332704,
+    "ast_hash": "7f0e3018214896d0918732e2b6640c07",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00143.png": {
+    "mtime": 1794429825.5280724,
+    "seen": 1794430634.0332704,
+    "ast_hash": "fbfa8433bfcefd9a1344990a03475966",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00144.png": {
+    "mtime": 1794429825.5477152,
+    "seen": 1794430634.0332704,
+    "ast_hash": "9c09b25a23a5bcdbad62601100360850",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00145.png": {
+    "mtime": 1794429825.556722,
+    "seen": 1794430634.0332704,
+    "ast_hash": "3c952082bca195935e72067077ab0e9c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00146.png": {
+    "mtime": 1794429825.5837195,
+    "seen": 1794430634.0332704,
+    "ast_hash": "038e2479f4778bd7051827785bbabd5f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00147.png": {
+    "mtime": 1794429825.5907173,
+    "seen": 1794430634.0332704,
+    "ast_hash": "fd716ba6c8ec4dee9417115436a25af4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00148.png": {
+    "mtime": 1794429825.6092637,
+    "seen": 1794430634.0332704,
+    "ast_hash": "ca3428d2a8f400012743dc0940532758",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00149.png": {
+    "mtime": 1794429825.61726,
+    "seen": 1794430634.0332704,
+    "ast_hash": "73b726355aab369f2d9f9d3953a11b3d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00150.png": {
+    "mtime": 1794429825.6432714,
+    "seen": 1794430634.0332704,
+    "ast_hash": "5fb5a50c770f75c85fdfc403d7c9ccc4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00151.png": {
+    "mtime": 1794429825.65747,
+    "seen": 1794430634.0332704,
+    "ast_hash": "154fc7888682149744372d7a7239d1d8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00152.png": {
+    "mtime": 1794429825.674459,
+    "seen": 1794430634.0332704,
+    "ast_hash": "a14c0eec7d12fef0445e431d4de33149",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00153.png": {
+    "mtime": 1794429825.6905456,
+    "seen": 1794430634.0332704,
+    "ast_hash": "a0729f14eb6bd4666c5f478e07bac503",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00154.png": {
+    "mtime": 1794429825.7085557,
+    "seen": 1794430634.0332704,
+    "ast_hash": "44edaeb20a4b787bd33a7ed60bdc14b0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00155.png": {
+    "mtime": 1794429825.7265747,
+    "seen": 1794430634.0332704,
+    "ast_hash": "e8e1def4a9f08759a47ee11c07237d7b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00156.png": {
+    "mtime": 1794429825.745579,
+    "seen": 1794430634.0332704,
+    "ast_hash": "20a7251cac99229952d3c532085a642a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00157.png": {
+    "mtime": 1794429825.7785773,
+    "seen": 1794430634.0332704,
+    "ast_hash": "2d45c9ef1b8c8007395636c502ea29de",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00158.png": {
+    "mtime": 1794429825.796628,
+    "seen": 1794430634.0337815,
+    "ast_hash": "b742db6f3be858d5c307e523f9b0025a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00159.png": {
+    "mtime": 1794429825.8037097,
+    "seen": 1794430634.0337815,
+    "ast_hash": "9b55dfa5d27306fdafcd3a21a53c3d00",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00160.png": {
+    "mtime": 1794429825.8203192,
+    "seen": 1794430634.0337815,
+    "ast_hash": "106aec57bebd978787a4eea61f415ad3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00161.png": {
+    "mtime": 1794429825.835942,
+    "seen": 1794430634.0337815,
+    "ast_hash": "4c28e3c2140b0ad5f415a2108ac2c9db",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00162.png": {
+    "mtime": 1794429825.8494887,
+    "seen": 1794430634.0337815,
+    "ast_hash": "b0db88143d0b797016e75a6e51140413",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00163.png": {
+    "mtime": 1794429825.8633156,
+    "seen": 1794430634.0337815,
+    "ast_hash": "4b7c86332f478ec625fde54535809886",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00164.png": {
+    "mtime": 1794429825.88929,
+    "seen": 1794430634.0337815,
+    "ast_hash": "23ba46cfa19e9072cf6634586966ae49",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00165.png": {
+    "mtime": 1794429825.9089558,
+    "seen": 1794430634.0337815,
+    "ast_hash": "79d9f1760d5fc9447b4011f72f9519f6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00166.png": {
+    "mtime": 1794429825.9260328,
+    "seen": 1794430634.0337815,
+    "ast_hash": "89c9e45d59b031962c12104421cc30a5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00167.png": {
+    "mtime": 1794429825.9421034,
+    "seen": 1794430634.0337815,
+    "ast_hash": "e1c317c9090af738946a412128d608ef",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00168.png": {
+    "mtime": 1794429825.959758,
+    "seen": 1794430634.0337815,
+    "ast_hash": "b3b23c118df9b8d95f7a98d9a4a65fad",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00169.png": {
+    "mtime": 1794429825.9732237,
+    "seen": 1794430634.0337815,
+    "ast_hash": "7006a0267dfd0c8c063a784575e993d4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00170.png": {
+    "mtime": 1794429825.9965005,
+    "seen": 1794430634.0337815,
+    "ast_hash": "2cb2e89af3fd6db830966b75baaaba8a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00171.png": {
+    "mtime": 1794429826.0145183,
+    "seen": 1794430634.0338354,
+    "ast_hash": "292f4b9ebf279eb1d12f26f40d7496b8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00172.png": {
+    "mtime": 1794429826.0295167,
+    "seen": 1794430634.0338354,
+    "ast_hash": "70af4ccee13a0db75aaf1879bc8e6b4b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00173.png": {
+    "mtime": 1794429826.0435147,
+    "seen": 1794430634.0338354,
+    "ast_hash": "dd45d2491c50bc0a07649c19feb051cc",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00174.png": {
+    "mtime": 1794429826.057891,
+    "seen": 1794430634.0338354,
+    "ast_hash": "a613a49ee7700e5f10faf27343421e9a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00175.png": {
+    "mtime": 1794429826.0738537,
+    "seen": 1794430634.0338354,
+    "ast_hash": "fd13567c427a95471b74e6672a2e41dc",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00176.png": {
+    "mtime": 1794429826.084976,
+    "seen": 1794430634.0338354,
+    "ast_hash": "5535e5f2fefcc0368878c0978f965675",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00177.png": {
+    "mtime": 1794429826.0990338,
+    "seen": 1794430634.0338354,
+    "ast_hash": "b6ab2c5fd4aabc71ff59e3cbb151df17",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00178.png": {
+    "mtime": 1794429826.1221466,
+    "seen": 1794430634.0338354,
+    "ast_hash": "64a806b3c957bce91cb55cb5e44e3cd7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00179.png": {
+    "mtime": 1794429826.137063,
+    "seen": 1794430634.0338354,
+    "ast_hash": "f98433fd6eb428f6f5f6024bf7e29d1a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00180.png": {
+    "mtime": 1794429826.1646533,
+    "seen": 1794430634.0338354,
+    "ast_hash": "abd3b550ebead0ea1b8082a66e4ea4f5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00181.png": {
+    "mtime": 1794429826.1717477,
+    "seen": 1794430634.0338354,
+    "ast_hash": "3de716ca06dacafe0d0e907340555025",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00182.png": {
+    "mtime": 1794429826.1927023,
+    "seen": 1794430634.0338354,
+    "ast_hash": "3407528a686a75f5e5f70090678f565f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00183.png": {
+    "mtime": 1794429826.2087467,
+    "seen": 1794430634.0338354,
+    "ast_hash": "a5d1c50a68e1a96f34242b346387df0e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00184.png": {
+    "mtime": 1794429826.226277,
+    "seen": 1794430634.0338354,
+    "ast_hash": "163bb3721e7dad6b99f577595e66ab1a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00185.png": {
+    "mtime": 1794429826.2463136,
+    "seen": 1794430634.0338354,
+    "ast_hash": "afda8c24f7e28de582ff0d35fdfbe688",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00186.png": {
+    "mtime": 1794429826.2613268,
+    "seen": 1794430634.0338354,
+    "ast_hash": "5fc6af7da58febf9f0107d18e45a21de",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00187.png": {
+    "mtime": 1794429826.2713847,
+    "seen": 1794430634.0338354,
+    "ast_hash": "6af1c04c67f1064936957b5a94d8b019",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00188.png": {
+    "mtime": 1794429826.2866626,
+    "seen": 1794430634.0338354,
+    "ast_hash": "50469ecad6f9a615f851dc8e01ec8e6c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00189.png": {
+    "mtime": 1794429826.3006692,
+    "seen": 1794430634.0338354,
+    "ast_hash": "5c022be9338e0f9b5594e28a07c486cf",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00190.png": {
+    "mtime": 1794429826.3176403,
+    "seen": 1794430634.0338354,
+    "ast_hash": "10e19ad8c125c88d1a07fe4b7cafee21",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00191.png": {
+    "mtime": 1794429826.33174,
+    "seen": 1794430634.0338354,
+    "ast_hash": "9fe394dbef9274a25a1acbd7a5576a5a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00192.png": {
+    "mtime": 1794429826.349699,
+    "seen": 1794430634.0338354,
+    "ast_hash": "800b18e0c32c7d131e55fdb394bd85b9",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00193.png": {
+    "mtime": 1794429826.374702,
+    "seen": 1794430634.0338354,
+    "ast_hash": "78a4ed84551f1346d377224969711a53",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00194.png": {
+    "mtime": 1794429826.3906815,
+    "seen": 1794430634.0338354,
+    "ast_hash": "401dde8bed2605304665ffcc9266588c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00195.png": {
+    "mtime": 1794429826.410354,
+    "seen": 1794430634.0338354,
+    "ast_hash": "13d9b774118889d45e8174e5ee9d7cb5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00196.png": {
+    "mtime": 1794429826.425611,
+    "seen": 1794430634.0338354,
+    "ast_hash": "95d118bc3934e8c83c05d53d2ecefffb",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00197.png": {
+    "mtime": 1794429826.443576,
+    "seen": 1794430634.0338354,
+    "ast_hash": "a32d5756b3346d42ef493b50e8a64dd7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00198.png": {
+    "mtime": 1794429826.4692597,
+    "seen": 1794430634.0338354,
+    "ast_hash": "d3be195e7bbfbcea30b55f136eae7b67",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00199.png": {
+    "mtime": 1794429826.4822357,
+    "seen": 1794430634.0338354,
+    "ast_hash": "80a382d87de910ee39f5ebd7c4340b74",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00200.png": {
+    "mtime": 1794429826.4972787,
+    "seen": 1794430634.0338354,
+    "ast_hash": "e6cf5717d953ec13e16f84b672c10550",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00201.png": {
+    "mtime": 1794429826.5082693,
+    "seen": 1794430634.0338354,
+    "ast_hash": "fb488106606daec4a5f885f26c840132",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00202.png": {
+    "mtime": 1794429826.5488124,
+    "seen": 1794430634.0338354,
+    "ast_hash": "cf0715b80153a07d018e33aa765392c1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00203.png": {
+    "mtime": 1794429826.789893,
+    "seen": 1794430634.0338354,
+    "ast_hash": "d03ca6dbbd75c1c7d5d1719901cb4143",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00204.png": {
+    "mtime": 1794429826.8021708,
+    "seen": 1794430634.0338354,
+    "ast_hash": "86e76e7c28004ea2f77990143cc9eac3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00205.png": {
+    "mtime": 1794429826.8178134,
+    "seen": 1794430634.0338354,
+    "ast_hash": "cb5e356b0c168bf6c4c342f72985d7cf",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00206.png": {
+    "mtime": 1794429826.8327634,
+    "seen": 1794430634.0338354,
+    "ast_hash": "9a6251264092d7ca871589f36697df68",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00207.png": {
+    "mtime": 1794429826.8495052,
+    "seen": 1794430634.0338354,
+    "ast_hash": "e6708245b52a043587589ba31d7be683",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00208.png": {
+    "mtime": 1794429826.8726063,
+    "seen": 1794430634.0338354,
+    "ast_hash": "6a42969ca9670d3a1241b3f4812aac2e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00209.png": {
+    "mtime": 1794429826.888194,
+    "seen": 1794430634.0338354,
+    "ast_hash": "0d85474d366edb52c52246e46c0717da",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00210.png": {
+    "mtime": 1794429826.906254,
+    "seen": 1794430634.0338354,
+    "ast_hash": "0d776a0563a28c31b4b8c78b22cb9e7a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00211.png": {
+    "mtime": 1794429826.9259448,
+    "seen": 1794430634.0338354,
+    "ast_hash": "fe8da2f9b106acef317b6085ce8f9259",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00212.png": {
+    "mtime": 1794429826.9491277,
+    "seen": 1794430634.0338354,
+    "ast_hash": "c5c028ca8f4753fde9b2bdfd421c0731",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00213.png": {
+    "mtime": 1794429826.9609132,
+    "seen": 1794430634.0338354,
+    "ast_hash": "900a96c7ad87dcea5339709d5b9825b6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00214.png": {
+    "mtime": 1794429826.9784384,
+    "seen": 1794430634.0338354,
+    "ast_hash": "da111db5dd4fcab91914cf46a337c271",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00215.png": {
+    "mtime": 1794429826.9883838,
+    "seen": 1794430634.0338354,
+    "ast_hash": "bb042612ffa869e83715a14f97762076",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00216.png": {
+    "mtime": 1794429827.004491,
+    "seen": 1794430634.0338354,
+    "ast_hash": "a03af5bd801c9cdd1f38957d7291de89",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00217.png": {
+    "mtime": 1794429827.0191157,
+    "seen": 1794430634.0338354,
+    "ast_hash": "574abda9854cd8da3484d37f6d68f2ff",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00218.png": {
+    "mtime": 1794429827.0337777,
+    "seen": 1794430634.0338354,
+    "ast_hash": "e1664c492bb66f8a8c776f8270bed09e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00219.png": {
+    "mtime": 1794429827.0589523,
+    "seen": 1794430634.0338354,
+    "ast_hash": "ffc6172e26df00dbd5860872ce35787f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/cdp_frames/frame_00220.png": {
+    "mtime": 1794429827.061896,
+    "seen": 1794430634.0338354,
+    "ast_hash": "3a2e96831f8a7bebf4ec952774ecbebd",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/frame_10s.png": {
+    "mtime": 1794430301.7947645,
+    "seen": 1794430634.0338354,
+    "ast_hash": "01e23abd30ed96689fa863e3592dc00e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/frame_18s.png": {
+    "mtime": 1794430302.2896056,
+    "seen": 1794430634.0338354,
+    "ast_hash": "97ca82ac11f3a9b7ad3797cd01784627",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/frame_2s.png": {
+    "mtime": 1794430301.3721879,
+    "seen": 1794430634.0338354,
+    "ast_hash": "4c340111c824960e457b28e198dd0aa3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00001.jpg": {
+    "mtime": 1794430346.1829178,
+    "seen": 1794430634.0338354,
+    "ast_hash": "e65e572ecac7652f67964fcaa196014d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00002.jpg": {
+    "mtime": 1794430346.6942804,
+    "seen": 1794430634.0338354,
+    "ast_hash": "aabafb24206ca8f5adeb49606af34728",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00003.jpg": {
+    "mtime": 1794430347.0849738,
+    "seen": 1794430634.0338354,
+    "ast_hash": "411525a7136d1653d057456f99eb6b97",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00004.jpg": {
+    "mtime": 1794430347.3400626,
+    "seen": 1794430634.0338354,
+    "ast_hash": "2c12d1bb13c140e7429608493f415d3b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00005.jpg": {
+    "mtime": 1794430347.5401852,
+    "seen": 1794430634.0338354,
+    "ast_hash": "88fd8e65137e112506fe24f7e47b07e2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00006.jpg": {
+    "mtime": 1794430347.7442043,
+    "seen": 1794430634.0338354,
+    "ast_hash": "964ac88ca8a95fe62120e24bbab8e7cb",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00007.jpg": {
+    "mtime": 1794430347.9048364,
+    "seen": 1794430634.0338354,
+    "ast_hash": "3044ff0c6a2ca508a37f39754c62e548",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00008.jpg": {
+    "mtime": 1794430348.0574949,
+    "seen": 1794430634.0338354,
+    "ast_hash": "fba14234117d717feb4af81ad875b2db",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00009.jpg": {
+    "mtime": 1794430348.2109592,
+    "seen": 1794430634.0338354,
+    "ast_hash": "017301ba5fc1b13ba5516f54fb80bbfe",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00010.jpg": {
+    "mtime": 1794430348.3150463,
+    "seen": 1794430634.0338354,
+    "ast_hash": "2033136efa8e4bab33580f6f3e4ca7ac",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00011.jpg": {
+    "mtime": 1794430348.4220805,
+    "seen": 1794430634.0338354,
+    "ast_hash": "f95def19d01ce76f7b3393e303aaa45f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00012.jpg": {
+    "mtime": 1794430348.5250652,
+    "seen": 1794430634.0338354,
+    "ast_hash": "ff1981d6cc566cae7014fd335df27638",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00013.jpg": {
+    "mtime": 1794430348.6648228,
+    "seen": 1794430634.0338354,
+    "ast_hash": "cf2cb5ddabf380f366b0cb7000780aa2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00014.jpg": {
+    "mtime": 1794430348.776055,
+    "seen": 1794430634.0338354,
+    "ast_hash": "2c633c0c7425a4cb1c6bfba1aa87389b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00015.jpg": {
+    "mtime": 1794430348.8859553,
+    "seen": 1794430634.0338354,
+    "ast_hash": "2bf7148257ff30d3e52879a7a731b220",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00016.jpg": {
+    "mtime": 1794430348.9659421,
+    "seen": 1794430634.0338354,
+    "ast_hash": "0b329ac9bc8be1a30501042195c4ba35",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00017.jpg": {
+    "mtime": 1794430349.0483477,
+    "seen": 1794430634.0338354,
+    "ast_hash": "52d99bfae3e5a807ba6e1841bf569ee4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00018.jpg": {
+    "mtime": 1794430349.149302,
+    "seen": 1794430634.0338354,
+    "ast_hash": "0178eb33ed17aa4c78f3bd98c83c3321",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00019.jpg": {
+    "mtime": 1794430349.2258892,
+    "seen": 1794430634.0338354,
+    "ast_hash": "4aaf73a0c1ea572398a3b88b6e57c846",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00020.jpg": {
+    "mtime": 1794430349.3084857,
+    "seen": 1794430634.0338354,
+    "ast_hash": "4406bf00be658c842b4c775330ab9a26",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00021.jpg": {
+    "mtime": 1794430349.3957808,
+    "seen": 1794430634.0338354,
+    "ast_hash": "bff91b0bc5e4068623245eea3ae8e9cc",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00022.jpg": {
+    "mtime": 1794430349.4649923,
+    "seen": 1794430634.0338354,
+    "ast_hash": "781502b01656fde46e58e61a78ea682c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00023.jpg": {
+    "mtime": 1794430349.6068144,
+    "seen": 1794430634.0338354,
+    "ast_hash": "f74c5e7a10acdbbcd8f43ed5bfd098f4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00024.jpg": {
+    "mtime": 1794430349.673201,
+    "seen": 1794430634.0338354,
+    "ast_hash": "d12220af6e99b19b9a56ea579ada3227",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00025.jpg": {
+    "mtime": 1794430350.2040982,
+    "seen": 1794430634.0338354,
+    "ast_hash": "6746f3bf58a4146e02d69bda1d819b58",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00026.jpg": {
+    "mtime": 1794430350.2214856,
+    "seen": 1794430634.0338354,
+    "ast_hash": "e7b8442f57def54c73097ae18624895a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00027.jpg": {
+    "mtime": 1794430350.256858,
+    "seen": 1794430634.0338354,
+    "ast_hash": "60b53736639e1a6183b7ae4ed475cf01",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00028.jpg": {
+    "mtime": 1794430350.3349364,
+    "seen": 1794430634.0338354,
+    "ast_hash": "f39f8ca6cd6af9ef461876ceaa1f8ccf",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00029.jpg": {
+    "mtime": 1794430350.3582006,
+    "seen": 1794430634.0338354,
+    "ast_hash": "f9fc1f6b518c2908a259a5f51c944a06",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00030.jpg": {
+    "mtime": 1794430350.42506,
+    "seen": 1794430634.0338354,
+    "ast_hash": "39d3e7a5dea27ba343fb014860ad8298",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00031.jpg": {
+    "mtime": 1794430350.5031307,
+    "seen": 1794430634.0338354,
+    "ast_hash": "7a2d8a9bfd6c4747f55c07a5533619c4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00032.jpg": {
+    "mtime": 1794430350.5492196,
+    "seen": 1794430634.0338354,
+    "ast_hash": "68cd7253f8e9bb23b9524ad76ba1a77c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00033.jpg": {
+    "mtime": 1794430350.6004307,
+    "seen": 1794430634.0338354,
+    "ast_hash": "fb741c7c59c49265a7fa5da5b7853a5d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00034.jpg": {
+    "mtime": 1794430350.6662726,
+    "seen": 1794430634.0338354,
+    "ast_hash": "7327330a7730e5126ccda47018b14df9",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00035.jpg": {
+    "mtime": 1794430350.7328699,
+    "seen": 1794430634.0338354,
+    "ast_hash": "ba22d6261da478a153787251d65a63d3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00036.jpg": {
+    "mtime": 1794430350.7773552,
+    "seen": 1794430634.0338354,
+    "ast_hash": "5774352d7a6a4f54d4edaad26d9108ef",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00037.jpg": {
+    "mtime": 1794430350.8223364,
+    "seen": 1794430634.0338354,
+    "ast_hash": "835cee1eadda72c3f110f72adc476425",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00038.jpg": {
+    "mtime": 1794430350.9297721,
+    "seen": 1794430634.0338354,
+    "ast_hash": "e03d79a73d035330202701257643ce4b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00039.jpg": {
+    "mtime": 1794430350.9917612,
+    "seen": 1794430634.0338354,
+    "ast_hash": "9ea3d11da264a3cc189d2eede312818c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00040.jpg": {
+    "mtime": 1794430351.0400457,
+    "seen": 1794430634.0338354,
+    "ast_hash": "8c87cf394f11b6c5655b18c3084d2d8a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00041.jpg": {
+    "mtime": 1794430351.0913765,
+    "seen": 1794430634.0338354,
+    "ast_hash": "e6d1a6671b789846a6977aca60231842",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00042.jpg": {
+    "mtime": 1794430351.156119,
+    "seen": 1794430634.0338354,
+    "ast_hash": "a6d8407a1f6ccdb0ac8a7831744a077c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00043.jpg": {
+    "mtime": 1794430351.218151,
+    "seen": 1794430634.0338354,
+    "ast_hash": "3480ae807eaa5b01cf534c7a12578ff4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00044.jpg": {
+    "mtime": 1794430351.268694,
+    "seen": 1794430634.0338354,
+    "ast_hash": "a0bb0ba06e5fcf1e658de10262013847",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00045.jpg": {
+    "mtime": 1794430351.2950604,
+    "seen": 1794430634.0338354,
+    "ast_hash": "83455058647fae636304c1f09288e287",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00046.jpg": {
+    "mtime": 1794430351.3424082,
+    "seen": 1794430634.0338354,
+    "ast_hash": "0b0b0f0188a6b698103e807186ffba92",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00047.jpg": {
+    "mtime": 1794430351.3671446,
+    "seen": 1794430634.0338354,
+    "ast_hash": "da8df1c1b955d4b2e06c1e58242302d8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00048.jpg": {
+    "mtime": 1794430351.4443164,
+    "seen": 1794430634.0338354,
+    "ast_hash": "909911cd58f7b7fa7e2660ca5170ac76",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00049.jpg": {
+    "mtime": 1794430351.4981978,
+    "seen": 1794430634.0338354,
+    "ast_hash": "de00c754f8b42ea68a539d00bb5144b5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00050.jpg": {
+    "mtime": 1794430351.5538116,
+    "seen": 1794430634.0338354,
+    "ast_hash": "857bbc1d1465a441a6553b2dc2f915c2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00051.jpg": {
+    "mtime": 1794430351.6702478,
+    "seen": 1794430634.0338354,
+    "ast_hash": "a99b133a1fdf58d90b94a81c46f2bf75",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00052.jpg": {
+    "mtime": 1794430351.7032585,
+    "seen": 1794430634.0338354,
+    "ast_hash": "562b74e341ab1959bbf991362b0e0e40",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00053.jpg": {
+    "mtime": 1794430351.7347112,
+    "seen": 1794430634.0338354,
+    "ast_hash": "1f6bb746139f663bfd2ae8257a89362e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00054.jpg": {
+    "mtime": 1794430351.792121,
+    "seen": 1794430634.0338354,
+    "ast_hash": "6454e14433af1118e79030c9176e052d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00055.jpg": {
+    "mtime": 1794430351.8248162,
+    "seen": 1794430634.0338354,
+    "ast_hash": "684575c270d95415dd221ef7d343b0a1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00056.jpg": {
+    "mtime": 1794430351.8660808,
+    "seen": 1794430634.0338354,
+    "ast_hash": "9fbd171df6ab05480638f5a7c2c698ce",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00057.jpg": {
+    "mtime": 1794430351.957151,
+    "seen": 1794430634.0338354,
+    "ast_hash": "6b470765b705604005adb9aa3d694e05",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00058.jpg": {
+    "mtime": 1794430351.9730515,
+    "seen": 1794430634.0338354,
+    "ast_hash": "25b287105c9930bc4adf5cebf8278d92",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00059.jpg": {
+    "mtime": 1794430352.0531776,
+    "seen": 1794430634.0338354,
+    "ast_hash": "660941b7c7641dac0e2d8d8d8b9f4776",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00060.jpg": {
+    "mtime": 1794430352.116189,
+    "seen": 1794430634.0338354,
+    "ast_hash": "2e794731dca78d1284e3e403ad54b1d0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00061.jpg": {
+    "mtime": 1794430352.1582084,
+    "seen": 1794430634.0338354,
+    "ast_hash": "f75492c317cf1871f068412ab0d642a5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00062.jpg": {
+    "mtime": 1794430352.1682558,
+    "seen": 1794430634.0338354,
+    "ast_hash": "edd8cd4223fc5bcdf555e485efd7d83a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00063.jpg": {
+    "mtime": 1794430352.2969842,
+    "seen": 1794430634.0338354,
+    "ast_hash": "87529322a10f8326d5e02684e628ab6e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00064.jpg": {
+    "mtime": 1794430352.305075,
+    "seen": 1794430634.0338354,
+    "ast_hash": "87dba096f32062ee521094cf751e76e7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00065.jpg": {
+    "mtime": 1794430352.3352146,
+    "seen": 1794430634.0338354,
+    "ast_hash": "ffc83e9ae07564fa29d18c010c60963a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00066.jpg": {
+    "mtime": 1794430352.425406,
+    "seen": 1794430634.0338354,
+    "ast_hash": "33412bfe6e634b570a999e10fe145bdd",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00067.jpg": {
+    "mtime": 1794430352.5140488,
+    "seen": 1794430634.0343444,
+    "ast_hash": "fa6e3af936def242e75e965a3a2a6fe6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00068.jpg": {
+    "mtime": 1794430352.5226667,
+    "seen": 1794430634.0343444,
+    "ast_hash": "46510e57b6f2a3bfc2fa61568e9ac92a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00069.jpg": {
+    "mtime": 1794430352.5387745,
+    "seen": 1794430634.0343444,
+    "ast_hash": "c720d0e004779bdae733cf5765c52afa",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00070.jpg": {
+    "mtime": 1794430352.6495519,
+    "seen": 1794430634.0343444,
+    "ast_hash": "308031a180a3b0a03139252af7a60e3e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00071.jpg": {
+    "mtime": 1794430352.677374,
+    "seen": 1794430634.0343444,
+    "ast_hash": "d9725c09105cf30022ddbc739a7cd829",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00072.jpg": {
+    "mtime": 1794430352.7392175,
+    "seen": 1794430634.0343444,
+    "ast_hash": "c15019accc2b7d20ce3577f1b93dddc6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00073.jpg": {
+    "mtime": 1794430352.8147936,
+    "seen": 1794430634.0343444,
+    "ast_hash": "57fe33daf01df944dd759641332fdafe",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00074.jpg": {
+    "mtime": 1794430352.8763099,
+    "seen": 1794430634.0343444,
+    "ast_hash": "938687a5be1b2f8bca96d9a876b18954",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00075.jpg": {
+    "mtime": 1794430352.904693,
+    "seen": 1794430634.0343444,
+    "ast_hash": "8a2fbff9bdd2113f14171f88e0e20cdc",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00076.jpg": {
+    "mtime": 1794430352.9230804,
+    "seen": 1794430634.0343444,
+    "ast_hash": "60ebb67375f72b3793f78ca59efbe804",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00077.jpg": {
+    "mtime": 1794430353.0242665,
+    "seen": 1794430634.0343444,
+    "ast_hash": "ff9cd5593ae41276abfa1eae7c4f328f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00078.jpg": {
+    "mtime": 1794430353.0386467,
+    "seen": 1794430634.0343444,
+    "ast_hash": "d5f9d2e242dfa91a436faf27b130964d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00079.jpg": {
+    "mtime": 1794430353.0552483,
+    "seen": 1794430634.0343444,
+    "ast_hash": "01ab7b73c355a3275cac24e4f479d878",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00080.jpg": {
+    "mtime": 1794430353.1421971,
+    "seen": 1794430634.0343444,
+    "ast_hash": "4bdb4596e9a29786874639f9cb110a53",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00081.jpg": {
+    "mtime": 1794430353.1515534,
+    "seen": 1794430634.0343444,
+    "ast_hash": "42ef83363bd77e3fc48a727b91429897",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00082.jpg": {
+    "mtime": 1794430353.1792314,
+    "seen": 1794430634.0343444,
+    "ast_hash": "957e1a945580e655fc6843ceabd1d5ea",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00083.jpg": {
+    "mtime": 1794430353.2757058,
+    "seen": 1794430634.0343444,
+    "ast_hash": "fb05e1020cf1d25244b025a8bd7d8655",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00084.jpg": {
+    "mtime": 1794430353.3107872,
+    "seen": 1794430634.0343444,
+    "ast_hash": "6a890d0fc52e35fc1a47ef47564b4028",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00085.jpg": {
+    "mtime": 1794430353.3561115,
+    "seen": 1794430634.0343444,
+    "ast_hash": "f5e2d505c08abe5eb16dfc4389fa1735",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00086.jpg": {
+    "mtime": 1794430353.4487832,
+    "seen": 1794430634.0343444,
+    "ast_hash": "0710c826cb5b0f536d1ebfcd42fa8f4c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00087.jpg": {
+    "mtime": 1794430353.4642057,
+    "seen": 1794430634.0343444,
+    "ast_hash": "578dbf39b0a11a7b96e985829e699b11",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00088.jpg": {
+    "mtime": 1794430353.5326102,
+    "seen": 1794430634.0343444,
+    "ast_hash": "b8aaea7801eed318a1b2a5061913904d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00089.jpg": {
+    "mtime": 1794430353.5670648,
+    "seen": 1794430634.0343444,
+    "ast_hash": "1b026c2270da2c1feaf492a93e5e2dc8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00090.jpg": {
+    "mtime": 1794430353.650349,
+    "seen": 1794430634.0343444,
+    "ast_hash": "85b7dcf5fb562cd298ad3eaa5cedc5a5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00091.jpg": {
+    "mtime": 1794430353.6811786,
+    "seen": 1794430634.0343444,
+    "ast_hash": "ca63b2c550f0e3d0cf6b59fea9c77684",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00092.jpg": {
+    "mtime": 1794430353.6984656,
+    "seen": 1794430634.0343444,
+    "ast_hash": "c5797dae57e3b4a659d16d6246dea2d5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00093.jpg": {
+    "mtime": 1794430353.7806113,
+    "seen": 1794430634.0343444,
+    "ast_hash": "4150818b32276124dd981d1166592813",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00094.jpg": {
+    "mtime": 1794430353.7997954,
+    "seen": 1794430634.0343444,
+    "ast_hash": "e90f4679dfe920ad1dbff4d84d50b529",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00095.jpg": {
+    "mtime": 1794430353.8246675,
+    "seen": 1794430634.0343444,
+    "ast_hash": "07c2eeac0813be199292bcc4575b2c53",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00096.jpg": {
+    "mtime": 1794430353.8953876,
+    "seen": 1794430634.0343444,
+    "ast_hash": "b362cb6c9556673addd2b9b3260ab111",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00097.jpg": {
+    "mtime": 1794430353.940953,
+    "seen": 1794430634.0343444,
+    "ast_hash": "c4e666c0ad564d39c30c2ac71a47d8f5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00098.jpg": {
+    "mtime": 1794430353.997425,
+    "seen": 1794430634.0343444,
+    "ast_hash": "08bdd76eee6a08f01e423833d07bbb38",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00099.jpg": {
+    "mtime": 1794430354.0511405,
+    "seen": 1794430634.0343444,
+    "ast_hash": "b512e3a12067eb5304e1bf6f5d2b1480",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00100.jpg": {
+    "mtime": 1794430354.1137266,
+    "seen": 1794430634.0343444,
+    "ast_hash": "7ae82a69ef7313eb79050d70b70f220c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00101.jpg": {
+    "mtime": 1794430354.1442516,
+    "seen": 1794430634.0343444,
+    "ast_hash": "c82f72775565994f402198a8181f17c3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00102.jpg": {
+    "mtime": 1794430354.2027903,
+    "seen": 1794430634.0343444,
+    "ast_hash": "ea1619a610ba7d8cd5a5a3340d6ff81a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00103.jpg": {
+    "mtime": 1794430354.2351499,
+    "seen": 1794430634.0343444,
+    "ast_hash": "cec28eb1d8d86be164787aefa3d18ee7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00104.jpg": {
+    "mtime": 1794430354.2908309,
+    "seen": 1794430634.0343444,
+    "ast_hash": "1f249c25ddda8b038acffc8c5b8418d6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00105.jpg": {
+    "mtime": 1794430354.3542984,
+    "seen": 1794430634.0343444,
+    "ast_hash": "9b938db49ebf778082e4aa517ab636ba",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00106.jpg": {
+    "mtime": 1794430354.3851023,
+    "seen": 1794430634.0343444,
+    "ast_hash": "eb21274591b7a77c728a9da50aeb3a35",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00107.jpg": {
+    "mtime": 1794430354.415489,
+    "seen": 1794430634.0343444,
+    "ast_hash": "5eb907e5101036455165ab5e50240b92",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00108.jpg": {
+    "mtime": 1794430354.4832294,
+    "seen": 1794430634.0343444,
+    "ast_hash": "06d566757efd44f98940f87f56dc4d4b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00109.jpg": {
+    "mtime": 1794430354.497437,
+    "seen": 1794430634.0343444,
+    "ast_hash": "fc167addc53ee67bc7dd6d02ac462467",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00110.jpg": {
+    "mtime": 1794430354.5944743,
+    "seen": 1794430634.0343444,
+    "ast_hash": "d207a1df6c628224779a51cb965948c4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00111.jpg": {
+    "mtime": 1794430354.6502357,
+    "seen": 1794430634.0343444,
+    "ast_hash": "443b63799ea00f761f5fff2680c7036d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00112.jpg": {
+    "mtime": 1794430354.6923518,
+    "seen": 1794430634.0343444,
+    "ast_hash": "770960f2af15cbc2e123436c658c2e02",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00113.jpg": {
+    "mtime": 1794430354.7678392,
+    "seen": 1794430634.0343444,
+    "ast_hash": "5f09c35b2fcd4336c911fdb39b58408e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00114.jpg": {
+    "mtime": 1794430354.82552,
+    "seen": 1794430634.0343444,
+    "ast_hash": "c779c87c10b7dca729d677ddfad90348",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00115.jpg": {
+    "mtime": 1794430354.834538,
+    "seen": 1794430634.0343444,
+    "ast_hash": "63852a812367d0095d88ad992b6ca2d0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00116.jpg": {
+    "mtime": 1794430354.9277778,
+    "seen": 1794430634.0343444,
+    "ast_hash": "7a8ad4668668918e60f03c0459071b57",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00117.jpg": {
+    "mtime": 1794430354.9789057,
+    "seen": 1794430634.0343444,
+    "ast_hash": "e6f4d9b0ae5c4d678bc397b290c6e661",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00118.jpg": {
+    "mtime": 1794430354.9961007,
+    "seen": 1794430634.0343444,
+    "ast_hash": "4ebeba915aeb4213a2395f9c5160b343",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00119.jpg": {
+    "mtime": 1794430355.0739038,
+    "seen": 1794430634.0343444,
+    "ast_hash": "833f50579b04e8c6e92b9a7ab07f80f6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00120.jpg": {
+    "mtime": 1794430355.111196,
+    "seen": 1794430634.0343444,
+    "ast_hash": "3e588fbfb64b3b64948ed45db0ea2dcd",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00121.jpg": {
+    "mtime": 1794430355.1642418,
+    "seen": 1794430634.0343444,
+    "ast_hash": "108b076967cc7c420da9502bc3ff0aa6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00122.jpg": {
+    "mtime": 1794430355.2060132,
+    "seen": 1794430634.0343444,
+    "ast_hash": "fe908f4011ead746075e8768adce5a5a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00123.jpg": {
+    "mtime": 1794430355.2571542,
+    "seen": 1794430634.0343444,
+    "ast_hash": "08a21712e037d8eb707dd6b859df1723",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00124.jpg": {
+    "mtime": 1794430355.299985,
+    "seen": 1794430634.0343444,
+    "ast_hash": "0836ff9df17e5fb06aee2057c2902428",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00125.jpg": {
+    "mtime": 1794430355.3321054,
+    "seen": 1794430634.0343444,
+    "ast_hash": "411dd4b255c2c26558e74e1d5a1430ef",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00126.jpg": {
+    "mtime": 1794430355.379989,
+    "seen": 1794430634.0343444,
+    "ast_hash": "a26c1a186db155c932843d9acf48fbe5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00127.jpg": {
+    "mtime": 1794430355.4225638,
+    "seen": 1794430634.0343444,
+    "ast_hash": "56bce7a5091d8376e42c601aaad15697",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00128.jpg": {
+    "mtime": 1794430355.4291139,
+    "seen": 1794430634.0343444,
+    "ast_hash": "b8d825c9fc5cabbad917f23b0494cff3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00129.jpg": {
+    "mtime": 1794430355.5332816,
+    "seen": 1794430634.0343444,
+    "ast_hash": "2fdc2596d02cc6d2916ed664c35d315e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00130.jpg": {
+    "mtime": 1794430355.5402937,
+    "seen": 1794430634.0343444,
+    "ast_hash": "0df09d24f1fc3da693e693c53315ae8d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00131.jpg": {
+    "mtime": 1794430355.545135,
+    "seen": 1794430634.0343444,
+    "ast_hash": "bbab9d5ab80db48288b911dac9626215",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00132.jpg": {
+    "mtime": 1794430355.6408331,
+    "seen": 1794430634.0343444,
+    "ast_hash": "304facfc9eae90dd0ded8a9c86ce1c5f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00133.jpg": {
+    "mtime": 1794430355.6840768,
+    "seen": 1794430634.0343444,
+    "ast_hash": "225f8c2e954a234e0f79bd752a301e1e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00134.jpg": {
+    "mtime": 1794430355.7004147,
+    "seen": 1794430634.0343444,
+    "ast_hash": "4f2f680d10adc8586903815bbee11be8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00135.jpg": {
+    "mtime": 1794430355.7421052,
+    "seen": 1794430634.0343444,
+    "ast_hash": "3bf736eaf3e621ae3e86fcadcc3fed33",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00136.jpg": {
+    "mtime": 1794430355.8038585,
+    "seen": 1794430634.0343444,
+    "ast_hash": "f153ffe025cf6257fd6976a5174066f1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00137.jpg": {
+    "mtime": 1794430355.841085,
+    "seen": 1794430634.0343444,
+    "ast_hash": "2ca3e26f6b45fac2ad499a886351603c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00138.jpg": {
+    "mtime": 1794430355.8599243,
+    "seen": 1794430634.0343444,
+    "ast_hash": "1e375c9031ad82de7c92ca0742d3411f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00139.jpg": {
+    "mtime": 1794430355.9489849,
+    "seen": 1794430634.0343444,
+    "ast_hash": "92c560c889c7a2d49888aaa03f50f2cd",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00140.jpg": {
+    "mtime": 1794430355.9650848,
+    "seen": 1794430634.0343444,
+    "ast_hash": "02f891a648ba0f90d5bfcc6dc308d47b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00141.jpg": {
+    "mtime": 1794430355.9700842,
+    "seen": 1794430634.0343444,
+    "ast_hash": "dc42530d8ccfb4a1ad6fee0ff622b94c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00142.jpg": {
+    "mtime": 1794430356.038796,
+    "seen": 1794430634.0343444,
+    "ast_hash": "8a86d5cb0a51a5a11e1ac3f821ea0692",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00143.jpg": {
+    "mtime": 1794430356.061109,
+    "seen": 1794430634.0343444,
+    "ast_hash": "97bd9f60ed1808b0dad2e973dbe610ec",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00144.jpg": {
+    "mtime": 1794430356.0788596,
+    "seen": 1794430634.0343444,
+    "ast_hash": "331da312805cc676d9055d54640062da",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00145.jpg": {
+    "mtime": 1794430356.1399357,
+    "seen": 1794430634.0343444,
+    "ast_hash": "f1fffed233aef719e58794d3b8a3f42c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00146.jpg": {
+    "mtime": 1794430356.1950586,
+    "seen": 1794430634.0343444,
+    "ast_hash": "cf2dc2482b60cc92d0c9aaf8215e00c3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00147.jpg": {
+    "mtime": 1794430356.2269495,
+    "seen": 1794430634.0343444,
+    "ast_hash": "bee9ae3c7d08ffd4fd08f5f0567ae66c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00148.jpg": {
+    "mtime": 1794430356.2929163,
+    "seen": 1794430634.0343444,
+    "ast_hash": "bf433f53c68ca442ab2717d45d637834",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00149.jpg": {
+    "mtime": 1794430356.2993095,
+    "seen": 1794430634.0343444,
+    "ast_hash": "ebffac8dda23ab6471e809f9091fd1ef",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00150.jpg": {
+    "mtime": 1794430356.3198297,
+    "seen": 1794430634.0343444,
+    "ast_hash": "6302b044d11912ca52971782d063647b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00151.jpg": {
+    "mtime": 1794430356.4178195,
+    "seen": 1794430634.0343444,
+    "ast_hash": "f56202a3b90c4a2f1b1dbda46a8f8654",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00152.jpg": {
+    "mtime": 1794430356.4369764,
+    "seen": 1794430634.0343444,
+    "ast_hash": "0b0c972baa61c448b169230be113c87f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00153.jpg": {
+    "mtime": 1794430356.469087,
+    "seen": 1794430634.0343444,
+    "ast_hash": "b21d5064adedb68d285a4abb62bb8a03",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00154.jpg": {
+    "mtime": 1794430356.5179887,
+    "seen": 1794430634.0343444,
+    "ast_hash": "913102ebd3d761630cc1061c99a13c65",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00155.jpg": {
+    "mtime": 1794430356.5325093,
+    "seen": 1794430634.0343444,
+    "ast_hash": "f11aa3a803ff2638a095cab51df7fa87",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00156.jpg": {
+    "mtime": 1794430356.5795639,
+    "seen": 1794430634.0343444,
+    "ast_hash": "f11ff7484f323a9da5714a3524c4d05a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00157.jpg": {
+    "mtime": 1794430356.642375,
+    "seen": 1794430634.0343444,
+    "ast_hash": "3f415f8b6e7b82f510c8e92991a61c8c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00158.jpg": {
+    "mtime": 1794430356.660179,
+    "seen": 1794430634.0343444,
+    "ast_hash": "b97a5ffc78ba90220c26a7116455dd64",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00159.jpg": {
+    "mtime": 1794430356.6985352,
+    "seen": 1794430634.0343444,
+    "ast_hash": "eeaeea3008c429c69074b0415d3824b4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00160.jpg": {
+    "mtime": 1794430356.7721713,
+    "seen": 1794430634.0343444,
+    "ast_hash": "0c6911347353075ce2abed67d2755e8d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00161.jpg": {
+    "mtime": 1794430356.780674,
+    "seen": 1794430634.0343444,
+    "ast_hash": "7b98cdbf72a0a61e735a2c219baf73ef",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00162.jpg": {
+    "mtime": 1794430356.7911408,
+    "seen": 1794430634.0343444,
+    "ast_hash": "2f8ba200bd95d648323b849070cb6a5a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00163.jpg": {
+    "mtime": 1794430356.9055936,
+    "seen": 1794430634.0343444,
+    "ast_hash": "fb91006ef8f2409183087cb2159b5ce7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00164.jpg": {
+    "mtime": 1794430356.9157321,
+    "seen": 1794430634.0343444,
+    "ast_hash": "0e2d7c7e4c0dbd17bf1fcd8faad9804a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00165.jpg": {
+    "mtime": 1794430356.9784937,
+    "seen": 1794430634.0343444,
+    "ast_hash": "e1cb4a4530305a7e6d9669cdc617799c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00166.jpg": {
+    "mtime": 1794430357.0342119,
+    "seen": 1794430634.0343444,
+    "ast_hash": "06121f3ef5ac1de4b5deddfef0bdceb2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00167.jpg": {
+    "mtime": 1794430357.0568786,
+    "seen": 1794430634.0343444,
+    "ast_hash": "93011dc7d30a60d9664fadb57fe36439",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00168.jpg": {
+    "mtime": 1794430357.0961874,
+    "seen": 1794430634.0343444,
+    "ast_hash": "fd0f6b728312841f54e8acbf64028cdf",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00169.jpg": {
+    "mtime": 1794430357.1496468,
+    "seen": 1794430634.0343444,
+    "ast_hash": "1c4aeddad4c926e3e6527d019eab12bd",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00170.jpg": {
+    "mtime": 1794430357.2301326,
+    "seen": 1794430634.0343444,
+    "ast_hash": "8e0f8b763ba2b5e3b220c931cc7775b4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00171.jpg": {
+    "mtime": 1794430357.2660391,
+    "seen": 1794430634.0343444,
+    "ast_hash": "5d9af05a3c004f6cc660f76803a892aa",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00172.jpg": {
+    "mtime": 1794430357.2976751,
+    "seen": 1794430634.0343444,
+    "ast_hash": "7ef85584a903da53d92aa5555939b304",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00173.jpg": {
+    "mtime": 1794430357.3470201,
+    "seen": 1794430634.0343444,
+    "ast_hash": "2b34961f0427e39d84aac30195432318",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00174.jpg": {
+    "mtime": 1794430357.4008286,
+    "seen": 1794430634.0343444,
+    "ast_hash": "3f1ccc2c9feeb4a2fd1514a7cdca013a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00175.jpg": {
+    "mtime": 1794430357.7045777,
+    "seen": 1794430634.0343444,
+    "ast_hash": "ce97ed4d0f00069723b3fd47be9462dd",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00176.jpg": {
+    "mtime": 1794430358.6733184,
+    "seen": 1794430634.0343444,
+    "ast_hash": "ef8ad4e14bc1ed09c779cf2055d2f139",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00177.jpg": {
+    "mtime": 1794430358.6981368,
+    "seen": 1794430634.0343444,
+    "ast_hash": "c1ad4184eda4225ef9cc2d5f90a3dad2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00178.jpg": {
+    "mtime": 1794430358.7087357,
+    "seen": 1794430634.0343444,
+    "ast_hash": "8b1ff6d6610b671215a7813af84429f0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00179.jpg": {
+    "mtime": 1794430358.843955,
+    "seen": 1794430634.0343444,
+    "ast_hash": "4d6d1a8252e661c37077f3d77377aecb",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00180.jpg": {
+    "mtime": 1794430358.862682,
+    "seen": 1794430634.0343444,
+    "ast_hash": "2905c76e4967aebdfac17efbfbfe1197",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00181.jpg": {
+    "mtime": 1794430358.8749235,
+    "seen": 1794430634.0343444,
+    "ast_hash": "e3a4113c3a585b501bb0c68396bd3cf0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00182.jpg": {
+    "mtime": 1794430358.9640124,
+    "seen": 1794430634.0343444,
+    "ast_hash": "66e0df283ec3345831c82062622be502",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00183.jpg": {
+    "mtime": 1794430359.0074387,
+    "seen": 1794430634.0343444,
+    "ast_hash": "689fdcdf7cf52f7ed81599736dc88b05",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00184.jpg": {
+    "mtime": 1794430359.0124133,
+    "seen": 1794430634.0343444,
+    "ast_hash": "ce491039f2735d990ea741efdbdd1749",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc07_frames/frame_00185.jpg": {
+    "mtime": 1794430365.5139785,
+    "seen": 1794430634.0343444,
+    "ast_hash": "2aee5a7c930fe9d9fa523877df6f960b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00001.jpg": {
+    "mtime": 1794430368.8262267,
+    "seen": 1794430634.0343444,
+    "ast_hash": "2aee5a7c930fe9d9fa523877df6f960b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00002.jpg": {
+    "mtime": 1794430373.5163462,
+    "seen": 1794430634.0343444,
+    "ast_hash": "f0286fb2d51457516543f28ede665411",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00003.jpg": {
+    "mtime": 1794430373.8479674,
+    "seen": 1794430634.0343444,
+    "ast_hash": "ed9a13e5132f483fae3bfdc0dd170fd2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00004.jpg": {
+    "mtime": 1794430373.8684113,
+    "seen": 1794430634.0343444,
+    "ast_hash": "ddae93a4c8b4fb97dab4f71d29bb2c14",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00005.jpg": {
+    "mtime": 1794430373.872914,
+    "seen": 1794430634.0343444,
+    "ast_hash": "911b4d01488ffa9b1bdabbc773e307a0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00006.jpg": {
+    "mtime": 1794430373.890258,
+    "seen": 1794430634.0343444,
+    "ast_hash": "385336b5c479011ae4630b2edb4a2b81",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00007.jpg": {
+    "mtime": 1794430373.9210346,
+    "seen": 1794430634.0343444,
+    "ast_hash": "4450b8a9ef74662c4a282e8c78403677",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00008.jpg": {
+    "mtime": 1794430373.9287462,
+    "seen": 1794430634.0343444,
+    "ast_hash": "09d82149e1a0e430d2e30f38c410e9f7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00009.jpg": {
+    "mtime": 1794430373.953164,
+    "seen": 1794430634.0343444,
+    "ast_hash": "1226eaab654c2e3e275d410d4dc920ca",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00010.jpg": {
+    "mtime": 1794430373.9785523,
+    "seen": 1794430634.0343444,
+    "ast_hash": "22aef52ac29273558d12afb3362bafb6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00011.jpg": {
+    "mtime": 1794430373.9896038,
+    "seen": 1794430634.0343444,
+    "ast_hash": "2ebad4be00c2f8873aaee98b006d5bdb",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00012.jpg": {
+    "mtime": 1794430374.0038471,
+    "seen": 1794430634.0343444,
+    "ast_hash": "e184fe8ed07cbb37e8c3c25893bca977",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00013.jpg": {
+    "mtime": 1794430374.0377922,
+    "seen": 1794430634.0348978,
+    "ast_hash": "a4e2e189d84bd14b2af29997177c1f9d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00014.jpg": {
+    "mtime": 1794430374.0485091,
+    "seen": 1794430634.0348978,
+    "ast_hash": "703387ad8a06b913317cf7aa4a8781bd",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00015.jpg": {
+    "mtime": 1794430374.065625,
+    "seen": 1794430634.0348978,
+    "ast_hash": "ea3e875635339abef2931b6f592bf5dd",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00016.jpg": {
+    "mtime": 1794430374.0798504,
+    "seen": 1794430634.0348978,
+    "ast_hash": "065ecefe3e480afef8707282ed0c0fb8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00017.jpg": {
+    "mtime": 1794430374.10098,
+    "seen": 1794430634.0348978,
+    "ast_hash": "af468e5f6f8ed109957ee7a5e719ff19",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00018.jpg": {
+    "mtime": 1794430374.1268747,
+    "seen": 1794430634.0348978,
+    "ast_hash": "c5813e429d6c12fae0aa7be801cb6ae3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00019.jpg": {
+    "mtime": 1794430374.1399138,
+    "seen": 1794430634.0348978,
+    "ast_hash": "d72bd56c7244060346bc8eef83ca17d1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00020.jpg": {
+    "mtime": 1794430374.1607466,
+    "seen": 1794430634.0348978,
+    "ast_hash": "e02f2051bf6b3df566fbda021a83a7a8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00021.jpg": {
+    "mtime": 1794430374.1764445,
+    "seen": 1794430634.0348978,
+    "ast_hash": "fedf25cf31c08fd32963411df04f0e91",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00022.jpg": {
+    "mtime": 1794430374.1869235,
+    "seen": 1794430634.0348978,
+    "ast_hash": "6fc46cf4c032acd48a1ae569885829fa",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00023.jpg": {
+    "mtime": 1794430374.2145422,
+    "seen": 1794430634.0348978,
+    "ast_hash": "8b90fd36dda72f479dda4e8cb53fce65",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00024.jpg": {
+    "mtime": 1794430374.2199285,
+    "seen": 1794430634.0348978,
+    "ast_hash": "a471d5c8de90ba0c5f964b9d0cdd110f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00025.jpg": {
+    "mtime": 1794430374.2253225,
+    "seen": 1794430634.0348978,
+    "ast_hash": "28f214ce3e2134cf5153a53197038a7c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00026.jpg": {
+    "mtime": 1794430374.2759774,
+    "seen": 1794430634.0348978,
+    "ast_hash": "9ccfabb68bef00c9669f89996a441c3a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00027.jpg": {
+    "mtime": 1794430374.2930248,
+    "seen": 1794430634.0348978,
+    "ast_hash": "8257d92ecd1088d9ea0734e9a31bfd11",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00028.jpg": {
+    "mtime": 1794430374.3065393,
+    "seen": 1794430634.0349631,
+    "ast_hash": "b13b665b7a6c003f8770a4a7cd43eed5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00029.jpg": {
+    "mtime": 1794430374.3277676,
+    "seen": 1794430634.0349631,
+    "ast_hash": "80118f2c4df0f3dffbafff1df4b148fc",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00030.jpg": {
+    "mtime": 1794430374.3441577,
+    "seen": 1794430634.0349631,
+    "ast_hash": "c50836fa1faf7e71fbf035ebe2090461",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00031.jpg": {
+    "mtime": 1794430374.365916,
+    "seen": 1794430634.0349631,
+    "ast_hash": "c5291056483b375d8e92b6f29f2a7ade",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00032.jpg": {
+    "mtime": 1794430374.3773232,
+    "seen": 1794430634.0349631,
+    "ast_hash": "e9a2ed5a94fa11c691d603e00ca4e8c7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00033.jpg": {
+    "mtime": 1794430374.3892846,
+    "seen": 1794430634.0349631,
+    "ast_hash": "0c6b4db37a3798e33652a88a2cb0ff1f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00034.jpg": {
+    "mtime": 1794430374.4284768,
+    "seen": 1794430634.0349631,
+    "ast_hash": "834124fd07d31c3d2c061a5437aa0c1f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00035.jpg": {
+    "mtime": 1794430374.4364307,
+    "seen": 1794430634.0349631,
+    "ast_hash": "5600577f00d1a96247ce703bc5d795e2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00036.jpg": {
+    "mtime": 1794430374.4531965,
+    "seen": 1794430634.0349631,
+    "ast_hash": "d50de814b1db05ddab6f72b97157f2d1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00037.jpg": {
+    "mtime": 1794430374.503074,
+    "seen": 1794430634.0349631,
+    "ast_hash": "c34f32edacf95162d2bc8ef9ebb9fd33",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00038.jpg": {
+    "mtime": 1794430374.5103266,
+    "seen": 1794430634.0349631,
+    "ast_hash": "48a9506bcc4d1e2e124544b1043b2ec8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00039.jpg": {
+    "mtime": 1794430374.5391216,
+    "seen": 1794430634.0349631,
+    "ast_hash": "2719e52d88be63af2d18a5b0392ce82f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00040.jpg": {
+    "mtime": 1794430374.5630307,
+    "seen": 1794430634.0349631,
+    "ast_hash": "a73be667bc1aebf97e0bbd7be5d3a453",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00041.jpg": {
+    "mtime": 1794430374.5875745,
+    "seen": 1794430634.0349631,
+    "ast_hash": "d1ecd61550387c52bf424a25546d70d5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00042.jpg": {
+    "mtime": 1794430374.602875,
+    "seen": 1794430634.0349631,
+    "ast_hash": "bdb91f4ec5d9eac0960b61bcc81bae49",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00043.jpg": {
+    "mtime": 1794430374.6180696,
+    "seen": 1794430634.0349631,
+    "ast_hash": "8516175f793af49122b3ea3b25c99984",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00044.jpg": {
+    "mtime": 1794430374.6396325,
+    "seen": 1794430634.0349631,
+    "ast_hash": "f0286fb2d51457516543f28ede665411",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00045.jpg": {
+    "mtime": 1794430381.5421877,
+    "seen": 1794430634.0349631,
+    "ast_hash": "827895a0235e65b4b60fc9bf5fa036e0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00046.jpg": {
+    "mtime": 1794430381.9672387,
+    "seen": 1794430634.0349631,
+    "ast_hash": "fdc553c899aac5d7eb5f321972a2fc57",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00047.jpg": {
+    "mtime": 1794430381.973795,
+    "seen": 1794430634.0349631,
+    "ast_hash": "0d364f21a1408db806c1987e7d4aeb91",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00048.jpg": {
+    "mtime": 1794430381.988155,
+    "seen": 1794430634.0349631,
+    "ast_hash": "4e02fb574bacb3d94163d34b747acf1e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00049.jpg": {
+    "mtime": 1794430382.0114522,
+    "seen": 1794430634.0349631,
+    "ast_hash": "030ff2dd7f9d3d368448881b52dca1a3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00050.jpg": {
+    "mtime": 1794430382.026904,
+    "seen": 1794430634.0349631,
+    "ast_hash": "3b737bd72489cd501ca2b24c99271cbc",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00051.jpg": {
+    "mtime": 1794430382.0689821,
+    "seen": 1794430634.0349631,
+    "ast_hash": "dd3fe75a062a09a9474f19e0e2b8fc04",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00052.jpg": {
+    "mtime": 1794430382.0740504,
+    "seen": 1794430634.0349631,
+    "ast_hash": "009ac00e1bc985a0f6f091d7c7a88923",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00053.jpg": {
+    "mtime": 1794430382.1032317,
+    "seen": 1794430634.0349631,
+    "ast_hash": "a6eae3c557739f2edd0eb1355a8db164",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00054.jpg": {
+    "mtime": 1794430382.11472,
+    "seen": 1794430634.0349631,
+    "ast_hash": "3c85921e60f3e9570fac92bf03a0deb3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00055.jpg": {
+    "mtime": 1794430382.1237845,
+    "seen": 1794430634.0349631,
+    "ast_hash": "8b95174095fd62d4a05d4719112a929d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00056.jpg": {
+    "mtime": 1794430382.1683204,
+    "seen": 1794430634.0349631,
+    "ast_hash": "8d77a571fed387332a49130b23f4751d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00057.jpg": {
+    "mtime": 1794430382.1787388,
+    "seen": 1794430634.0349631,
+    "ast_hash": "133faeb1fa261e5413f806323975efd0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00058.jpg": {
+    "mtime": 1794430382.2044547,
+    "seen": 1794430634.0349631,
+    "ast_hash": "7cb3e8a44efe78e8028f17b92fde7808",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00059.jpg": {
+    "mtime": 1794430382.2370372,
+    "seen": 1794430634.0349631,
+    "ast_hash": "cab4fc2d0ef28a3e07b8bf4e94f6f312",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00060.jpg": {
+    "mtime": 1794430382.2427943,
+    "seen": 1794430634.0349631,
+    "ast_hash": "cca9a59eec14f522eadcfe6a5e8c4bda",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00061.jpg": {
+    "mtime": 1794430382.2652009,
+    "seen": 1794430634.0349631,
+    "ast_hash": "d07f05774ee0df813b3a58f5395e015b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00062.jpg": {
+    "mtime": 1794430382.2950156,
+    "seen": 1794430634.0349631,
+    "ast_hash": "ca3bdc8324563a98eb1fe0dcd99af915",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00063.jpg": {
+    "mtime": 1794430382.3083484,
+    "seen": 1794430634.0349631,
+    "ast_hash": "5fb4ae5f1602abf747577c0dcd9d79d7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00064.jpg": {
+    "mtime": 1794430382.3412454,
+    "seen": 1794430634.0349631,
+    "ast_hash": "b074c2c15912d819361cddec9b4b495d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00065.jpg": {
+    "mtime": 1794430382.3669212,
+    "seen": 1794430634.0349631,
+    "ast_hash": "5c590aa7e35bcd4a99374a33cc516511",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00066.jpg": {
+    "mtime": 1794430382.388854,
+    "seen": 1794430634.0349631,
+    "ast_hash": "0cc362bb8cf9f87ca90406791ac3519a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00067.jpg": {
+    "mtime": 1794430382.4219842,
+    "seen": 1794430634.0349631,
+    "ast_hash": "4d095cd9350ad77fa24ba0c6ec0acc9e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00068.jpg": {
+    "mtime": 1794430382.4569862,
+    "seen": 1794430634.0349631,
+    "ast_hash": "08396acfabdafea96c87ac06acd4791b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00069.jpg": {
+    "mtime": 1794430382.4790695,
+    "seen": 1794430634.0349631,
+    "ast_hash": "354199ece56950bbbe7a6e3102d02825",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00070.jpg": {
+    "mtime": 1794430382.5310435,
+    "seen": 1794430634.0349631,
+    "ast_hash": "059ea3f2fbad3a2c64799baff3a0b0a2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00071.jpg": {
+    "mtime": 1794430382.5669923,
+    "seen": 1794430634.0349631,
+    "ast_hash": "69c67fe11b075b665c58841741e2ee10",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00072.jpg": {
+    "mtime": 1794430382.616499,
+    "seen": 1794430634.0349631,
+    "ast_hash": "e6f3dd8a7e6dbf1d02da473f481cacc5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00073.jpg": {
+    "mtime": 1794430382.6254456,
+    "seen": 1794430634.0349631,
+    "ast_hash": "dca8538d858fff0a1da5ea0f7ac40dc8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00074.jpg": {
+    "mtime": 1794430382.6560414,
+    "seen": 1794430634.0349631,
+    "ast_hash": "b134cdf6fe7e993a5e9e059dcb091a7b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00075.jpg": {
+    "mtime": 1794430382.7186418,
+    "seen": 1794430634.0349631,
+    "ast_hash": "9ae6dbe9638dade8b60f8a334bbb7f32",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc08_frames/frame_00076.jpg": {
+    "mtime": 1794430382.7571175,
+    "seen": 1794430634.0349631,
+    "ast_hash": "827895a0235e65b4b60fc9bf5fa036e0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc09_state1.png": {
+    "mtime": 1794430389.2964735,
+    "seen": 1794430634.0349631,
+    "ast_hash": "4f3a2723580d67411cee54eb15a292b1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc09_state2.png": {
+    "mtime": 1794430389.452794,
+    "seen": 1794430634.0349631,
+    "ast_hash": "4f3a2723580d67411cee54eb15a292b1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc09_state3.png": {
+    "mtime": 1794430389.9665065,
+    "seen": 1794430634.0349631,
+    "ast_hash": "e5b9a246ae027d51a4564dc32a821238",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc09_state4.png": {
+    "mtime": 1794430392.1364365,
+    "seen": 1794430634.0349631,
+    "ast_hash": "31abaf93fa67df82cf5cec2d4458faaa",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00001.jpg": {
+    "mtime": 1794430023.270312,
+    "seen": 1794430634.0349631,
+    "ast_hash": "539b7473d3e42b961c90a28f0955b39a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00002.jpg": {
+    "mtime": 1794430023.777825,
+    "seen": 1794430634.0349631,
+    "ast_hash": "dc8c41da8b3f32dd7b9b5c250930cbaf",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00003.jpg": {
+    "mtime": 1794430024.1468594,
+    "seen": 1794430634.0349631,
+    "ast_hash": "25c7122c4790f9d8f7e4617e372d3487",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00004.jpg": {
+    "mtime": 1794430024.3781765,
+    "seen": 1794430634.0349631,
+    "ast_hash": "9ad6c5b6eafaeaada16b0c4059bcc500",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00005.jpg": {
+    "mtime": 1794430024.578368,
+    "seen": 1794430634.0349631,
+    "ast_hash": "3e7a1cbdd19a44a7678577ff94dc268d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00006.jpg": {
+    "mtime": 1794430024.7320356,
+    "seen": 1794430634.0349631,
+    "ast_hash": "5a6b5e92b7f8b7958d715f038b2149ba",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00007.jpg": {
+    "mtime": 1794430024.908486,
+    "seen": 1794430634.0349631,
+    "ast_hash": "14f691e52b76167dc96e67816f3db925",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00008.jpg": {
+    "mtime": 1794430025.0512946,
+    "seen": 1794430634.0349631,
+    "ast_hash": "c5390ed8a28ef1aa3da4057683ebbeeb",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00009.jpg": {
+    "mtime": 1794430025.1670117,
+    "seen": 1794430634.0349631,
+    "ast_hash": "8e2ff300f27962be4111ee7f1fc7e484",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00010.jpg": {
+    "mtime": 1794430025.2933688,
+    "seen": 1794430634.0349631,
+    "ast_hash": "eb3797263b2ff232c4a66b525b2a30df",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00011.jpg": {
+    "mtime": 1794430025.4029346,
+    "seen": 1794430634.0349631,
+    "ast_hash": "5b7a49f7d1ce1ba8db7b43cb4d88d5e6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00012.jpg": {
+    "mtime": 1794430025.531231,
+    "seen": 1794430634.0349631,
+    "ast_hash": "975ea5e833d9635f5f9f79a8dab39d8d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00013.jpg": {
+    "mtime": 1794430025.632175,
+    "seen": 1794430634.0349631,
+    "ast_hash": "371b4436803a2fbafc9500d594bc3aff",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00014.jpg": {
+    "mtime": 1794430025.728214,
+    "seen": 1794430634.0349631,
+    "ast_hash": "65c7855ce9065a562149e1a0a8a2c305",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00015.jpg": {
+    "mtime": 1794430025.8300755,
+    "seen": 1794430634.0349631,
+    "ast_hash": "a00100282496ae9b4fabc6247fb5e7dd",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00016.jpg": {
+    "mtime": 1794430025.9244604,
+    "seen": 1794430634.0349631,
+    "ast_hash": "bc75bfd8dda48d34dd272db41f17269a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00017.jpg": {
+    "mtime": 1794430026.012743,
+    "seen": 1794430634.0349631,
+    "ast_hash": "d28828ee1d9e4e539be137273593abdb",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00018.jpg": {
+    "mtime": 1794430026.0968454,
+    "seen": 1794430634.0349631,
+    "ast_hash": "08b61841e174599db840f030d290d775",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00019.jpg": {
+    "mtime": 1794430026.19341,
+    "seen": 1794430634.0349631,
+    "ast_hash": "c64a73b1edce50c64ab3706a65a3a27b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00020.jpg": {
+    "mtime": 1794430026.2641308,
+    "seen": 1794430634.0349631,
+    "ast_hash": "117fb1795c3b9e985419163d555ee6f8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00021.jpg": {
+    "mtime": 1794430026.3457491,
+    "seen": 1794430634.0349631,
+    "ast_hash": "b2908de13d09b7825c80c0b3f722bb99",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00022.jpg": {
+    "mtime": 1794430026.4300842,
+    "seen": 1794430634.0349631,
+    "ast_hash": "bd42a7d162826c49a00fed6cadfbbd62",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00023.jpg": {
+    "mtime": 1794430026.487448,
+    "seen": 1794430634.0349631,
+    "ast_hash": "a70a2f0b2befa8b89409ac4e24a86607",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00024.jpg": {
+    "mtime": 1794430026.603116,
+    "seen": 1794430634.0349631,
+    "ast_hash": "a47d427123dd245d40a6eceddccd1d85",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00025.jpg": {
+    "mtime": 1794430026.670478,
+    "seen": 1794430634.0349631,
+    "ast_hash": "eb4d0e5070b056309a9f6755783e6109",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00026.jpg": {
+    "mtime": 1794430026.7564006,
+    "seen": 1794430634.0349631,
+    "ast_hash": "055e711b90bfba035d67b65bc220d7c9",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00027.jpg": {
+    "mtime": 1794430026.7613218,
+    "seen": 1794430634.0349631,
+    "ast_hash": "c1a433e99f822897fd1c45d3de76ef7a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00028.jpg": {
+    "mtime": 1794430026.797043,
+    "seen": 1794430634.0349631,
+    "ast_hash": "cb84d12931d10d8e7136eea60b9ceebf",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00029.jpg": {
+    "mtime": 1794430027.150034,
+    "seen": 1794430634.0349631,
+    "ast_hash": "cb84d12931d10d8e7136eea60b9ceebf",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00030.jpg": {
+    "mtime": 1794430027.1550388,
+    "seen": 1794430634.0349631,
+    "ast_hash": "db70bd7dc8949037b74af6c286169dd2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00031.jpg": {
+    "mtime": 1794430027.189583,
+    "seen": 1794430634.0349631,
+    "ast_hash": "81df914fc2bb197d93215ce541f840a1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00032.jpg": {
+    "mtime": 1794430027.249677,
+    "seen": 1794430634.0349631,
+    "ast_hash": "cc7db5c12f446273719c373f92f86bdd",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00033.jpg": {
+    "mtime": 1794430027.2949524,
+    "seen": 1794430634.0349631,
+    "ast_hash": "d835cf4b1fe844a9eb1061da74aa39cb",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00034.jpg": {
+    "mtime": 1794430027.3559375,
+    "seen": 1794430634.0349631,
+    "ast_hash": "91723a074739387f84eda6d7a8f49acc",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00035.jpg": {
+    "mtime": 1794430027.4197118,
+    "seen": 1794430634.0349631,
+    "ast_hash": "ce4e61c0815d18ecc5789715fec68088",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00036.jpg": {
+    "mtime": 1794430027.4773667,
+    "seen": 1794430634.0349631,
+    "ast_hash": "96a00e2573be3ba8e55f9bfded051509",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00037.jpg": {
+    "mtime": 1794430027.542217,
+    "seen": 1794430634.0349631,
+    "ast_hash": "ecf4698a25aeae761b3d328375d97af9",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00038.jpg": {
+    "mtime": 1794430027.5918467,
+    "seen": 1794430634.0349631,
+    "ast_hash": "d987f49179737208bca9b40e8e550947",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00039.jpg": {
+    "mtime": 1794430027.6370068,
+    "seen": 1794430634.0349631,
+    "ast_hash": "cbd8f527fdf13f6410aac67279176a7d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00040.jpg": {
+    "mtime": 1794430027.7086833,
+    "seen": 1794430634.0349631,
+    "ast_hash": "da72a5073694d6d4ef6d40109eb1e87c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00041.jpg": {
+    "mtime": 1794430027.761634,
+    "seen": 1794430634.0349631,
+    "ast_hash": "c8f1034be6f102340d4febd4b4058075",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00042.jpg": {
+    "mtime": 1794430027.8113675,
+    "seen": 1794430634.0349631,
+    "ast_hash": "3d3d48c33dadae9fd4e543017b233729",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00043.jpg": {
+    "mtime": 1794430027.857435,
+    "seen": 1794430634.0349631,
+    "ast_hash": "90598cc35cfb64354b695d198dd507a6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00044.jpg": {
+    "mtime": 1794430027.9034972,
+    "seen": 1794430634.0349631,
+    "ast_hash": "8568a59144af6ddda5e5d8d402119cdd",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00045.jpg": {
+    "mtime": 1794430027.96254,
+    "seen": 1794430634.0349631,
+    "ast_hash": "e452e589fbb2a0c71f9e6877260c0294",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00046.jpg": {
+    "mtime": 1794430028.0305512,
+    "seen": 1794430634.0349631,
+    "ast_hash": "72004e87f50bf6db87fb9a3e3a202529",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00047.jpg": {
+    "mtime": 1794430028.0734048,
+    "seen": 1794430634.0349631,
+    "ast_hash": "d70c614bace4a2806271e30c090c29c0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00048.jpg": {
+    "mtime": 1794430028.1170347,
+    "seen": 1794430634.0349631,
+    "ast_hash": "47544a14b1905cff28b5243f3565db1e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00049.jpg": {
+    "mtime": 1794430028.1805873,
+    "seen": 1794430634.0349631,
+    "ast_hash": "4690e39957caabc97943d806a23bfe40",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00050.jpg": {
+    "mtime": 1794430028.2311141,
+    "seen": 1794430634.0349631,
+    "ast_hash": "e17622f381925761b2fbda941d1c622a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00051.jpg": {
+    "mtime": 1794430028.295027,
+    "seen": 1794430634.0349631,
+    "ast_hash": "3ab0c93d44a702766b6b7caf82f7671b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00052.jpg": {
+    "mtime": 1794430028.3092618,
+    "seen": 1794430634.0349631,
+    "ast_hash": "d96f87e02af9ed085ee2745473ef8c83",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00053.jpg": {
+    "mtime": 1794430028.3626587,
+    "seen": 1794430634.0349631,
+    "ast_hash": "aac7b14caee2940f067ce2616c56ebd1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00054.jpg": {
+    "mtime": 1794430028.413546,
+    "seen": 1794430634.0349631,
+    "ast_hash": "b28b15da2c0999b55033270236961728",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00055.jpg": {
+    "mtime": 1794430028.4626908,
+    "seen": 1794430634.0349631,
+    "ast_hash": "9594472c057abd5a7c59a58fe2c75469",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00056.jpg": {
+    "mtime": 1794430028.508248,
+    "seen": 1794430634.0349631,
+    "ast_hash": "8ea1f56e8cd325c85b96f5ad5578433c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00057.jpg": {
+    "mtime": 1794430028.5614412,
+    "seen": 1794430634.0349631,
+    "ast_hash": "546378a2fd71237f71616a140d2bd644",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00058.jpg": {
+    "mtime": 1794430028.5844316,
+    "seen": 1794430634.0349631,
+    "ast_hash": "10d92a5a57d3bd07231d9e29de4c37f2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00059.jpg": {
+    "mtime": 1794430028.6429677,
+    "seen": 1794430634.0349631,
+    "ast_hash": "761f7fba9c041f56b6fcf96e7568a06a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00060.jpg": {
+    "mtime": 1794430028.6963902,
+    "seen": 1794430634.0349631,
+    "ast_hash": "ca3aaf063e0f69fa58c970e8250c4cf8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00061.jpg": {
+    "mtime": 1794430028.7303526,
+    "seen": 1794430634.0349631,
+    "ast_hash": "702dfc2f0010e1430f1888969b274b84",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00062.jpg": {
+    "mtime": 1794430028.7721355,
+    "seen": 1794430634.0349631,
+    "ast_hash": "5359b9013bbd7b26c490a8a71cba6417",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00063.jpg": {
+    "mtime": 1794430028.8206246,
+    "seen": 1794430634.0349631,
+    "ast_hash": "eb61670b2ce15470e8de6cc655cff323",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00064.jpg": {
+    "mtime": 1794430028.8621624,
+    "seen": 1794430634.0349631,
+    "ast_hash": "cf40c23e3aeafcf93062cb3b8113494a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00065.jpg": {
+    "mtime": 1794430028.912617,
+    "seen": 1794430634.0349631,
+    "ast_hash": "f3b858ce503d690affe690f5aa3258cd",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00066.jpg": {
+    "mtime": 1794430028.9441793,
+    "seen": 1794430634.0349631,
+    "ast_hash": "df2724bc4352cdd2da26884d53058b8b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00067.jpg": {
+    "mtime": 1794430028.991287,
+    "seen": 1794430634.0349631,
+    "ast_hash": "ed5878ecf47afcd8635d2199aad43e5c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00068.jpg": {
+    "mtime": 1794430029.0246942,
+    "seen": 1794430634.0349631,
+    "ast_hash": "1c1c7212ab4223c16fc7d7623e19b0f4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00069.jpg": {
+    "mtime": 1794430029.081249,
+    "seen": 1794430634.0349631,
+    "ast_hash": "178e570c9ff7c0d168917413f9f451e7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00070.jpg": {
+    "mtime": 1794430029.1187541,
+    "seen": 1794430634.0349631,
+    "ast_hash": "0f6c8203140f23a27120d4b58c1d0703",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00071.jpg": {
+    "mtime": 1794430029.1870768,
+    "seen": 1794430634.0349631,
+    "ast_hash": "3a585acc0879da2aaf5d59a10de3be59",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00072.jpg": {
+    "mtime": 1794430029.1960766,
+    "seen": 1794430634.0354714,
+    "ast_hash": "ddbe7db6ed919e605fe623bfbf64bdce",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00073.jpg": {
+    "mtime": 1794430029.2387466,
+    "seen": 1794430634.0354714,
+    "ast_hash": "841e073768644a07b7bb28779a4fa99e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00074.jpg": {
+    "mtime": 1794430029.2812426,
+    "seen": 1794430634.0354714,
+    "ast_hash": "621d511e95e92e318a721885c05e4ab8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00075.jpg": {
+    "mtime": 1794430029.3333588,
+    "seen": 1794430634.0354714,
+    "ast_hash": "f025d4e0db309fd749feb5fc3f7e1864",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00076.jpg": {
+    "mtime": 1794430029.372164,
+    "seen": 1794430634.0354714,
+    "ast_hash": "52d65cf315a96ac83278e5dd9f652fa1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00077.jpg": {
+    "mtime": 1794430029.402999,
+    "seen": 1794430634.0354714,
+    "ast_hash": "73dcdfec763d43b44f03bada9315feb1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00078.jpg": {
+    "mtime": 1794430029.4432292,
+    "seen": 1794430634.0354714,
+    "ast_hash": "95d511c2e4c89bdd2b40b72983d2283c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00079.jpg": {
+    "mtime": 1794430029.4767077,
+    "seen": 1794430634.0354714,
+    "ast_hash": "371c74549791f0033b0a6ba1d2f3080a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00080.jpg": {
+    "mtime": 1794430029.5404801,
+    "seen": 1794430634.0354714,
+    "ast_hash": "c374bcc6332bfbd3335cbb489232581d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00081.jpg": {
+    "mtime": 1794430029.5650952,
+    "seen": 1794430634.0354714,
+    "ast_hash": "d834e83155b2b6bec2b033bce8da5107",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00082.jpg": {
+    "mtime": 1794430029.5997362,
+    "seen": 1794430634.0354714,
+    "ast_hash": "8b99cc2924975c76397d6859aa8613b9",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00083.jpg": {
+    "mtime": 1794430029.63327,
+    "seen": 1794430634.0354714,
+    "ast_hash": "a64a7485be140dcc4dad632509453bfb",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00084.jpg": {
+    "mtime": 1794430029.6813178,
+    "seen": 1794430634.0354714,
+    "ast_hash": "8b09d2ae9dbfb4a128ef69bc96148f5b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00085.jpg": {
+    "mtime": 1794430029.7103167,
+    "seen": 1794430634.0354714,
+    "ast_hash": "c149ad26fa93d107096949ad1ed65b1f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00086.jpg": {
+    "mtime": 1794430029.7418942,
+    "seen": 1794430634.0354714,
+    "ast_hash": "6d2093856f80f3d5a615208479bac417",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00087.jpg": {
+    "mtime": 1794430029.8386502,
+    "seen": 1794430634.0355916,
+    "ast_hash": "fe9d9c7a0606e3bf3128ca4a1a1e3049",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00088.jpg": {
+    "mtime": 1794430029.8477528,
+    "seen": 1794430634.0355916,
+    "ast_hash": "3221b85b3e7cc6391a01640bacb73b2f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00089.jpg": {
+    "mtime": 1794430029.877059,
+    "seen": 1794430634.0355916,
+    "ast_hash": "73246081fd1b77631d504367c3c46076",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00090.jpg": {
+    "mtime": 1794430029.9084313,
+    "seen": 1794430634.0355916,
+    "ast_hash": "739d65e67c451563ba16f21ef1c14b49",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00091.jpg": {
+    "mtime": 1794430029.9325786,
+    "seen": 1794430634.0355916,
+    "ast_hash": "b36c0510825e045b68e03d7536040522",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00092.jpg": {
+    "mtime": 1794430030.0081935,
+    "seen": 1794430634.0355916,
+    "ast_hash": "ee8bb5b357f66af632061ac6ea2416a3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00093.jpg": {
+    "mtime": 1794430030.0818236,
+    "seen": 1794430634.0355916,
+    "ast_hash": "9f2bd61f7a34a4cab907ad804e3dddae",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00094.jpg": {
+    "mtime": 1794430030.0858245,
+    "seen": 1794430634.0355916,
+    "ast_hash": "8f44aa4fd2c8381558618ef38098bbeb",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00095.jpg": {
+    "mtime": 1794430030.127556,
+    "seen": 1794430634.0355916,
+    "ast_hash": "3ad36ab8a5f4a198704c48994385d987",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00096.jpg": {
+    "mtime": 1794430030.215569,
+    "seen": 1794430634.0355916,
+    "ast_hash": "375c7b04f9fb8adb96782460f9975838",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00097.jpg": {
+    "mtime": 1794430030.2215695,
+    "seen": 1794430634.0355916,
+    "ast_hash": "19c11f01bc62bb3f9d787a60a1a962c2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00098.jpg": {
+    "mtime": 1794430030.3228016,
+    "seen": 1794430634.0355916,
+    "ast_hash": "0b96d7a21f1bc53a1bfe6ab287dfe8ed",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00099.jpg": {
+    "mtime": 1794430030.3318636,
+    "seen": 1794430634.0355916,
+    "ast_hash": "5aa4c8764c55d5714546af3307f4d219",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00100.jpg": {
+    "mtime": 1794430030.346856,
+    "seen": 1794430634.0355916,
+    "ast_hash": "a0b5b7f4baba2a0367f7c65c63cdd55a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00101.jpg": {
+    "mtime": 1794430030.372854,
+    "seen": 1794430634.0355916,
+    "ast_hash": "0eb89013160e84f5bf8fd0e23f7d1456",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00102.jpg": {
+    "mtime": 1794430030.4008522,
+    "seen": 1794430634.0355916,
+    "ast_hash": "a0467570b41caae0138a8e7526744278",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00103.jpg": {
+    "mtime": 1794430030.4452412,
+    "seen": 1794430634.0355916,
+    "ast_hash": "22a99fa9b9799f25a4d49dd38103f87a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00104.jpg": {
+    "mtime": 1794430030.48911,
+    "seen": 1794430634.0355916,
+    "ast_hash": "dcc6355b60beab1890ebd5d54912f8fb",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00105.jpg": {
+    "mtime": 1794430030.5046413,
+    "seen": 1794430634.0355916,
+    "ast_hash": "e9634e886ed0c80fdc152f5653109aa2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00106.jpg": {
+    "mtime": 1794430030.5344183,
+    "seen": 1794430634.0355916,
+    "ast_hash": "cc93464037a62b6d4bb5fb5e4c5919b2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00107.jpg": {
+    "mtime": 1794430030.5634375,
+    "seen": 1794430634.0355916,
+    "ast_hash": "a0d5698894a66899ed6b540b9fbb69eb",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00108.jpg": {
+    "mtime": 1794430030.6269925,
+    "seen": 1794430634.0355916,
+    "ast_hash": "1f75dd7ca5069d4d092c33a1de69204d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00109.jpg": {
+    "mtime": 1794430030.6299891,
+    "seen": 1794430634.0355916,
+    "ast_hash": "436e0e42e73493eb4cd45385d6dac0a0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00110.jpg": {
+    "mtime": 1794430030.6586492,
+    "seen": 1794430634.0355916,
+    "ast_hash": "91a657dd0f4211b2f7db05bfc3d0a234",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00111.jpg": {
+    "mtime": 1794430030.6886582,
+    "seen": 1794430634.0355916,
+    "ast_hash": "90e6f78438e0cc53d8a67e41be0ea5c3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00112.jpg": {
+    "mtime": 1794430030.7310162,
+    "seen": 1794430634.0355916,
+    "ast_hash": "41bdd1bf1aaf2344f8080a76b049c4ef",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00113.jpg": {
+    "mtime": 1794430030.7670503,
+    "seen": 1794430634.0355916,
+    "ast_hash": "d7d0e317a24a6fd4a427063690424e2a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00114.jpg": {
+    "mtime": 1794430030.7970178,
+    "seen": 1794430634.0355916,
+    "ast_hash": "53b0781e441170207bd535f78813775a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00115.jpg": {
+    "mtime": 1794430030.8300898,
+    "seen": 1794430634.0355916,
+    "ast_hash": "f8c39a2ce271bc1fbb36fc60afbdd497",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00116.jpg": {
+    "mtime": 1794430030.861933,
+    "seen": 1794430634.0355916,
+    "ast_hash": "a0e5bd873ec077b508e862c7c28b25f8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00117.jpg": {
+    "mtime": 1794430030.8759022,
+    "seen": 1794430634.0355916,
+    "ast_hash": "25a27873f08e672be37e5d38c6835045",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00118.jpg": {
+    "mtime": 1794430030.9107451,
+    "seen": 1794430634.0355916,
+    "ast_hash": "0bbb1107763b364462591c81ca8c3a9c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00119.jpg": {
+    "mtime": 1794430030.9416456,
+    "seen": 1794430634.0355916,
+    "ast_hash": "284635589d4efc15ae83f99b5a8b5aec",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00120.jpg": {
+    "mtime": 1794430030.9805455,
+    "seen": 1794430634.0355916,
+    "ast_hash": "2ff0607e83b74d55024693d5b1d30e82",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00121.jpg": {
+    "mtime": 1794430031.0153656,
+    "seen": 1794430634.0355916,
+    "ast_hash": "f083b5c0b641f61cdb23308ff675d3d7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00122.jpg": {
+    "mtime": 1794430031.046699,
+    "seen": 1794430634.0355916,
+    "ast_hash": "e718ad5b9ae8920c2370ff087ac98b1a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00123.jpg": {
+    "mtime": 1794430031.0777884,
+    "seen": 1794430634.0355916,
+    "ast_hash": "af182768b7b4479bc2fdb0a742bd3129",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00124.jpg": {
+    "mtime": 1794430031.114759,
+    "seen": 1794430634.0355916,
+    "ast_hash": "ac579464e3b03bd0fa664cc31d415b10",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00125.jpg": {
+    "mtime": 1794430031.126788,
+    "seen": 1794430634.0355916,
+    "ast_hash": "5da6d869701ae6339b30deb0acab2051",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00126.jpg": {
+    "mtime": 1794430031.158342,
+    "seen": 1794430634.0355916,
+    "ast_hash": "7ba24e6f44d465d2043c340053312d16",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00127.jpg": {
+    "mtime": 1794430031.1916952,
+    "seen": 1794430634.0355916,
+    "ast_hash": "be587e3e5a9350874fc49769f3e335ee",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00128.jpg": {
+    "mtime": 1794430031.2331007,
+    "seen": 1794430634.0355916,
+    "ast_hash": "684b3a75209156213c6d3a40ab41175e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00129.jpg": {
+    "mtime": 1794430031.2681525,
+    "seen": 1794430634.0355916,
+    "ast_hash": "9299f009bd970ae32ddd85808007b644",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00130.jpg": {
+    "mtime": 1794430031.3191147,
+    "seen": 1794430634.0355916,
+    "ast_hash": "389b3991b6efb0ff639440a9a00fd851",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00131.jpg": {
+    "mtime": 1794430031.323632,
+    "seen": 1794430634.0355916,
+    "ast_hash": "6db25e83bfa7a6c7707d08a67880fc99",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00132.jpg": {
+    "mtime": 1794430031.352398,
+    "seen": 1794430634.0355916,
+    "ast_hash": "2899d9b4be202ef315a2fd14bf5085db",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00133.jpg": {
+    "mtime": 1794430031.3814094,
+    "seen": 1794430634.0355916,
+    "ast_hash": "020a787cc596c8b31f7e70767a16e025",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00134.jpg": {
+    "mtime": 1794430031.4147606,
+    "seen": 1794430634.0355916,
+    "ast_hash": "9d207e82719132f0674ae5eeb3e4fba8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00135.jpg": {
+    "mtime": 1794430031.4470978,
+    "seen": 1794430634.0355916,
+    "ast_hash": "3c1c8c66e5cdfc53526ef2b4e58b2261",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00136.jpg": {
+    "mtime": 1794430031.4790566,
+    "seen": 1794430634.0355916,
+    "ast_hash": "b85e84a2dc47f23ae1275888f0b8d30b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00137.jpg": {
+    "mtime": 1794430031.535776,
+    "seen": 1794430634.0355916,
+    "ast_hash": "629af728d2d43a2ce2d9ac68dd2ccfe7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00138.jpg": {
+    "mtime": 1794430031.5467744,
+    "seen": 1794430634.0355916,
+    "ast_hash": "08a5c813d3023f13b1a2724c1449dc09",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00139.jpg": {
+    "mtime": 1794430031.581771,
+    "seen": 1794430634.0355916,
+    "ast_hash": "9b5e2e7212f37f15b4cfaea6d466a4f7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00140.jpg": {
+    "mtime": 1794430031.615779,
+    "seen": 1794430634.0355916,
+    "ast_hash": "98106cba76ac95a928df72c2706b0e06",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00141.jpg": {
+    "mtime": 1794430031.629107,
+    "seen": 1794430634.0355916,
+    "ast_hash": "8802850a95d3a4e2c65130b8c473cbff",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00142.jpg": {
+    "mtime": 1794430031.6676867,
+    "seen": 1794430634.0355916,
+    "ast_hash": "d88240c4743bf0be6211371bb24f4c3a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00143.jpg": {
+    "mtime": 1794430031.6966908,
+    "seen": 1794430634.0355916,
+    "ast_hash": "512802b7eaae5857c254c2c30abb2ece",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00144.jpg": {
+    "mtime": 1794430031.708691,
+    "seen": 1794430634.0355916,
+    "ast_hash": "f78a584af047ca5298e228632d0fd268",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00145.jpg": {
+    "mtime": 1794430031.7496874,
+    "seen": 1794430634.0355916,
+    "ast_hash": "96183c557f7e15356493911e272577c8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00146.jpg": {
+    "mtime": 1794430031.794047,
+    "seen": 1794430634.0355916,
+    "ast_hash": "660bd107ba0e45c40192e8badced6534",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00147.jpg": {
+    "mtime": 1794430031.8280458,
+    "seen": 1794430634.0355916,
+    "ast_hash": "c92d1ed0d87013f4badcf592ed72d4b1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00148.jpg": {
+    "mtime": 1794430031.8470683,
+    "seen": 1794430634.0355916,
+    "ast_hash": "4ebf9f415e288ee3b463ba2672c56741",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00149.jpg": {
+    "mtime": 1794430031.8834121,
+    "seen": 1794430634.0355916,
+    "ast_hash": "cf97a2583429ff59dd4315401e369185",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00150.jpg": {
+    "mtime": 1794430031.9154153,
+    "seen": 1794430634.0355916,
+    "ast_hash": "15e92297730436951ce3f7ecfa604e9a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00151.jpg": {
+    "mtime": 1794430031.9285226,
+    "seen": 1794430634.0355916,
+    "ast_hash": "0765c8f7663976e01a1973b53f203ec9",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00152.jpg": {
+    "mtime": 1794430031.9628787,
+    "seen": 1794430634.0355916,
+    "ast_hash": "717b83cfd5082ea3f479a44a8d699cdf",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00153.jpg": {
+    "mtime": 1794430031.9928756,
+    "seen": 1794430634.0355916,
+    "ast_hash": "739c3b016801705d4dc73acbecab56ff",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00154.jpg": {
+    "mtime": 1794430032.0178869,
+    "seen": 1794430634.0355916,
+    "ast_hash": "e46c1e770ebc015d31530aa3257d51a4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00155.jpg": {
+    "mtime": 1794430032.0558774,
+    "seen": 1794430634.0355916,
+    "ast_hash": "b86f894a768d78c02aa26ca8d4de8985",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00156.jpg": {
+    "mtime": 1794430032.1052563,
+    "seen": 1794430634.0355916,
+    "ast_hash": "83e2bbac8d690817af2a460ea2bfe96b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00157.jpg": {
+    "mtime": 1794430032.112256,
+    "seen": 1794430634.0355916,
+    "ast_hash": "983b03d536f5a03193692388e2754426",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00158.jpg": {
+    "mtime": 1794430032.1372626,
+    "seen": 1794430634.0355916,
+    "ast_hash": "9aa8692de1c679a27f2946941187a028",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00159.jpg": {
+    "mtime": 1794430032.179989,
+    "seen": 1794430634.0355916,
+    "ast_hash": "892f40b49e65e08769c096e0f1d27c73",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00160.jpg": {
+    "mtime": 1794430032.1949978,
+    "seen": 1794430634.0355916,
+    "ast_hash": "4244a01818159d40621554ab9ed2f603",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00161.jpg": {
+    "mtime": 1794430032.2473733,
+    "seen": 1794430634.0355916,
+    "ast_hash": "5f45f8323c15cc04d73ded0bac7b9626",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00162.jpg": {
+    "mtime": 1794430032.2583761,
+    "seen": 1794430634.0355916,
+    "ast_hash": "86c543b12869a606b477b806a3a838ec",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00163.jpg": {
+    "mtime": 1794430032.269377,
+    "seen": 1794430634.0355916,
+    "ast_hash": "74deaa4ae9ba0ecb2849d41dfbd261b7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00164.jpg": {
+    "mtime": 1794430032.326375,
+    "seen": 1794430634.0355916,
+    "ast_hash": "ca12624010139064fa019f27a32670f1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00165.jpg": {
+    "mtime": 1794430032.3684168,
+    "seen": 1794430634.0355916,
+    "ast_hash": "361625dccaa9fa5ac83c44ba96f78312",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00166.jpg": {
+    "mtime": 1794430032.400485,
+    "seen": 1794430634.0355916,
+    "ast_hash": "61ad2246a76da16787ca2f72b847ea36",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00167.jpg": {
+    "mtime": 1794430032.4105015,
+    "seen": 1794430634.0355916,
+    "ast_hash": "bcb0ee92f68d3b49cc25e7906441570c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00168.jpg": {
+    "mtime": 1794430032.4367332,
+    "seen": 1794430634.0355916,
+    "ast_hash": "43c195056ca041df01390c417711c751",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00169.jpg": {
+    "mtime": 1794430032.4957285,
+    "seen": 1794430634.0355916,
+    "ast_hash": "d46fb20d521e7d5f6e3f0da5f9ff5d19",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00170.jpg": {
+    "mtime": 1794430032.5212603,
+    "seen": 1794430634.0355916,
+    "ast_hash": "6b01375cc9fb49d5665f8bd23f9d7486",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00171.jpg": {
+    "mtime": 1794430032.544033,
+    "seen": 1794430634.0355916,
+    "ast_hash": "f58a07ce65fc622e2fedc52cca845075",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00172.jpg": {
+    "mtime": 1794430032.5619788,
+    "seen": 1794430634.0355916,
+    "ast_hash": "10b5a5796e69bde2ac6264d3146633f0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00173.jpg": {
+    "mtime": 1794430032.6179786,
+    "seen": 1794430634.0355916,
+    "ast_hash": "649c10128bbd4aa209eb560773fdbc4e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00174.jpg": {
+    "mtime": 1794430032.6349766,
+    "seen": 1794430634.0355916,
+    "ast_hash": "68dcfd8f919a6a2a4cb9cbbc5b174598",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00175.jpg": {
+    "mtime": 1794430032.6710563,
+    "seen": 1794430634.0355916,
+    "ast_hash": "f33a30179e97e50c1a61f7a5fa68bd58",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00176.jpg": {
+    "mtime": 1794430032.731873,
+    "seen": 1794430634.0355916,
+    "ast_hash": "9967c88104d0bbe81c54458ddcca2198",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00177.jpg": {
+    "mtime": 1794430032.7368748,
+    "seen": 1794430634.0355916,
+    "ast_hash": "29a83cd62d64b62b53d07e497f44e5a6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00178.jpg": {
+    "mtime": 1794430032.7728758,
+    "seen": 1794430634.0355916,
+    "ast_hash": "ecb30d0a6666ab43dbaa5be6639744f4",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00179.jpg": {
+    "mtime": 1794430032.8079002,
+    "seen": 1794430634.0355916,
+    "ast_hash": "79a097436d00ccea169f0a7af0b5b402",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00180.jpg": {
+    "mtime": 1794430032.8214154,
+    "seen": 1794430634.0355916,
+    "ast_hash": "707bc35b1905f6f5f8d48de36e736aaa",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00181.jpg": {
+    "mtime": 1794430032.857202,
+    "seen": 1794430634.0355916,
+    "ast_hash": "b975c47f8a368731baaef3171b1a79fe",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00182.jpg": {
+    "mtime": 1794430032.8729167,
+    "seen": 1794430634.0355916,
+    "ast_hash": "a6dc52a3294b14b610738d3516bf40dc",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00183.jpg": {
+    "mtime": 1794430032.9200544,
+    "seen": 1794430634.0355916,
+    "ast_hash": "9f31e73cbf05787a8e6145203aace2bd",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00184.jpg": {
+    "mtime": 1794430032.9280593,
+    "seen": 1794430634.0355916,
+    "ast_hash": "60e3dff45f45c7b5846ddae7561c47ea",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00185.jpg": {
+    "mtime": 1794430032.9536104,
+    "seen": 1794430634.0355916,
+    "ast_hash": "65b926a6a8f1b4e43572d165855c1d83",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00186.jpg": {
+    "mtime": 1794430033.0103579,
+    "seen": 1794430634.0355916,
+    "ast_hash": "5a0cceb1300a62b9018e6a224de66052",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00187.jpg": {
+    "mtime": 1794430033.0265484,
+    "seen": 1794430634.0355916,
+    "ast_hash": "c5aac15ef87f038c3c4b5b357740c7af",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00188.jpg": {
+    "mtime": 1794430033.0676239,
+    "seen": 1794430634.0355916,
+    "ast_hash": "42e0693defec91591d991f3cd2dc6e9f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00189.jpg": {
+    "mtime": 1794430033.1086452,
+    "seen": 1794430634.0355916,
+    "ast_hash": "a9b355aed8d577f1743cfc8c7bb56460",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00190.jpg": {
+    "mtime": 1794430033.131182,
+    "seen": 1794430634.0355916,
+    "ast_hash": "55aa4ff5746503a530aca598b3ccaacc",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00191.jpg": {
+    "mtime": 1794430033.1572328,
+    "seen": 1794430634.0355916,
+    "ast_hash": "18aa237e1e28b8caaa1154503d7bc154",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00192.jpg": {
+    "mtime": 1794430033.2162466,
+    "seen": 1794430634.0355916,
+    "ast_hash": "f8ec27aacb336fbe845f728028185cef",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00193.jpg": {
+    "mtime": 1794430033.256548,
+    "seen": 1794430634.0355916,
+    "ast_hash": "32a3bf8a2cd91183661ea2099d67b082",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00194.jpg": {
+    "mtime": 1794430033.2788372,
+    "seen": 1794430634.0355916,
+    "ast_hash": "81db311c8da9a39870afa03e1ebe6fc0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00195.jpg": {
+    "mtime": 1794430033.342407,
+    "seen": 1794430634.0355916,
+    "ast_hash": "3bbe8908e72f99a13606974a357b1387",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00196.jpg": {
+    "mtime": 1794430033.3927982,
+    "seen": 1794430634.0355916,
+    "ast_hash": "a16013087a374c9bb999f7b157ad0aff",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00197.jpg": {
+    "mtime": 1794430033.4163442,
+    "seen": 1794430634.0355916,
+    "ast_hash": "d3fa851e46a06ad4a1461a8aa9e4963b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00198.jpg": {
+    "mtime": 1794430033.4897463,
+    "seen": 1794430634.0355916,
+    "ast_hash": "73717b6299c4fd6a54410de38250c20e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00199.jpg": {
+    "mtime": 1794430033.5440755,
+    "seen": 1794430634.0360994,
+    "ast_hash": "bc8b4d26fca5c6b5b99dbd2ae61a286d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00200.jpg": {
+    "mtime": 1794430033.5963058,
+    "seen": 1794430634.0360994,
+    "ast_hash": "b96f861daaedeec9083a62e076af5de1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00201.jpg": {
+    "mtime": 1794430033.6590395,
+    "seen": 1794430634.0360994,
+    "ast_hash": "144a40710aa9db162160530ab1ffdfbe",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00202.jpg": {
+    "mtime": 1794430033.7162666,
+    "seen": 1794430634.0360994,
+    "ast_hash": "3f3d5e5af2925589ce73cd4878876041",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00203.jpg": {
+    "mtime": 1794430033.7446637,
+    "seen": 1794430634.0360994,
+    "ast_hash": "eba199560c88c1ce081ba60777eb12bf",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00204.jpg": {
+    "mtime": 1794430033.8320453,
+    "seen": 1794430634.0360994,
+    "ast_hash": "00bb956db8d9cd50d3b957aa4960193c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00205.jpg": {
+    "mtime": 1794430033.9112213,
+    "seen": 1794430634.0360994,
+    "ast_hash": "4e0f845b9c0659e6e0a741ba86d962dd",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00206.jpg": {
+    "mtime": 1794430033.9629078,
+    "seen": 1794430634.0360994,
+    "ast_hash": "7d91d24c0d38e105c77a44bcfd8e07d7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00207.jpg": {
+    "mtime": 1794430034.051783,
+    "seen": 1794430634.0360994,
+    "ast_hash": "e4b1da07d4b334ed28213c47bbe783f1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00208.jpg": {
+    "mtime": 1794430034.099061,
+    "seen": 1794430634.0360994,
+    "ast_hash": "e7b1907d960b346268b7b27e50e715fb",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00209.jpg": {
+    "mtime": 1794430034.1109173,
+    "seen": 1794430634.0360994,
+    "ast_hash": "16c2a0f99a8a8fd32261ba658b5ac853",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00210.jpg": {
+    "mtime": 1794430034.1421623,
+    "seen": 1794430634.0360994,
+    "ast_hash": "233af3acd16bd1fb8245cec093244a7b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00211.jpg": {
+    "mtime": 1794430034.8384027,
+    "seen": 1794430634.0360994,
+    "ast_hash": "2bab74a40468ecbbbfa7c6b7b75ef954",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00212.jpg": {
+    "mtime": 1794430035.3875515,
+    "seen": 1794430634.0360994,
+    "ast_hash": "60d6a0bf2f358f97096729ad2e4955f3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00213.jpg": {
+    "mtime": 1794430035.3955488,
+    "seen": 1794430634.0360994,
+    "ast_hash": "249b52d76c660ac5a0af3ebfcf3e859b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00214.jpg": {
+    "mtime": 1794430035.4115686,
+    "seen": 1794430634.0360994,
+    "ast_hash": "fa06cdd9ed4b70c75dcdc6e9d94e529e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00215.jpg": {
+    "mtime": 1794430035.4932525,
+    "seen": 1794430634.0360994,
+    "ast_hash": "aca652d42ba0a4a94b2c0d234cfdcf83",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00216.jpg": {
+    "mtime": 1794430035.5044947,
+    "seen": 1794430634.0360994,
+    "ast_hash": "4fe58845c5143cf2b33d54e8047a0698",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00217.jpg": {
+    "mtime": 1794430035.5235891,
+    "seen": 1794430634.0360994,
+    "ast_hash": "77743a018faf2dd12e50b92dafb02aa0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00218.jpg": {
+    "mtime": 1794430035.6074388,
+    "seen": 1794430634.0360994,
+    "ast_hash": "d2ca223fb05677a078607ff23fbdd880",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00219.jpg": {
+    "mtime": 1794430035.6204472,
+    "seen": 1794430634.0360994,
+    "ast_hash": "c5e596097744954d45b2a98e19357c66",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00220.jpg": {
+    "mtime": 1794430035.6375399,
+    "seen": 1794430634.0360994,
+    "ast_hash": "126c4dc9665a05095c1602232c130061",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00221.jpg": {
+    "mtime": 1794430035.6955078,
+    "seen": 1794430634.0360994,
+    "ast_hash": "d1945bc2968c4b43fcfb2644a47bcee8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00222.jpg": {
+    "mtime": 1794430035.7174835,
+    "seen": 1794430634.0360994,
+    "ast_hash": "15a2fd7413691025884c3a3ef33047e5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00223.jpg": {
+    "mtime": 1794430035.7525012,
+    "seen": 1794430634.0360994,
+    "ast_hash": "7c7d9bff855a84f60af3aeb4dd8730d3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00224.jpg": {
+    "mtime": 1794430035.786476,
+    "seen": 1794430634.0360994,
+    "ast_hash": "8397e38e44760af1b7bd1c6926cdb4c6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00225.jpg": {
+    "mtime": 1794430035.81654,
+    "seen": 1794430634.0360994,
+    "ast_hash": "696ab349270b58767f968440de5e844e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00226.jpg": {
+    "mtime": 1794430035.8691707,
+    "seen": 1794430634.0360994,
+    "ast_hash": "fa8f99d23315950eead305a07782799f",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00227.jpg": {
+    "mtime": 1794430035.8821437,
+    "seen": 1794430634.0360994,
+    "ast_hash": "353f671c5f491f7733c5c457f035a861",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00228.jpg": {
+    "mtime": 1794430035.919145,
+    "seen": 1794430634.0360994,
+    "ast_hash": "13cc85c1d3042718413e05e60714b7ae",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00229.jpg": {
+    "mtime": 1794430035.9559946,
+    "seen": 1794430634.0360994,
+    "ast_hash": "c1671b57d0a66b95c9bfe17ab07dd299",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00230.jpg": {
+    "mtime": 1794430035.9917305,
+    "seen": 1794430634.0360994,
+    "ast_hash": "2bab74a40468ecbbbfa7c6b7b75ef954",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_frames/frame_00231.jpg": {
+    "mtime": 1794430042.6746566,
+    "seen": 1794430634.0360994,
+    "ast_hash": "3fcea2f00c4608f3ef8f47f7a25d98c0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scroll_test/frame_0000.png": {
+    "mtime": 1794429789.114095,
+    "seen": 1794430634.0360994,
+    "ast_hash": "1c6e3a928660e97e8e00d16f3f6084d6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scroll_test/frame_0001.png": {
+    "mtime": 1794429789.2533348,
+    "seen": 1794430634.0360994,
+    "ast_hash": "4a14a5950afea22bd1d7977fab2d256e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scroll_test/frame_0002.png": {
+    "mtime": 1794429789.4118996,
+    "seen": 1794430634.0360994,
+    "ast_hash": "be44741a82e1ce72e33ec0f1e6bae1f2",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scroll_test/frame_0003.png": {
+    "mtime": 1794429789.574128,
+    "seen": 1794430634.0360994,
+    "ast_hash": "a80b3556de8f74960033cb9236f2b50c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scroll_test/frame_0004.png": {
+    "mtime": 1794429789.7263296,
+    "seen": 1794430634.0360994,
+    "ast_hash": "1545fd1a1aa3285d7a4155499dbfd061",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scroll_test/frame_0005.png": {
+    "mtime": 1794429789.8812673,
+    "seen": 1794430634.0362477,
+    "ast_hash": "32baf6c3da0f301519568da4e4c7bb52",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scroll_test/frame_0006.png": {
+    "mtime": 1794429790.0175161,
+    "seen": 1794430634.0362477,
+    "ast_hash": "c5cdfb5cbad335315e6ac6d86c3b4955",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scroll_test/frame_0007.png": {
+    "mtime": 1794429790.1623027,
+    "seen": 1794430634.0362477,
+    "ast_hash": "af3d26cd2b38f38628b02fb4610d91d5",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scroll_test/frame_0008.png": {
+    "mtime": 1794429790.307945,
+    "seen": 1794430634.0362477,
+    "ast_hash": "ce853b6df80ca9fa65f5c63dd0fe7212",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scroll_test/frame_0009.png": {
+    "mtime": 1794429790.4616175,
+    "seen": 1794430634.0362477,
+    "ast_hash": "23bd2f207626c916403dedcb2ce17a82",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/test_sub_frame.png": {
+    "mtime": 1794430144.0443778,
+    "seen": 1794430634.0362477,
+    "ast_hash": "6249e8e0c4651dd08eaf3cfdc7de161d",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/verify_01_hook.png": {
+    "mtime": 1794430606.8078413,
+    "seen": 1794430634.0362477,
+    "ast_hash": "c237cfb5372ea82b16ac94624a56d911",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/verify_06_table.png": {
+    "mtime": 1794430607.1499267,
+    "seen": 1794430634.0362477,
+    "ast_hash": "cf3ea4dfc8a7d188a46e5450b8d98f4a",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/verify_07_drawer_scroll.png": {
+    "mtime": 1794430607.3482063,
+    "seen": 1794430634.0362477,
+    "ast_hash": "e318a924369e1e9e5bb93e01498e4964",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/verify_08_invariants_scroll.png": {
+    "mtime": 1794430607.6804862,
+    "seen": 1794430634.0362477,
+    "ast_hash": "ee61817bece001604db951a239dee286",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/verify_09_dispatch.png": {
+    "mtime": 1794430608.017199,
+    "seen": 1794430634.0362477,
+    "ast_hash": "2be72bd2d7ee72aa96d358f20c754b3e",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc09_sub1.mp4": {
+    "mtime": 1794430393.4872804,
+    "seen": 1794430634.0362477,
+    "ast_hash": "a44f2b6a2e1e4dded41ac37958be0907",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc09_sub2.mp4": {
+    "mtime": 1794430395.4307494,
+    "seen": 1794430634.0362477,
+    "ast_hash": "2bee138e96e0ca6af177f72b2d0a26e8",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc09_sub3.mp4": {
+    "mtime": 1794430397.121937,
+    "seen": 1794430634.0362477,
+    "ast_hash": "d1ea23007fabfe1976a77d9c1de07e32",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/sc09_sub4.mp4": {
+    "mtime": 1794430400.5679748,
+    "seen": 1794430634.0362477,
+    "ast_hash": "3a971382e57baa7bceb9e134d9b48b70",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_06_disputes_aggrid_sub_0.mp4": {
+    "mtime": 1794430502.880777,
+    "seen": 1794430634.0362477,
+    "ast_hash": "1d8720551c454818caa7833ebb0e81e9",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_06_disputes_aggrid_sub_1.mp4": {
+    "mtime": 1794430504.780587,
+    "seen": 1794430634.0362477,
+    "ast_hash": "eedf698753081dfd2f016b31851c8dc1",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_06_disputes_aggrid_video_only.mp4": {
+    "mtime": 1794430505.0321903,
+    "seen": 1794430634.0362477,
+    "ast_hash": "c730108ac907eecf8299d67039050241",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_06_visual.mp4": {
+    "mtime": 1794430204.489335,
+    "seen": 1794430634.0362477,
+    "ast_hash": "f61fb27d8e693aa55de052ab1784c7c0",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_scroll_visual.mp4": {
+    "mtime": 1794430368.5258968,
+    "seen": 1794430634.0362477,
+    "ast_hash": "72a493ea191f77fee4a0457c888ba9d7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_07_visual.mp4": {
+    "mtime": 1794430224.116054,
+    "seen": 1794430634.0362477,
+    "ast_hash": "91e9f0b2232ff3cd242912687c6c29a6",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_08_scroll_visual.mp4": {
+    "mtime": 1794430388.4994886,
+    "seen": 1794430634.0362477,
+    "ast_hash": "7e6e82d9aba8ded50cb9c928c142e5d7",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_08_visual.mp4": {
+    "mtime": 1794430242.6609128,
+    "seen": 1794430634.0362477,
+    "ast_hash": "316ff5fce25b4721d2a19401b710238c",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_09_dispatch_visual.mp4": {
+    "mtime": 1794430400.95223,
+    "seen": 1794430634.0362477,
+    "ast_hash": "f6b56dfe42ab67575912129279fb2b55",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/scene_09_visual.mp4": {
+    "mtime": 1794430260.293478,
+    "seen": 1794430634.0362477,
+    "ast_hash": "679f43bf9251951d6ae2d40fb3b617f3",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/test_scene_07_scroll.mp4": {
+    "mtime": 1794430048.2246943,
+    "seen": 1794430634.0362477,
+    "ast_hash": "825a83757ab0d0c502498cf9e7f62b8b",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/test_stream.mp4": {
+    "mtime": 1794430114.2684014,
+    "seen": 1794430634.0362477,
+    "ast_hash": "e15afa38ab7b49ed9d259a50a0122295",
+    "semantic_hash": ""
+  },
+  "video/rendered_clips/test_subtitles.mp4": {
+    "mtime": 1794430138.293563,
+    "seen": 1794430634.0362477,
+    "ast_hash": "0743fa532687f6552c9f7c0ca8cc03f0",
     "semantic_hash": ""
   },
   "frontend/package-lock.json": {
